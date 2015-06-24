@@ -17,27 +17,24 @@
  *  under the License.
  *
  */
-package org.apache.kerby.kerberos.tool.kadmin.executor;
+package org.apache.kerby.kerberos.tool.kadmin.command;
 
 import org.apache.kerby.KOptions;
-import org.apache.kerby.config.Config;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.admin.Kadmin;
 import org.apache.kerby.kerberos.kerb.admin.KadminOption;
-import org.apache.kerby.kerberos.tool.kadmin.tool.KadminTool;
+import org.apache.kerby.kerberos.tool.kadmin.ToolUtil;
 
 import java.io.File;
 
-public class KeytabRemoveExecutor implements KadminCommandExecutor{
+public class KeytabRemoveCommand extends KadminCommand {
     private static final String USAGE =
             "Usage: ktremove [-k[eytab] keytab] [-q] principal [kvno | all | old]";
 
-    private static final String DEFAULT_KEYTAB_FILE_LOCATION = "/etc/krb5.keytab";
+    private static final String DEFAULT_KEYTAB_FILE = "/etc/krb5.keytab";
 
-    private Config backendConfig;
-
-    public KeytabRemoveExecutor(Config backendConfig) {
-        this.backendConfig = backendConfig;
+    public KeytabRemoveCommand(Kadmin kadmin) {
+        super(kadmin);
     }
 
     @Override
@@ -48,9 +45,9 @@ public class KeytabRemoveExecutor implements KadminCommandExecutor{
             return;
         }
 
-        String principal = null;
-        String keytabFileLocation = null;
-        String rangeSuffix = null;
+        String principal;
+        String keytabFileLocation;
+        String removeOption = null;
         int lastIndex ;
 
         if (commands[commands.length - 1].matches("^all|old|-?\\d+$")) {
@@ -60,12 +57,12 @@ public class KeytabRemoveExecutor implements KadminCommandExecutor{
             }
             lastIndex = commands.length - 3;
             principal = commands[commands.length - 2];
-            rangeSuffix = commands[commands.length - 1];
+            removeOption = commands[commands.length - 1];
         } else {
             lastIndex = commands.length - 2;
             principal = commands[commands.length - 1];
         }
-        KOptions kOptions = KadminTool.parseOptions(commands, 1, lastIndex);
+        KOptions kOptions = ToolUtil.parseOptions(commands, 1, lastIndex);
 
         if (principal == null || kOptions == null ||
                 kOptions.contains(KadminOption.K) && kOptions.contains(KadminOption.KEYTAB)) {
@@ -77,15 +74,20 @@ public class KeytabRemoveExecutor implements KadminCommandExecutor{
                 kOptions.getStringOption(KadminOption.K):kOptions.getStringOption(KadminOption.KEYTAB);
 
         if (keytabFileLocation == null) {
-            keytabFileLocation = DEFAULT_KEYTAB_FILE_LOCATION;
+            keytabFileLocation = DEFAULT_KEYTAB_FILE;
         }
         File keytabFile = new File(keytabFileLocation);
 
-        Kadmin kadmin = new Kadmin(backendConfig);
         try {
-            StringBuilder result = kadmin.removeEntryFromKeytab(keytabFile, principal, rangeSuffix);
-            result.append("\tFile:" + keytabFileLocation);
-            System.out.println(result.toString());
+            if (removeOption.equals("all")) {
+                getKadmin().removeKeytabEntriesOf(keytabFile, principal);
+            } else if (removeOption.equals("old")) {
+                getKadmin().removeOldKeytabEntriesOf(keytabFile, principal);
+            } else {
+                int kvno = Integer.parseInt(removeOption);
+                getKadmin().removeKeytabEntriesOf(keytabFile, principal, kvno);
+            }
+            System.out.println("Done!");
         } catch (KrbException e) {
             System.err.println("Principal \"" + principal + "\" fail to remove entry from keytab." +
                 e.getMessage());

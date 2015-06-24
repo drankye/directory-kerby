@@ -17,12 +17,31 @@
  *  under the License.
  *
  */
-package org.apache.kerby.kerberos.tool.kadmin.executor;
+package org.apache.kerby.util;
 
-public interface KadminCommandExecutor {
+import java.io.IOException;
+import java.net.ServerSocket;
+
+/**
+ * Some network related utilities.
+ */
+public class NetworkUtil {
 
     /**
-     * Execute the kadmin command.
+     * Get a server socket point for server, either TCP or UDP.
+     * @return server socket point
      */
-    void execute(String input);
+    public static int getServerPort() {
+        int serverPort = 0;
+
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            serverPort = serverSocket.getLocalPort();
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to get a server socket point");
+        }
+
+        return serverPort;
+    }
 }

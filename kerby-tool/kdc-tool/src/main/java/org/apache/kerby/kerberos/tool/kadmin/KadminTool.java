@@ -19,17 +19,16 @@
  */
 package org.apache.kerby.kerberos.tool.kadmin;
 
-import org.apache.kerby.config.Conf;
-import org.apache.kerby.kerberos.kerb.server.KdcConfig;
-import org.apache.kerby.kerberos.tool.kadmin.executor.*;
+import org.apache.kerby.kerberos.kerb.KrbException;
+import org.apache.kerby.kerberos.kerb.admin.Kadmin;
+import org.apache.kerby.kerberos.tool.kadmin.command.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Kadmin {
-    private static final String PROMPT = Kadmin.class.getSimpleName() + ".local";
+public class KadminTool {
+    private static final String PROMPT = KadminTool.class.getSimpleName() + ".local";
     private static final String REQUEST_LIST = "Available " + PROMPT + " requests:\n" +
             "\n" +
             "add_principal, addprinc, ank\n" +
@@ -62,11 +61,9 @@ public class Kadmin {
             "list_requests, lr, ?     List available requests.\n" +
             "quit, exit, q            Exit program.";
 
-    private static KdcConfig kdcConfig;
-    private static Conf backendConfig;
 
-    private static void execute(String command) {
-        //omit the leading and trailing whitespace.
+    private static void execute(Kadmin kadmin, String command) {
+        //Omit the leading and trailing whitespace.
         command = command.trim();
         if (command.equals("list_requests") ||
                 command.equals("lr") ||
@@ -75,36 +72,36 @@ public class Kadmin {
             return;
         }
 
-        KadminCommandExecutor executor = null;
+        KadminCommand executor = null;
         if (command.startsWith("add_principal") ||
                 command.startsWith("addprinc") ||
                 command.startsWith("ank")) {
-            executor = new AddPrincipalExecutor(kdcConfig, backendConfig);
+            executor = new AddPrincipalCommand(kadmin);
         } else if (command.startsWith("ktadd") ||
                 command.startsWith("xst")) {
-            executor = new KeytabAddExecutor(backendConfig);
+            executor = new KeytabAddCommand(kadmin);
         } else if (command.startsWith("ktremove") ||
                 command.startsWith("ktrem")) {
-            executor = new KeytabRemoveExecutor(backendConfig);
+            executor = new KeytabRemoveCommand(kadmin);
         } else if (command.startsWith("delete_principal") ||
                 command.startsWith("delprinc")) {
-            executor = new DeletePrincipalExecutor(backendConfig);
+            executor = new DeletePrincipalCommand(kadmin);
         } else if (command.startsWith("modify_principal") ||
                 command.startsWith("modprinc")) {
-            executor = new ModifyPrincipalExecutor(kdcConfig, backendConfig);
+            executor = new ModifyPrincipalCommand(kadmin);
         } else if (command.startsWith("rename_principal") ||
                 command.startsWith("renprinc")) {
-            executor = new RenamePrincipalExecutor(backendConfig);
+            executor = new RenamePrincipalCommand(kadmin);
         } else if (command.startsWith("change_password") ||
                 command.startsWith("cpw")) {
-            executor = new ChangePasswordExecutor(kdcConfig, backendConfig);
+            executor = new ChangePasswordCommand(kadmin);
         } else if (command.startsWith("get_principal") || command.startsWith("getprinc") ||
                 command.startsWith("Get principal")) {
-            executor = new GetPrincipalExcutor(backendConfig);
+            executor = new GetPrincipalCommand(kadmin);
         } else if (command.startsWith("list_principals") ||
                 command.startsWith("listprincs") || command.startsWith("get_principals") ||
                 command.startsWith("getprincs") || command.startsWith("List principals")) {
-            executor = new ListPrincipalExcutor(backendConfig);
+            executor = new ListPrincipalCommand(kadmin);
         }
         if (executor == null) {
             System.out.println("Unknown request \"" + command + "\". Type \"?\" for a request list.");
@@ -113,7 +110,7 @@ public class Kadmin {
         executor.execute(command);
     }
 
-    private static void initConfig(String[] args) {
+    private static File getConfDir(String[] args) {
         File confDir;
         if (args.length == 0) {
             String envDir;
@@ -132,43 +129,30 @@ public class Kadmin {
             confDir = new File(args[0]);
         }
 
-        if (confDir.exists()) {
-            File kdcConfFile = new File(confDir, "kdc.conf");
-            if (kdcConfFile.exists()) {
-                kdcConfig = new KdcConfig();
-                try {
-                    kdcConfig.addIniConfig(kdcConfFile);
-                } catch (IOException e) {
-                    System.err.println("Can not load the kdc configuration file " + kdcConfFile.getAbsolutePath());
-                    e.printStackTrace();
-                }
-            }
-
-            File backendConfigFile = new File(confDir, "backend.conf");
-            if (backendConfigFile.exists()) {
-                backendConfig = new Conf();
-                try {
-                    backendConfig.addIniConfig(backendConfigFile);
-                } catch (IOException e) {
-                    System.err.println("Can not load the backend configuration file " + backendConfigFile.getAbsolutePath());
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            throw new RuntimeException("Can not find configuration directory");
+        if (!confDir.exists()) {
+            throw new RuntimeException("Can not locate KDC backend directory "
+                + confDir.getAbsolutePath());
         }
+        return confDir;
     }
 
     public static void main(String[] args) {
-        initConfig(args);
+        Kadmin kadmin;
+        try {
+            kadmin = new Kadmin(getConfDir(args));
+        } catch (KrbException e) {
+            System.err.println("Failed to init Kadmin due to " + e.getMessage());
+            return;
+        }
+
         System.out.print(PROMPT + ": ");
+
         try (Scanner scanner = new Scanner(System.in)) {
             String input = scanner.nextLine();
-    
-            while (!(input.equals("quit") ||
-                    input.equals("exit") ||
-                    input.equals("q"))) {
-                execute(input);
+
+            boolean quit = input.equals("quit") || input.equals("exit") || input.equals("q");
+            while (!quit) {
+                execute(kadmin, input);
                 System.out.print(PROMPT + ": ");
                 input = scanner.nextLine();
             }

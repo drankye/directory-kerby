@@ -2,7 +2,7 @@ package org.apache.kerby.kerberos.kerb.integration.test;
 
 import java.io.IOException;
 
-public abstract class AppClient extends App {
+public abstract class AppClient extends TestApp {
     protected Transport.Connection conn;
 
     protected void usage(String[] args) {
@@ -26,7 +26,7 @@ public abstract class AppClient extends App {
         System.out.println("Connected to server");
 
         try {
-            onConnection(conn);
+            withConnection(conn);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -38,5 +38,5 @@ public abstract class AppClient extends App {
         }
     }
 
-    protected abstract void onConnection(Transport.Connection conn) throws Exception;
+    protected abstract void withConnection(Transport.Connection conn) throws Exception;
 }

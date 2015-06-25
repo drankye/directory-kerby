@@ -61,7 +61,7 @@ public abstract class GssInteropTestBase extends KdcTest {
         kdcServer.init();
         
         // Must disable pre-auth
-        kdcServer.getSetting().getKdcConfig().setBoolean(KdcConfigKey.PREAUTH_REQUIRED, false);
+        kdcServer.getKdcConfig().setBoolean(KdcConfigKey.PREAUTH_REQUIRED, false);
         
         kdcRealm = kdcServer.getKdcRealm();
         clientPrincipal = "drankye@" + kdcRealm;
@@ -146,8 +146,8 @@ public abstract class GssInteropTestBase extends KdcTest {
     }
     
     /**
-     * This class represents a PrivilegedExceptionAction implementation to obtain a service ticket from a Kerberos
-     * Key Distribution Center.
+     * This class represents a PrivilegedExceptionAction implementation to
+     * obtain a service ticket from a Kerberos Key Distribution Center.
      */
     private static class KerberosClientExceptionAction implements PrivilegedExceptionAction<byte[]> {
 

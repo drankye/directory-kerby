@@ -27,5 +27,10 @@
   <description>Kerb Integration Test</description>
 
   <dependencies>
+    <dependency>
+      <groupId>org.apache.kerby</groupId>
+      <artifactId>kerb-simplekdc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

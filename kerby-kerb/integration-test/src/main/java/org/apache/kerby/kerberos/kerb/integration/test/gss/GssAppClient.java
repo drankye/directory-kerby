@@ -25,14 +25,12 @@ public class GssAppClient extends AppClient {
     }
 
     @Override
-    protected void onConnection(Transport.Connection conn) throws Exception {
+    protected void withConnection(Transport.Connection conn) throws Exception {
         Oid krb5Oid = new Oid("1.2.840.113554.1.2.2");
 
         GSSName serverName = manager.createName(serverPrincipal, null);
         GSSContext context = manager.createContext(serverName,
-                krb5Oid,
-                null,
-                GSSContext.DEFAULT_LIFETIME);
+                krb5Oid, null, GSSContext.DEFAULT_LIFETIME);
         context.requestMutualAuth(true);
         context.requestConf(true);
         context.requestInteg(true);
@@ -64,8 +62,9 @@ public class GssAppClient extends AppClient {
 
         token = conn.recvToken();
         context.verifyMIC(token, 0, token.length,
-                messageBytes, 0, messageBytes.length,
-                prop);
+                messageBytes, 0, messageBytes.length, prop);
+        setTestOK(true);
+
         System.out.println("Verified received MIC for message.");
         context.dispose();
     }

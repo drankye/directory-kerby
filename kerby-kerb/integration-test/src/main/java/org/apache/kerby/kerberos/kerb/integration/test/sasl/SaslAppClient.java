@@ -34,7 +34,7 @@ public class SaslAppClient extends AppClient {
     }
 
     @Override
-    protected void onConnection(Transport.Connection conn) throws Exception {
+    protected void withConnection(Transport.Connection conn) throws Exception {
         byte[] token = saslClient.hasInitialResponse() ? new byte[0] : null;
         token = saslClient.evaluateChallenge(token);
         conn.sendMessage("CONT", token);
@@ -60,18 +60,19 @@ public class SaslAppClient extends AppClient {
         System.out.println("Will send wrap token of size " + token.length);
 
         conn.sendToken(token);
+        setTestOK(true);
 
         saslClient.dispose();
     }
 
-    protected boolean isOK(Transport.Message msg) {
+    private boolean isOK(Transport.Message msg) {
         if (msg.header != null) {
             return new String(msg.header).equals("OK");
         }
         return false;
     }
 
-    protected boolean isContinue(Transport.Message msg) {
+    private boolean isContinue(Transport.Message msg) {
         if (msg.header != null) {
             return new String(msg.header).equals("CONT");
         }

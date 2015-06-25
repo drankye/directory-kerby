@@ -19,9 +19,21 @@
  */
 package org.apache.kerby.kerberos.kerb.integration.test;
 
+import org.apache.kerby.kerberos.kerb.integration.test.gss.GssAppClient;
+import org.apache.kerby.kerberos.kerb.integration.test.gss.GssAppServer;
+
 /**
  * This is an interop test using the Java GSS APIs against the Kerby KDC
  */
-public class GssIntegrationTest {
+public class GssTest extends IntegrationTest {
 
+    @Override
+    protected AppServer createAppServer() {
+        return new GssAppServer();
+    }
+
+    @Override
+    protected AppClient createAppClient() {
+        return new GssAppClient();
+    }
 }

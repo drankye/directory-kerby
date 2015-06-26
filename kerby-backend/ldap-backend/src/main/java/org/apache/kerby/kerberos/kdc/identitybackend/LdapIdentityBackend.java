@@ -19,12 +19,15 @@
  */
 package org.apache.kerby.kerberos.kdc.identitybackend;
 
+import org.apache.directory.api.ldap.model.cursor.CursorException;
+import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
+import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.GeneralizedTime;
@@ -36,10 +39,11 @@ import org.apache.kerby.kerberos.kerb.identity.backend.AbstractIdentityBackend;
 import org.apache.kerby.kerberos.kerb.spec.KerberosTime;
 import org.apache.kerby.kerberos.kerb.spec.base.EncryptionKey;
 import org.apache.kerby.kerberos.kerb.spec.base.EncryptionType;
-import sun.security.krb5.Asn1Exception;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +52,6 @@ import java.util.Map;
  *
  */
 public class LdapIdentityBackend extends AbstractIdentityBackend {
-    private static final String BASE_DN = "ou=users,dc=example,dc=com";
-    private static final String ADMIN_DN = "uid=admin,ou=system";
     private LdapNetworkConnection connection;
 
     public LdapIdentityBackend() {
@@ -66,9 +68,10 @@ public class LdapIdentityBackend extends AbstractIdentityBackend {
     }
 
     public void startConnection() throws LdapException {
-        this.connection = new LdapNetworkConnection( "localhost",
-                getConfig().getInt("port") );
-        connection.bind( ADMIN_DN, "secret" );
+        this.connection = new LdapNetworkConnection(getConfig().getString("host"),
+                getConfig().getInt("port"));
+        connection.bind(getConfig().getString("admin_dn"),
+                getConfig().getString("admin_pw"));
     }
 
     @Override
@@ -93,8 +96,7 @@ public class LdapIdentityBackend extends AbstractIdentityBackend {
     }
 
     public void closeConnection() throws LdapException, IOException {
-        if (this.connection.connect()) {
-            this.connection.unBind();
+        if (this.connection.isConnected()) {
             this.connection.close();
         }
     }
@@ -190,8 +192,6 @@ public class LdapIdentityBackend extends AbstractIdentityBackend {
             krbIdentity.setLocked(getHelper.getLocked());
         } catch (LdapException e) {
             e.printStackTrace();
-        } catch (Asn1Exception e) {
-            e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -236,17 +236,38 @@ public class LdapIdentityBackend extends AbstractIdentityBackend {
     private Dn toDn(String principalName) throws LdapInvalidDnException {
         String[] names = principalName.split("@");
         String uid = names[0];
-        Dn dn = new Dn(new Rdn("uid", uid), new Dn(BASE_DN));
+        Dn dn = new Dn(new Rdn("uid", uid), new Dn(getConfig().getString("base_dn")));
         return dn;
     }
 
     @Override
     public List<String> getIdentities(int start, int limit) {
-        return null;
+        List<String> identityNames = getIdentities();
+        return identityNames.subList(start, limit);
     }
 
     @Override
     public List<String> getIdentities() {
-        return null;
+        List<String> identityNames = new ArrayList<>();
+        EntryCursor cursor;
+        Entry entry;
+        try {
+            cursor = connection.search( getConfig().getString("base_dn"), 
+                    "(objectclass=*)", SearchScope.ONELEVEL, KerberosAttribute.KRB5_PRINCIPAL_NAME_AT);
+            if (cursor == null) {
+                return null;
+            }
+            while (cursor.next()) {
+                entry = cursor.get();
+                identityNames.add(entry.get(KerberosAttribute.KRB5_PRINCIPAL_NAME_AT).getString());
+            }
+            cursor.close();
+            Collections.sort(identityNames);
+        } catch (LdapException e) {
+            e.printStackTrace();
+        } catch (CursorException e) {
+            e.printStackTrace();
+        }
+        return identityNames;
     }
 }

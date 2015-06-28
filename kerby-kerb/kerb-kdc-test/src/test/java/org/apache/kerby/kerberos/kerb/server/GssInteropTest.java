@@ -48,20 +48,13 @@ public class GssInteropTest extends KdcTestBase {
     public void setUp() throws Exception {
         super.setUp();
 
-        File file1 = new File(this.getClass().getResource("/kerberos.jaas").getPath());
+        File file1 = new File(this.getClass().getResource(
+                "/kerberos.jaas").getPath());
         String content1 = getFileContent(file1.getPath());
         String path1 = writeToTestDir(content1, file1.getName());
 
         // System.setProperty("sun.security.krb5.debug", "true");
         System.setProperty("java.security.auth.login.config", path1);
-
-        // Read in krb5.conf and substitute in the correct port
-        File file2 = new File(this.getClass().getResource("/krb5.conf").getPath());
-        String content2 = getFileContent(file2.getPath());
-        content2 = content2.replaceAll("port", "" + getTcpPort());
-        String path2 = writeToTestDir(content2, file2.getName());
-
-        System.setProperty("java.security.krb5.conf", path2);
     }
 
     @Override
@@ -137,7 +130,7 @@ public class GssInteropTest extends KdcTestBase {
                         pc.setPassword(getClientPassword().toCharArray());
                         break;
                     } else if (pc.getPrompt().contains(getServerPrincipalName())) {
-                        pc.setPassword(clientPassword.toCharArray());
+                        pc.setPassword(getClientPassword().toCharArray());
                         break;
                     }
                 }

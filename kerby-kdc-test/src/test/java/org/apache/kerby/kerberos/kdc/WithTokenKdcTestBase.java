@@ -62,7 +62,7 @@ public class WithTokenKdcTestBase extends KdcTestBase {
     @Override
     protected void createPrincipals() throws KrbException {
         super.createPrincipals();
-        kdcServer.createPrincipal(getClientPrincipal(), clientPassword);
+        kdcServer.createPrincipal(getClientPrincipal(), getClientPassword());
     }
 
     @Override

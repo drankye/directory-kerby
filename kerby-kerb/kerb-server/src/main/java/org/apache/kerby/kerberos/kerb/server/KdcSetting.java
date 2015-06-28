@@ -31,7 +31,7 @@ import java.io.File;
 public class KdcSetting {
     private final KOptions startupOptions;
     private final KdcConfig kdcConfig;
-    private Conf backendConfig;
+    private final Conf backendConfig;
 
     public KdcSetting(KOptions startupOptions,
                       KdcConfig config, Conf backendConfig) {

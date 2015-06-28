@@ -32,5 +32,10 @@
       <artifactId>kerb-simplekdc</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.kerby</groupId>
+      <artifactId>kerb-kdc-test</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 </project>

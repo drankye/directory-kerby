@@ -33,11 +33,11 @@ import org.junit.BeforeClass;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class KdcTestBase {
+public abstract class KdcTestBase extends SimpleKdc {
     private static File testDir;
 
     private final String kdcRealm = "TEST.COM";
-    protected final String clientPassword = "123456";
+    private final String clientPassword = "123456";
     private final String hostname = "localhost";
     private final String clientPrincipalName = "drankye";
     private final String clientPrincipal = clientPrincipalName + "@" + kdcRealm;
@@ -47,9 +47,6 @@ public abstract class KdcTestBase {
 
     private int tcpPort = -1;
     private int udpPort = -1;
-
-    protected SimpleKdcServer kdcServer;
-    protected KrbClient krbClnt;
 
     @BeforeClass
     public static void createTestDir() throws IOException {
@@ -67,7 +64,7 @@ public abstract class KdcTestBase {
         testDir.delete();
     }
 
-    public File getTestDir() {
+    protected File getTestDir() {
         return testDir;
     }
 
@@ -134,6 +131,7 @@ public abstract class KdcTestBase {
         setUpKdcServer();
 
         setUpClient();
+
         createPrincipals();
     }
 
@@ -164,7 +162,7 @@ public abstract class KdcTestBase {
     }
 
     protected void setUpKdcServer() throws Exception {
-        kdcServer = new SimpleKdcServer();
+        kdcServer = new SimpleKdc(testDir);
         prepareKdcServer();
         kdcServer.init();
     }

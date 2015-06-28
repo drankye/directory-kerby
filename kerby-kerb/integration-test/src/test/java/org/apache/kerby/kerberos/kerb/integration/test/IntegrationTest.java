@@ -19,29 +19,67 @@
  */
 package org.apache.kerby.kerberos.kerb.integration.test;
 
-import org.apache.kerby.kerberos.kerb.server.SimpleKdcServer;
+import org.apache.kerby.kerberos.kerb.server.KdcTestBase;
 
-public abstract class IntegrationTest {
-    protected SimpleKdcServer kdc;
+import javax.security.auth.Subject;
+import javax.security.auth.kerberos.KerberosPrincipal;
+import javax.security.auth.login.Configuration;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+import java.io.File;
+import java.security.Principal;
+import java.security.PrivilegedExceptionAction;
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class IntegrationTest extends KdcTestBase {
+    protected File clientCredentialFile;
+    protected File serviceKeytabFile;
     protected AppClient appClient;
     protected AppServer appServer;
 
-    protected void setupKdc() {
-        kdc = new SimpleKdcServer();
-        kdc.start();
-    }
-
-    protected void setupAppServer() {
+    protected void setupAppServer() throws Exception {
         appServer = createAppServer();
         new Thread(appServer).start();
     }
 
-    protected abstract AppServer createAppServer();
+    protected abstract AppServer createAppServer() throws Exception;
 
-    protected void setupAppClient() {
+    protected void setupAppClient() throws Exception {
         appClient = createAppClient();
         new Thread(appClient).start();
     }
 
-    protected abstract AppClient createAppClient();
+    protected abstract AppClient createAppClient() throws Exception;
+
+
+    protected <T> T loginAndDoAs(boolean isClient,
+                                 final PrivilegedExceptionAction<T> action)
+            throws Exception {
+        LoginContext loginContext = createLoginContext(isClient);
+        try {
+            loginContext.login();
+            Subject subject = loginContext.getSubject();
+            return Subject.doAs(subject, action);
+        } finally {
+            loginContext.logout();
+        }
+    }
+
+    private LoginContext createLoginContext(boolean isClient) throws LoginException {
+        String principal = isClient ? getClientPrincipalName() :
+                getServerPrincipalName();
+        Set<Principal> principals = new HashSet<Principal>();
+        principals.add(new KerberosPrincipal(principal));
+
+        Subject subject = new Subject(false, principals,
+                new HashSet<Object>(), new HashSet<Object>());
+
+        Configuration conf = isClient ? JaasKrbConf.createClientConfig(principal,
+                clientCredentialFile) :
+                JaasKrbConf.createServerConfig(principal, serviceKeytabFile);
+        String confName = isClient ? "clientConf" : "serverConf";
+        LoginContext loginContext = new LoginContext(confName, subject, null, conf);
+        return loginContext;
+    }
 }

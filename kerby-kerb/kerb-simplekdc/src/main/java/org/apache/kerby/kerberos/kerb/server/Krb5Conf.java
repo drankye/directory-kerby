@@ -11,10 +11,10 @@ import java.io.IOException;
 public class Krb5Conf {
     private static final String KRB5_CONF = "java.security.krb5.conf";
     private static final String KRB5_CONF_FILE = "krb5.conf";
-    private SimpleKdc kdcServer;
+    private SimpleKdcServer kdcServer;
     private int udpLimit = 4096;
 
-    public Krb5Conf(SimpleKdc kdcServer) {
+    public Krb5Conf(SimpleKdcServer kdcServer) {
         this.kdcServer = kdcServer;
     }
 
@@ -39,7 +39,7 @@ public class Krb5Conf {
         content = content.replaceAll("_REALM_", "" + kdcServer.getKdcRealm());
 
         content = content.replaceAll("_PORT_",
-                String.valueOf(kdcServer.getKdcHost()));
+                String.valueOf(kdcServer.getKdcSetting().getKdcHost()));
 
         content = content.replaceAll("_UDP_LIMIT_", String.valueOf(udpLimit));
 

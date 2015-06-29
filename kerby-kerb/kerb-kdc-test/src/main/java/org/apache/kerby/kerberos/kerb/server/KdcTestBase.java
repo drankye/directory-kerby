@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class KdcTestBase extends SimpleKdc {
+public abstract class KdcTestBase extends SimpleKdcServer {
     private static File testDir;
 
     private final String kdcRealm = "TEST.COM";
@@ -135,19 +135,9 @@ public abstract class KdcTestBase extends SimpleKdc {
         createPrincipals();
     }
 
-    /**
-     * Prepare KrbClient startup options and config.
-     * @throws Exception
-     */
-    protected void prepareKrbClient() throws Exception {
-
-    }
-
-    /**
-     * Prepare KDC startup options and config.
-     * @throws Exception
-     */
-    protected void prepareKdcServer() throws Exception {
+    @Override
+    protected void prepareKdcServer() throws KrbException {
+        KdcServer kdcServer = getKdcServer();
         kdcServer.setKdcRealm(kdcRealm);
         kdcServer.setKdcHost(hostname);
         kdcServer.setAllowTcp(allowTcp());
@@ -162,7 +152,7 @@ public abstract class KdcTestBase extends SimpleKdc {
     }
 
     protected void setUpKdcServer() throws Exception {
-        kdcServer = new SimpleKdc(testDir);
+        kdcServer = new SimpleKdcServer(testDir);
         prepareKdcServer();
         kdcServer.init();
     }
@@ -190,13 +180,11 @@ public abstract class KdcTestBase extends SimpleKdc {
     }
 
     protected void createPrincipals() throws KrbException {
-        kdcServer.createTgsPrincipal();
         kdcServer.createPrincipals(serverPrincipal);
         kdcServer.createPrincipal(clientPrincipal, clientPassword);
     }
 
     protected void deletePrincipals() throws KrbException {
-        kdcServer.deleteTgsPrincipal();
         kdcServer.deletePrincipals(serverPrincipal);
         kdcServer.deletePrincipal(clientPrincipal);
     }

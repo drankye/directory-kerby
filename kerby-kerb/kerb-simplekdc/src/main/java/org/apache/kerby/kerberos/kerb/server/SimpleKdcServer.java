@@ -22,7 +22,6 @@ package org.apache.kerby.kerberos.kerb.server;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.admin.Kadmin;
 import org.apache.kerby.kerberos.kerb.client.KrbClient;
-import org.apache.kerby.kerberos.kerb.common.KrbUtil;
 import org.apache.kerby.util.NetworkUtil;
 
 import java.io.File;
@@ -31,47 +30,36 @@ import java.io.IOException;
 /**
  * A simple KDC server mainly for test usage.
  */
-public class SimpleKdc {
-    private KdcServer kdcServer;
-    private KrbClient krbClnt;
+public class SimpleKdcServer {
+    private final KdcServer kdcServer;
+    private final KrbClient krbClnt;
     private Kadmin kadmin;
 
     private File workDir;
 
-    public SimpleKdc(File workDir) {
-        this.workDir = workDir;
+    public SimpleKdcServer() {
         this.kdcServer = new KdcServer();
+
         this.krbClnt = new KrbClient();
+    }
+
+    public void setWorkDir(File workDir) {
+        this.workDir = workDir;
     }
 
     public File getWorkDir() {
         return workDir;
     }
 
-    /**
-     * Prepare KDC configuration.
-     */
-    protected void prepareKdcConfig() {
-        KdcConfig kdcConfig = kdcServer.getKdcConfig();
-        kdcConfig.setString(KdcConfigKey.KDC_HOST, "localhost");
-        kdcConfig.setInt(KdcConfigKey.KDC_PORT, NetworkUtil.getServerPort());
-        kdcConfig.setString(KdcConfigKey.KDC_REALM, "EXAMPLE.COM");
-    }
-
-    /**
-     * Prepare KDC startup options and config.
-     */
-    protected void prepareKdcServer() throws Exception {
-
-    }
-
     public void init() throws KrbException {
+        prepareKdcServer();
+
         kdcServer.init();
 
-        prepareKdcConfig();
+        kadmin = new Kadmin(kdcServer.getSetting(),
+                kdcServer.getIdentityService());
 
-        kadmin = new Kadmin(kdcServer.getIdentityService(),
-                kdcServer.getKdcConfig(), kdcServer.getBackendConfig());
+        kadmin.createBuiltinPrincipals();
 
         try {
             Krb5Conf krb5Conf = new Krb5Conf(this);
@@ -81,8 +69,31 @@ public class SimpleKdc {
         }
     }
 
+    /**
+     * Prepare Kdc server side startup options and config.
+     * @throws Exception
+     */
+    protected void prepareKdcServer() throws KrbException {
+        KdcConfig kdcConfig = kdcServer.getKdcConfig();
+        kdcConfig.setString(KdcConfigKey.KDC_HOST, "localhost");
+        kdcConfig.setInt(KdcConfigKey.KDC_PORT, NetworkUtil.getServerPort());
+        kdcConfig.setString(KdcConfigKey.KDC_REALM, "EXAMPLE.COM");
+    }
+
+    /**
+     * Prepare KrbClient startup options and config.
+     * @throws Exception
+     */
+    protected void prepareKrbClient() throws Exception {
+
+    }
+
     public KdcServer getKdcServer() {
         return kdcServer;
+    }
+
+    public KdcSetting getKdcSetting() {
+        return kdcServer.getSetting();
     }
 
     public KrbClient getKrbClient() {
@@ -95,18 +106,6 @@ public class SimpleKdc {
      */
     public Kadmin getKadmin() {
         return kadmin;
-    }
-
-    private String getTgsPrincipal() {
-        return KrbUtil.makeTgsPrincipal(getKdcRealm()).getName();
-    }
-
-    public void createTgsPrincipal() throws KrbException {
-        createPrincipal(getTgsPrincipal());
-    }
-
-    public void deleteTgsPrincipal() throws KrbException {
-        deletePrincipal(getTgsPrincipal());
     }
 
     public String getKdcRealm() {
@@ -151,11 +150,11 @@ public class SimpleKdc {
         kadmin.exportKeytab(keytabFile);
     }
 
-    public void start() {
+    public void start() throws KrbException {
         kdcServer.start();
     }
 
-    public void stop() {
+    public void stop() throws KrbException {
         kdcServer.stop();
     }
 }

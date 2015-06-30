@@ -66,7 +66,7 @@ public abstract class GssInteropTestBase extends KdcTestBase {
         System.setProperty("java.security.auth.login.config", path1);
     }
 
-    //@Test
+    @Test
     public void testKdc() throws Exception {
         LoginContext loginContext = new LoginContext(getClientPrincipalName(),
                 new KerberosCallbackHandler());

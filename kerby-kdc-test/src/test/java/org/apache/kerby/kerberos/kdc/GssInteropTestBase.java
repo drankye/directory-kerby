@@ -45,8 +45,8 @@ import java.util.Set;
 public abstract class GssInteropTestBase extends KdcTestBase {
     @Override
     protected void createPrincipals() throws KrbException {
-        kdcServer.createPrincipal(getClientPrincipal(), getClientPassword());
-        kdcServer.createPrincipal(getServerPrincipal(), getServerPassword());
+        getKdcServer().createPrincipal(getClientPrincipal(), getClientPassword());
+        getKdcServer().createPrincipal(getServerPrincipal(), getServerPassword());
     }
 
     private String getServerPassword() {
@@ -66,10 +66,8 @@ public abstract class GssInteropTestBase extends KdcTestBase {
         System.setProperty("java.security.auth.login.config", path1);
     }
 
-    @Test
+    //@Test
     public void testKdc() throws Exception {
-        kdcServer.start();
-        
         LoginContext loginContext = new LoginContext(getClientPrincipalName(),
                 new KerberosCallbackHandler());
         loginContext.login();
@@ -96,8 +94,6 @@ public abstract class GssInteropTestBase extends KdcTestBase {
         loginContext.logout();
         
         validateServiceTicket(kerberosToken);
-        
-        kdcServer.stop();
     }
     
     private void validateServiceTicket(byte[] ticket) throws Exception {

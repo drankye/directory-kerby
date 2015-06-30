@@ -21,10 +21,7 @@ package org.apache.kerby.kerberos.kerb.server;
 
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.client.KrbClient;
-import org.apache.kerby.kerberos.kerb.client.KrbConfig;
-import org.apache.kerby.kerberos.kerb.client.KrbConfigKey;
 import org.apache.kerby.util.IOUtil;
-import org.apache.kerby.util.NetworkUtil;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,20 +30,19 @@ import org.junit.BeforeClass;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class KdcTestBase extends SimpleKdcServer {
+public abstract class KdcTestBase {
     private static File testDir;
 
-    private final String kdcRealm = "TEST.COM";
     private final String clientPassword = "123456";
     private final String hostname = "localhost";
     private final String clientPrincipalName = "drankye";
-    private final String clientPrincipal = clientPrincipalName + "@" + kdcRealm;
+    private final String clientPrincipal =
+            clientPrincipalName + "@" + TestKdcServer.kdcRealm;
     private final String serverPrincipalName = "test-service";
     private final String serverPrincipal =
-            serverPrincipalName + "/" + hostname + "@" + kdcRealm;
+            serverPrincipalName + "/" + hostname + "@" + TestKdcServer.kdcRealm;
 
-    private int tcpPort = -1;
-    private int udpPort = -1;
+    private SimpleKdcServer kdcServer;
 
     @BeforeClass
     public static void createTestDir() throws IOException {
@@ -66,6 +62,14 @@ public abstract class KdcTestBase extends SimpleKdcServer {
 
     protected File getTestDir() {
         return testDir;
+    }
+
+    protected SimpleKdcServer getKdcServer() {
+        return kdcServer;
+    }
+
+    protected KrbClient getKrbClient() {
+        return kdcServer.getKrbClient();
     }
 
     protected String getClientPrincipalName() {
@@ -96,14 +100,6 @@ public abstract class KdcTestBase extends SimpleKdcServer {
         return true;
     }
 
-    protected int getTcpPort() {
-        return tcpPort;
-    }
-
-    protected int getUdpPort() {
-        return udpPort;
-    }
-
     protected String getFileContent(String path) throws IOException {
         return IOUtil.readFile(new File(path));
     }
@@ -120,63 +116,27 @@ public abstract class KdcTestBase extends SimpleKdcServer {
 
     @Before
     public void setUp() throws Exception {
-        if (allowTcp()) {
-            tcpPort = NetworkUtil.getServerPort();
-        }
-
-        if (allowUdp()) {
-            udpPort = NetworkUtil.getServerPort();
-        }
-
         setUpKdcServer();
 
-        setUpClient();
-
         createPrincipals();
+
+        setUpClient();
     }
 
-    @Override
-    protected void prepareKdcServer() throws KrbException {
-        KdcServer kdcServer = getKdcServer();
-        kdcServer.setKdcRealm(kdcRealm);
-        kdcServer.setKdcHost(hostname);
-        kdcServer.setAllowTcp(allowTcp());
-        if (tcpPort > 0) {
-            kdcServer.setKdcTcpPort(tcpPort);
-        }
-
-        kdcServer.setAllowUdp(allowUdp());
-        if (udpPort > 0) {
-            kdcServer.setKdcUdpPort(udpPort);
-        }
-    }
-
-    protected void setUpKdcServer() throws Exception {
-        kdcServer = new SimpleKdcServer(testDir);
-        prepareKdcServer();
+    protected void prepareKdc() throws KrbException {
         kdcServer.init();
     }
 
+    protected void setUpKdcServer() throws Exception {
+        kdcServer = new TestKdcServer(allowTcp(), allowUdp());
+        kdcServer.setWorkDir(testDir);
+
+        prepareKdc();
+
+        kdcServer.start();
+    }
+
     protected void setUpClient() throws Exception {
-        KrbConfig krbConfig = new KrbConfig();
-        krbConfig.setString(KrbConfigKey.PERMITTED_ENCTYPES,
-            "aes128-cts-hmac-sha1-96 des-cbc-crc des-cbc-md5 des3-cbc-sha1");
-
-        krbClnt = new KrbClient(krbConfig);
-        prepareKrbClient();
-
-        krbClnt.setKdcHost(hostname);
-        krbClnt.setAllowTcp(allowTcp());
-        if (tcpPort > 0) {
-            krbClnt.setKdcTcpPort(tcpPort);
-        }
-        krbClnt.setAllowUdp(allowUdp());
-        if (udpPort > 0) {
-            krbClnt.setKdcUdpPort(udpPort);
-        }
-
-        krbClnt.setTimeout(1000);
-        krbClnt.setKdcRealm(kdcServer.getKdcRealm());
     }
 
     protected void createPrincipals() throws KrbException {
@@ -185,6 +145,7 @@ public abstract class KdcTestBase extends SimpleKdcServer {
     }
 
     protected void deletePrincipals() throws KrbException {
+        kdcServer.getKadmin().deleteBuiltinPrincipals();
         kdcServer.deletePrincipals(serverPrincipal);
         kdcServer.deletePrincipal(clientPrincipal);
     }

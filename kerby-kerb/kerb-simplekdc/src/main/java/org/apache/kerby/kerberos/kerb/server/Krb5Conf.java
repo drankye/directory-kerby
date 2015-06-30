@@ -4,6 +4,7 @@ import org.apache.kerby.util.IOUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Generate krb5 file using given kdc server settings.
@@ -12,14 +13,9 @@ public class Krb5Conf {
     private static final String KRB5_CONF = "java.security.krb5.conf";
     private static final String KRB5_CONF_FILE = "krb5.conf";
     private SimpleKdcServer kdcServer;
-    private int udpLimit = 4096;
 
     public Krb5Conf(SimpleKdcServer kdcServer) {
         this.kdcServer = kdcServer;
-    }
-
-    public void setUdpLimit(int udpLimit) {
-        this.udpLimit = udpLimit;
     }
 
     public void initKrb5conf() throws IOException {
@@ -29,19 +25,25 @@ public class Krb5Conf {
 
     // Read in krb5.conf and substitute in the correct port
     private File generateConfFile() throws IOException {
-        String resourcePath = "/" + KRB5_CONF_FILE;
-        String templateResource = getClass().getResource(resourcePath).getPath();
-        File templateFile = new File(templateResource);
-        String templateContent = IOUtil.readFile(templateFile);
+        KdcSetting setting = kdcServer.getKdcSetting();
+
+        String resourcePath = setting.allowUdp() ? "/krb5_udp.conf" : "/krb5.conf";
+        InputStream templateResource = getClass().getResourceAsStream(resourcePath);
+        String templateContent = IOUtil.readInput(templateResource);
 
         String content = templateContent;
 
-        content = content.replaceAll("_REALM_", "" + kdcServer.getKdcRealm());
+        content = content.replaceAll("_REALM_", "" + setting.getKdcRealm());
 
+        int kdcPort = setting.allowUdp() ? setting.getKdcUdpPort() :
+                setting.getKdcTcpPort();
         content = content.replaceAll("_PORT_",
-                String.valueOf(kdcServer.getKdcSetting().getKdcHost()));
+                String.valueOf(kdcPort));
 
-        content = content.replaceAll("_UDP_LIMIT_", String.valueOf(udpLimit));
+        if (setting.allowUdp()) {
+            int udpLimit = setting.allowUdp() ? 1 : 4096;
+            content = content.replaceAll("_UDP_LIMIT_", String.valueOf(udpLimit));
+        }
 
         File confFile = new File(kdcServer.getWorkDir(), KRB5_CONF_FILE);
         IOUtil.writeFile(content, confFile);

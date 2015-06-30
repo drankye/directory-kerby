@@ -43,6 +43,10 @@ import java.util.Set;
  */
 public class GssInteropTest extends KdcTestBase {
 
+    protected boolean allowUdp() {
+        return false;
+    }
+
     @Before
     @Override
     public void setUp() throws Exception {
@@ -59,8 +63,8 @@ public class GssInteropTest extends KdcTestBase {
 
     @Override
     protected void createPrincipals() throws KrbException {
-        kdcServer.createPrincipal(getClientPrincipal(), getClientPassword());
-        kdcServer.createPrincipal(getServerPrincipal(), getServerPassword());
+        getKdcServer().createPrincipal(getClientPrincipal(), getClientPassword());
+        getKdcServer().createPrincipal(getServerPrincipal(), getServerPassword());
     }
 
     private String getServerPassword() {
@@ -69,8 +73,6 @@ public class GssInteropTest extends KdcTestBase {
 
     @Test
     public void testKdc() throws Exception {
-        kdcServer.start();
-
         LoginContext loginContext = new LoginContext(getClientPrincipalName(),
                 new KerberosCallbackHandler());
         loginContext.login();
@@ -97,8 +99,6 @@ public class GssInteropTest extends KdcTestBase {
         loginContext.logout();
 
         validateServiceTicket(kerberosToken);
-
-        kdcServer.stop();
     }
 
     private void validateServiceTicket(byte[] ticket) throws Exception {

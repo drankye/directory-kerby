@@ -28,19 +28,22 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * A simple KDC server mainly for test usage.
+ * A simple KDC server mainly for test usage. It also integrates krb client and
+ * kadmin sides for convenience.
  */
-public class SimpleKdcServer {
-    private final KdcServer kdcServer;
+public class SimpleKdcServer extends KdcServer {
     private final KrbClient krbClnt;
     private Kadmin kadmin;
 
     private File workDir;
 
-    public SimpleKdcServer() {
-        this.kdcServer = new KdcServer();
-
+    public SimpleKdcServer() throws KrbException {
+        super();
         this.krbClnt = new KrbClient();
+
+        setKdcRealm("EXAMPLE.COM");
+        setKdcHost("localhost");
+        setKdcPort(NetworkUtil.getServerPort());
     }
 
     public void setWorkDir(File workDir) {
@@ -51,13 +54,49 @@ public class SimpleKdcServer {
         return workDir;
     }
 
+    @Override
+    public void setKdcRealm(String realm) {
+        super.setKdcRealm(realm);
+        krbClnt.setKdcRealm(realm);
+    }
+
+    @Override
+    public void setKdcHost(String kdcHost) {
+        super.setKdcHost(kdcHost);
+        krbClnt.setKdcHost(kdcHost);
+    }
+
+    @Override
+    public void setKdcTcpPort(int kdcTcpPort) {
+        super.setKdcTcpPort(kdcTcpPort);
+        krbClnt.setKdcTcpPort(kdcTcpPort);
+        setAllowTcp(true);
+    }
+
+    @Override
+    public void setAllowUdp(boolean allowUdp) {
+        super.setAllowUdp(allowUdp);
+        krbClnt.setAllowUdp(allowUdp);
+    }
+
+    @Override
+    public void setAllowTcp(boolean allowTcp) {
+        super.setAllowTcp(allowTcp);
+        krbClnt.setAllowTcp(allowTcp);
+    }
+
+    @Override
+    public void setKdcUdpPort(int kdcUdpPort) {
+        super.setKdcUdpPort(kdcUdpPort);
+        krbClnt.setKdcUdpPort(kdcUdpPort);
+        setAllowUdp(true);
+    }
+
+    @Override
     public void init() throws KrbException {
-        prepareKdcServer();
+        super.init();
 
-        kdcServer.init();
-
-        kadmin = new Kadmin(kdcServer.getSetting(),
-                kdcServer.getIdentityService());
+        kadmin = new Kadmin(getKdcSetting(), getIdentityService());
 
         kadmin.createBuiltinPrincipals();
 
@@ -69,31 +108,11 @@ public class SimpleKdcServer {
         }
     }
 
-    /**
-     * Prepare Kdc server side startup options and config.
-     * @throws Exception
-     */
-    protected void prepareKdcServer() throws KrbException {
-        KdcConfig kdcConfig = kdcServer.getKdcConfig();
-        kdcConfig.setString(KdcConfigKey.KDC_HOST, "localhost");
-        kdcConfig.setInt(KdcConfigKey.KDC_PORT, NetworkUtil.getServerPort());
-        kdcConfig.setString(KdcConfigKey.KDC_REALM, "EXAMPLE.COM");
-    }
+    @Override
+    public void start() throws KrbException {
+        super.start();
 
-    /**
-     * Prepare KrbClient startup options and config.
-     * @throws Exception
-     */
-    protected void prepareKrbClient() throws Exception {
-
-    }
-
-    public KdcServer getKdcServer() {
-        return kdcServer;
-    }
-
-    public KdcSetting getKdcSetting() {
-        return kdcServer.getSetting();
+        krbClnt.init();
     }
 
     public KrbClient getKrbClient() {
@@ -106,10 +125,6 @@ public class SimpleKdcServer {
      */
     public Kadmin getKadmin() {
         return kadmin;
-    }
-
-    public String getKdcRealm() {
-        return kdcServer.getSetting().getKdcRealm();
     }
 
     public void createPrincipal(String principal) throws KrbException {
@@ -148,13 +163,5 @@ public class SimpleKdcServer {
 
     public void exportPrincipals(File keytabFile) throws KrbException {
         kadmin.exportKeytab(keytabFile);
-    }
-
-    public void start() throws KrbException {
-        kdcServer.start();
-    }
-
-    public void stop() throws KrbException {
-        kdcServer.stop();
     }
 }

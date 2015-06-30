@@ -52,23 +52,19 @@ public class WithTokenKdcTestBase extends KdcTestBase {
     @Before
     public void setUp() throws Exception {
         KrbRuntime.setTokenProvider(new JwtTokenProvider());
-
         super.setUp();
-
-        kdcServer.start();
-        krbClnt.init();
     }
 
     @Override
     protected void createPrincipals() throws KrbException {
         super.createPrincipals();
-        kdcServer.createPrincipal(getClientPrincipal(), getClientPassword());
+        getKdcServer().createPrincipal(getClientPrincipal(), getClientPassword());
     }
 
     @Override
     protected void deletePrincipals() throws KrbException {
         super.deletePrincipals();
-        kdcServer.deletePrincipal(getClientPrincipal());
+        getKdcServer().deletePrincipal(getClientPrincipal());
     }
 
     protected AuthToken getKrbToken() {
@@ -108,14 +104,9 @@ public class WithTokenKdcTestBase extends KdcTestBase {
         return krbToken;
     }
 
-    @Override
-    protected void prepareKdcServer() throws Exception {
-        super.prepareKdcServer();
-    }
-
     protected File createCredentialCache(String principal,
                                        String password) throws Exception {
-        TgtTicket tgt = krbClnt.requestTgtWithPassword(principal, password);
+        TgtTicket tgt = getKrbClient().requestTgtWithPassword(principal, password);
         writeTgtToCache(tgt, principal);
         return cCacheFile;
     }
@@ -141,7 +132,7 @@ public class WithTokenKdcTestBase extends KdcTestBase {
 
     protected void verifyTicket(AbstractServiceTicket ticket) {
         assertThat(ticket).isNotNull();
-        assertThat(ticket.getRealm()).isEqualTo(kdcServer.getKdcRealm());
+        assertThat(ticket.getRealm()).isEqualTo(getKdcServer().getKdcSetting().getKdcRealm());
         assertThat(ticket.getTicket()).isNotNull();
         assertThat(ticket.getSessionKey()).isNotNull();
         assertThat(ticket.getEncKdcRepPart()).isNotNull();

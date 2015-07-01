@@ -23,40 +23,22 @@ import org.apache.kerby.kerberos.kerb.client.JaasKrbUtil;
 import org.apache.kerby.kerberos.kerb.server.KdcTestBase;
 
 import javax.security.auth.Subject;
+import javax.security.auth.login.LoginException;
 import java.io.File;
-import java.security.PrivilegedExceptionAction;
 
-public abstract class IntegrationTest extends KdcTestBase {
+public abstract class LoginTestBase extends KdcTestBase {
     protected File ticketCacheFile;
     protected File serviceKeytabFile;
-    protected AppClient appClient;
-    protected AppServer appServer;
 
-    protected void setupAppServer() throws Exception {
-        appServer = createAppServer();
-        new Thread(appServer).start();
-    }
-
-    protected abstract AppServer createAppServer() throws Exception;
-
-    protected void setupAppClient() throws Exception {
-        appClient = createAppClient();
-        new Thread(appClient).start();
-    }
-
-    protected abstract AppClient createAppClient() throws Exception;
-
-    protected <T> T loginAndDoAs(boolean isClient,
-                                 final PrivilegedExceptionAction<T> action)
-            throws Exception {
-        Subject subject;
-        if (isClient) {
-            subject = JaasKrbUtil.loginUsingPassword(getClientPrincipal(),
+    protected Subject loginClientUsingPassword() throws LoginException {
+        return JaasKrbUtil.loginUsingPassword(getClientPrincipal(),
                     getClientPassword());
-        } else {
-            subject = JaasKrbUtil.loginUsingKeytab(getServerPrincipal(), serviceKeytabFile);
-        }
-
-        return Subject.doAs(subject, action);
     }
+
+    protected Subject loginClientUsingTicketCache() throws LoginException {
+        getKrbClient().
+        return JaasKrbUtil.loginUsingPassword(getClientPrincipal(),
+                getClientPassword());
+    }
+
 }

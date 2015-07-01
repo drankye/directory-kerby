@@ -17,26 +17,38 @@
  *  under the License.
  *
  */
-package org.apache.kerby.util;
+package org.apache.kerby.kerberos.kdc;
 
-import java.io.UnsupportedEncodingException;
+import org.apache.directory.server.core.api.DirectoryService;
+import org.apache.directory.server.ldap.LdapServer;
 
-public final class Utf8 {
-    private Utf8() {}
+public class AbstractLdapBackendKdcTest extends KerbyKdcTest {
 
-    public static String toString(byte[] bytes) {
-        try {
-            return new String(bytes, "UTF-8");
-        } catch (UnsupportedEncodingException uee) {
-            throw new RuntimeException("UTF8 unavailable", uee);
-        }
+    /** The used DirectoryService instance */
+    private static DirectoryService service;
+
+    /** The used LdapServer instance */
+    private static LdapServer ldapServer;
+
+    public static DirectoryService getService()
+    {
+        return service;
     }
 
-    public static byte[] toBytes(String s) {
-        try {
-            return s.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException uee) {
-            throw new RuntimeException("UTF8 unavailable", uee);
-        }
+
+    public static void setService( DirectoryService service )
+    {
+        AbstractLdapBackendKdcTest.service = service;
+    }
+
+
+    public static LdapServer getLdapServer()
+    {
+        return ldapServer;
+    }
+
+    public static void setLdapServer( LdapServer ldapServer )
+    {
+        AbstractLdapBackendKdcTest.ldapServer = ldapServer;
     }
 }

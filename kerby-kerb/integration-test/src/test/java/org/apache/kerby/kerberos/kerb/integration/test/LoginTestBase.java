@@ -36,7 +36,6 @@ public abstract class LoginTestBase extends KdcTestBase {
     }
 
     protected Subject loginClientUsingTicketCache() throws LoginException {
-        getKrbClient().
         return JaasKrbUtil.loginUsingPassword(getClientPrincipal(),
                 getClientPassword());
     }

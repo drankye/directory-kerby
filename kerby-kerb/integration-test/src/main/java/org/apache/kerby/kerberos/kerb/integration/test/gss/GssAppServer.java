@@ -1,26 +1,43 @@
 package org.apache.kerby.kerberos.kerb.integration.test.gss;
 
 import org.apache.kerby.kerberos.kerb.integration.test.AppServer;
+import org.apache.kerby.kerberos.kerb.integration.test.AppUtil;
 import org.apache.kerby.kerberos.kerb.integration.test.Transport;
-import org.ietf.jgss.GSSContext;
-import org.ietf.jgss.GSSCredential;
-import org.ietf.jgss.GSSManager;
-import org.ietf.jgss.MessageProp;
+import org.ietf.jgss.*;
 
 import java.io.IOException;
 
 public class GssAppServer extends AppServer {
+    private String serverPrincipal;
     private GSSManager manager;
 
     public GssAppServer(String[] args) throws IOException {
         super(args);
+        if (args.length < 2) {
+            usage(args);
+        }
+        this.serverPrincipal = args[1];
         this.manager = GSSManager.getInstance();
+    }
+
+    protected void usage(String[] args) {
+        if (args.length < 1) {
+            System.err.println("Usage: AppServer <ListenPort> <server-principal>");
+            System.exit(-1);
+        }
     }
 
     @Override
     protected void onConnection(Transport.Connection conn) throws Exception {
-        GSSContext context = manager.createContext((GSSCredential)null);
-        byte[] token = null;
+        GSSName gssService = manager.createName(serverPrincipal,
+                GSSName.NT_USER_NAME);
+
+        Oid oid = new Oid(AppUtil.JGSS_KERBEROS_OID);
+        GSSCredential credentials = manager.createCredential(gssService,
+                GSSCredential.DEFAULT_LIFETIME, oid, GSSCredential.ACCEPT_ONLY);
+        GSSContext context = manager.createContext(credentials);
+
+        byte[] token;
 
         System.out.print("Starting negotiating security context");
         while (!context.isEstablished()) {

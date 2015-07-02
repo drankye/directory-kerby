@@ -19,12 +19,12 @@
  */
 package org.apache.kerby.kerberos.kerb.integration.test;
 
-import org.apache.kerby.kerberos.kerb.client.JaasKrbUtil;
 import org.apache.kerby.util.NetworkUtil;
+import org.junit.Assert;
 import org.junit.Before;
 
 import javax.security.auth.Subject;
-import java.security.PrivilegedExceptionAction;
+import java.security.PrivilegedAction;
 
 public abstract class AppTest extends LoginTestBase {
     private int serverPort;
@@ -40,7 +40,7 @@ public abstract class AppTest extends LoginTestBase {
 
         setupAppServer();
 
-        setupAppClient();
+        runAppClient();
     }
 
     protected int getServerPort() {
@@ -48,15 +48,40 @@ public abstract class AppTest extends LoginTestBase {
     }
 
     protected void setupAppServer() throws Exception {
-        appServer = createAppServer();
-        appServer.start();
+        Subject subject = loginServiceUsingKeytab();
+        Subject.doAs(subject, new PrivilegedAction<Object>() {
+            @Override
+            public Object run() {
+                try {
+                    appServer = createAppServer();
+                    appServer.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
     }
 
     protected abstract AppServer createAppServer() throws Exception;
 
-    protected void setupAppClient() throws Exception {
-        appClient = createAppClient();
-        appClient.start();
+    protected void runAppClient() throws Exception {
+        Subject subject = loginClientUsingTicketCache();
+        Subject.doAs(subject, new PrivilegedAction<Object>() {
+            @Override
+            public Object run() {
+                try {
+                    appClient = createAppClient();
+                    appClient.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
+
+        Assert.assertTrue("Client successfully connected and authenticated to server",
+                appClient.isTestOK());
     }
 
     protected abstract AppClient createAppClient() throws Exception;

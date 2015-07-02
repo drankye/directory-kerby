@@ -23,9 +23,6 @@ import org.apache.kerby.kerberos.kerb.integration.test.gss.GssAppClient;
 import org.apache.kerby.kerberos.kerb.integration.test.gss.GssAppServer;
 import org.junit.Test;
 
-import javax.security.auth.Subject;
-import java.security.PrivilegedAction;
-
 public class GssAppTest extends AppTest {
 
     @Override
@@ -41,24 +38,13 @@ public class GssAppTest extends AppTest {
         return new GssAppClient(new String[] {
             getHostname(),
             String.valueOf(getServerPort()),
-            getServerPrincipal()
+                getClientPrincipal(),
+                getServerPrincipal()
         });
     }
 
     @Test
     public void test() throws Exception {
-        Subject subject = loginClientUsingPassword();
-        Subject.doAs(subject, new PrivilegedAction<Object>() {
-            @Override
-            public Object run() {
-                try {
-                    setupAppClient();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        });
-
+        runAppClient();
     }
 }

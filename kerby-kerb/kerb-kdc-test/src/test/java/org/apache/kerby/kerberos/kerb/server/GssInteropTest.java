@@ -140,8 +140,7 @@ public class GssInteropTest extends KdcTestBase {
                     GSSName.NT_USER_NAME);
             GSSCredential credentials = gssManager.createCredential(
                     gssClient, GSSCredential.DEFAULT_LIFETIME, oid,
-                    GSSCredential.INITIATE_ONLY
-            );
+                    GSSCredential.INITIATE_ONLY);
 
             GSSContext secContext = gssManager.createContext(
                     gssService, oid, credentials,
@@ -176,18 +175,15 @@ public class GssInteropTest extends KdcTestBase {
         }
 
         public byte[] run() throws GSSException {
-
             GSSManager gssManager = GSSManager.getInstance();
-
-            GSSContext secContext = null;
+            GSSContext secContext;
             GSSName gssService = gssManager.createName(serviceName,
                     GSSName.NT_USER_NAME);
 
             Oid oid = new Oid(JGSS_KERBEROS_TICKET_OID);
-            GSSCredential credentials =
-                    gssManager.createCredential(
-                            gssService, GSSCredential.DEFAULT_LIFETIME, oid, GSSCredential.ACCEPT_ONLY
-                    );
+            GSSCredential credentials = gssManager.createCredential(
+                            gssService, GSSCredential.DEFAULT_LIFETIME,
+                            oid, GSSCredential.ACCEPT_ONLY);
             secContext = gssManager.createContext(credentials);
 
             try {

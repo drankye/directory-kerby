@@ -1,18 +1,20 @@
 package org.apache.kerby.kerberos.kerb.integration.test.gss;
 
 import org.apache.kerby.kerberos.kerb.integration.test.AppClient;
+import org.apache.kerby.kerberos.kerb.integration.test.AppUtil;
 import org.apache.kerby.kerberos.kerb.integration.test.Transport;
 import org.ietf.jgss.*;
 
 public class GssAppClient extends AppClient {
+    private String clientPrincipal;
     private String serverPrincipal;
     private GSSManager manager;
 
     @Override
     protected void usage(String[] args) {
         if (args.length < 3) {
-            System.err.println("Usage: java <options> GssAppClient "
-                    + "<server-host> <server-port> <server-principal> ");
+            System.err.println("Usage: GssAppClient <server-host> <server-port> "
+                    + "<client-principal> <server-principal> ");
             System.exit(-1);
         }
     }
@@ -20,7 +22,8 @@ public class GssAppClient extends AppClient {
     public GssAppClient(String[] args) throws Exception {
         super(args);
 
-        serverPrincipal = args[2];
+        clientPrincipal = args[2];
+        serverPrincipal = args[3];
         this.manager = GSSManager.getInstance();
     }
 
@@ -28,9 +31,15 @@ public class GssAppClient extends AppClient {
     protected void withConnection(Transport.Connection conn) throws Exception {
         Oid krb5Oid = new Oid("1.2.840.113554.1.2.2");
 
-        GSSName serverName = manager.createName(serverPrincipal, null);
+        GSSName serverName = manager.createName(serverPrincipal,
+                GSSName.NT_USER_NAME);
+        Oid oid = new Oid(AppUtil.JGSS_KERBEROS_OID);
+        GSSName clientName = manager.createName(clientPrincipal,
+                GSSName.NT_USER_NAME);
+        GSSCredential myCred = manager.createCredential(clientName,
+                GSSCredential.DEFAULT_LIFETIME, oid, GSSCredential.INITIATE_ONLY);
         GSSContext context = manager.createContext(serverName,
-                krb5Oid, null, GSSContext.DEFAULT_LIFETIME);
+                krb5Oid, myCred, GSSContext.DEFAULT_LIFETIME);
         context.requestMutualAuth(true);
         context.requestConf(true);
         context.requestInteg(true);

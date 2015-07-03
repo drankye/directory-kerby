@@ -22,8 +22,8 @@ package org.apache.kerby.kerberos.kerb.integration.test;
 import java.io.IOException;
 
 /**
- * Making it runnable because the server will be launched in a separate thread in
- * a test.
+ * Making it runnable because the server will be launched in a separate thread
+ * in a test.
  */
 public abstract class AppServer implements Runnable {
     protected Transport.Acceptor acceptor;

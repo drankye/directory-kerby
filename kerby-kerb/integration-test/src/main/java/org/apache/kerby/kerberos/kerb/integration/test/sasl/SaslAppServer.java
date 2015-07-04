@@ -47,7 +47,6 @@ public class SaslAppServer extends AppServer {
 
         SaslServer ss = Sasl.createSaslServer(mechanism,
                 serviceProtocol, serverFqdn, props, callbackHandler);
-        byte[] token = null;
         Transport.Message msg = conn.recvMessage();
         while (!ss.isComplete()) {
             try {

@@ -19,8 +19,6 @@
  */
 package org.apache.kerby.kerberos.kerb.integration.test;
 
-import org.apache.kerby.kerberos.kerb.integration.test.gss.GssAppClient;
-import org.apache.kerby.kerberos.kerb.integration.test.gss.GssAppServer;
 import org.apache.kerby.kerberos.kerb.integration.test.sasl.SaslAppClient;
 import org.apache.kerby.kerberos.kerb.integration.test.sasl.SaslAppServer;
 import org.junit.Test;
@@ -31,7 +29,8 @@ public class SaslAppTest extends AppTest {
     protected AppServer createAppServer() throws Exception {
         return new SaslAppServer(new String[] {
             String.valueOf(getServerPort()),
-            getServerPrincipal()
+                getServerPrincipalName(),
+                getServerPrincipal()
         });
     }
 
@@ -40,7 +39,7 @@ public class SaslAppTest extends AppTest {
         return new SaslAppClient(new String[] {
             getHostname(),
             String.valueOf(getServerPort()),
-                getClientPrincipal(),
+                getServerPrincipal(),
                 getServerPrincipal()
         });
     }

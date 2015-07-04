@@ -15,7 +15,7 @@ public class SaslAppClient extends AppClient {
     @Override
     protected void usage(String[] args) {
         if (args.length < 4) {
-            System.err.println("Usage: java <options> SaslAppClient "
+            System.err.println("Usage: SaslAppClient "
                     + "<server-host> <server-port> <service-protocol> <server-fqdn>");
             System.exit(-1);
         }

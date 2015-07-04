@@ -14,16 +14,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class SaslAppServer extends AppServer {
-    protected String mechanism;
-    protected String serviceProtocol;
-    protected String serverFqdn;
+    private String mechanism;
+    private String serviceProtocol;
+    private String serverFqdn;
 
     @Override
     protected void usage(String[] args) {
         if (args.length < 3) {
-            System.err.println("Usage: java <options> SaslAppServer "
+            System.err.println("Usage: SaslAppServer "
                     + "<ListenPort> <service-protocol> <server-fqdn>");
             System.exit(-1);
         }

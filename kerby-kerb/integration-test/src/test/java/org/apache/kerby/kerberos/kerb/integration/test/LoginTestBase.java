@@ -63,7 +63,7 @@ public class LoginTestBase extends KdcTestBase {
     }
 
     protected Subject loginServiceUsingKeytab() throws Exception {
-        getKdcServer().exportPrincipals(serviceKeytabFile);
+        getKdcServer().exportPrincipal(getServerPrincipal(), serviceKeytabFile);
 
         return JaasKrbUtil.loginUsingKeytab(getClientPrincipal(),
             serviceKeytabFile);

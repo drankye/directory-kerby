@@ -23,6 +23,7 @@ import org.apache.kerby.kerberos.kerb.KrbErrorCode;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.common.EncryptionUtil;
 import org.apache.kerby.kerberos.kerb.crypto.EncryptionHandler;
+import org.apache.kerby.kerberos.kerb.crypto.util.BytesUtil;
 import org.apache.kerby.kerberos.kerb.server.KdcConfig;
 import org.apache.kerby.kerberos.kerb.server.KdcContext;
 import org.apache.kerby.kerberos.kerb.spec.KerberosTime;
@@ -34,6 +35,7 @@ import org.apache.kerby.kerberos.kerb.spec.ticket.EncTicketPart;
 import org.apache.kerby.kerberos.kerb.spec.ticket.Ticket;
 import org.apache.kerby.kerberos.kerb.spec.ticket.TicketFlag;
 import org.apache.kerby.kerberos.kerb.spec.ticket.TicketFlags;
+import org.apache.kerby.util.HexUtil;
 
 /**
  * Handling ticket constructing, filling, and issuing.
@@ -221,6 +223,7 @@ public abstract class TickertIssuer {
         EncryptionType encryptionType = getTicketEncryptionType();
         EncryptionKey serverKey =
                 kdcRequest.getServerEntry().getKeys().get(encryptionType);
+        System.out.println(HexUtil.bytesToHex(serverKey.getKeyData()));
         return serverKey;
     }
 

@@ -19,7 +19,7 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.LimitedByteBuffer;
+import org.apache.kerby.asn1.DecodeBuffer;
 import org.apache.kerby.asn1.TagClass;
 import org.apache.kerby.asn1.TaggingOption;
 
@@ -74,7 +74,7 @@ public abstract class Asn1CollectionType extends AbstractAsn1Type<Asn1Collection
     }
 
     @Override
-    protected void decodeBody(LimitedByteBuffer content) throws IOException {
+    protected void decodeBody(DecodeBuffer content) throws IOException {
         initFields();
 
         Asn1Collection coll = createCollection();

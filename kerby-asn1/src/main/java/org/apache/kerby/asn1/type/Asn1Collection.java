@@ -19,7 +19,7 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.LimitedByteBuffer;
+import org.apache.kerby.asn1.DecodeBuffer;
 import org.apache.kerby.asn1.TagClass;
 import org.apache.kerby.asn1.UniversalTag;
 
@@ -73,7 +73,7 @@ public class Asn1Collection extends AbstractAsn1Type<List<Asn1Item>> {
     }
 
     @Override
-    protected void decodeBody(LimitedByteBuffer content) throws IOException {
+    protected void decodeBody(DecodeBuffer content) throws IOException {
         while (content.available()) {
             Asn1Type aValue = decodeOne(content);
             if (aValue != null) {

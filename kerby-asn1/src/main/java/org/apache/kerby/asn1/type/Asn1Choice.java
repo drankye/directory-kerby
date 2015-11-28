@@ -19,7 +19,7 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.LimitedByteBuffer;
+import org.apache.kerby.asn1.DecodeBuffer;
 import org.apache.kerby.asn1.TagClass;
 import org.apache.kerby.asn1.TaggingOption;
 import org.apache.kerby.asn1.UniversalTag;
@@ -72,7 +72,7 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
     }
 
     @Override
-    protected void decode(LimitedByteBuffer content) throws IOException {
+    protected void decode(DecodeBuffer content) throws IOException {
         int foundPos = -1;
         Asn1Item item = decodeOne(content);
         for (int i = 0; i < fieldInfos.length; ++i) {
@@ -108,7 +108,7 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
         fields[foundPos] = item.getValue();
     }
 
-    protected void decodeBody(LimitedByteBuffer content) throws IOException {
+    protected void decodeBody(DecodeBuffer content) throws IOException {
         // Not used
     }
 

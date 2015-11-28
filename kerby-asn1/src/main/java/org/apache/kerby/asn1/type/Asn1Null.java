@@ -19,7 +19,7 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.LimitedByteBuffer;
+import org.apache.kerby.asn1.DecodeBuffer;
 import org.apache.kerby.asn1.UniversalTag;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class Asn1Null extends Asn1Simple<Object> {
     }
 
     @Override
-    protected void decodeBody(LimitedByteBuffer content) throws IOException {
+    protected void decodeBody(DecodeBuffer content) throws IOException {
         if (content.hasLeft() != 0) {
             throw new IOException("Unexpected bytes found for NULL");
         }

@@ -20,7 +20,7 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Factory;
-import org.apache.kerby.asn1.LimitedByteBuffer;
+import org.apache.kerby.asn1.DecodeBuffer;
 import org.apache.kerby.asn1.TaggingOption;
 
 import java.io.IOException;
@@ -39,18 +39,18 @@ import java.nio.ByteBuffer;
  * or decodeValueAs with your holder or hodler type.
  */
 public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
-    private LimitedByteBuffer bodyContent;
+    private DecodeBuffer bodyContent;
 
     public Asn1Item(Asn1Type value) {
         super(value.tagFlags(), value.tagNo(), value);
     }
 
-    public Asn1Item(int tag, int tagNo, LimitedByteBuffer bodyContent) {
+    public Asn1Item(int tag, int tagNo, DecodeBuffer bodyContent) {
         super(tag, tagNo);
         this.bodyContent = bodyContent;
     }
 
-    public LimitedByteBuffer getBodyContent() {
+    public DecodeBuffer getBodyContent() {
         return bodyContent;
     }
 
@@ -67,16 +67,12 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
         if (getValue() != null) {
             ((AbstractAsn1Type<?>) getValue()).encodeBody(buffer);
         } else {
-            try {
-                buffer.put(bodyContent.readAllLeftBytes());
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to read all left bytes from body content", e);
-            }
+            buffer.put(bodyContent.readAllLeftBytes());
         }
     }
 
     @Override
-    protected void decodeBody(LimitedByteBuffer bodyContent) throws IOException {
+    protected void decodeBody(DecodeBuffer bodyContent) throws IOException {
         this.bodyContent = bodyContent;
     }
 

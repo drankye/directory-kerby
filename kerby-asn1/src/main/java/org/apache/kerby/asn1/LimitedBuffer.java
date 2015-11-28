@@ -19,39 +19,32 @@
  */
 package org.apache.kerby.asn1;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class LimitedByteBuffer {
-    private final ByteBuffer byteBuffer;
+public class LimitedBuffer extends DecodeBuffer {
     private final int limit;
-    private int startOffset;
 
-    public LimitedByteBuffer(byte[] bytes) {
-        this.byteBuffer = ByteBuffer.wrap(bytes);
+    public LimitedBuffer(byte[] bytes) {
+        super(bytes);
         this.limit = bytes.length;
-        this.startOffset = 0;
     }
 
-    public LimitedByteBuffer(ByteBuffer byteBuffer) {
+    public LimitedBuffer(ByteBuffer byteBuffer) {
         this(byteBuffer, byteBuffer.limit());
     }
 
-    public LimitedByteBuffer(ByteBuffer byteBuffer, int limit) {
-        this.byteBuffer = byteBuffer;
+    public LimitedBuffer(ByteBuffer byteBuffer, int limit) {
+        super(byteBuffer);
         this.limit = limit;
-        this.startOffset = byteBuffer.position();
     }
 
-    public LimitedByteBuffer(LimitedByteBuffer other, int limit) {
-        if (limit > other.hasLeft()) {
-            throw new IllegalArgumentException("limit is too large, out of bound");
-        }
-        this.byteBuffer = other.byteBuffer.duplicate();
+    public LimitedBuffer(DecodeBuffer other, int limit) {
+        super(other);
+
         this.limit = limit;
-        this.startOffset = byteBuffer.position();
     }
 
+    @Override
     public boolean available() {
         return byteBuffer.hasRemaining()
                 && byteBuffer.position() - startOffset < limit;
@@ -60,28 +53,21 @@ public class LimitedByteBuffer {
     public long hasRead() {
         return byteBuffer.position() - startOffset;
     }
+
     public long hasLeft() {
         return limit - hasRead();
     }
 
-    public byte readByte() throws IOException {
-        if (!available()) {
-            throw new IOException("Buffer EOF");
-        }
+    @Override
+    public byte readByte() {
         return byteBuffer.get();
     }
 
-    public byte[] readAllLeftBytes() throws IOException {
+    public byte[] readAllLeftBytes() {
         return readBytes((int) hasLeft());
     }
 
-    public void skip(int len) throws IOException {
-        checkLen(len);
-        int newPos = byteBuffer.position() + len;
-        byteBuffer.position(newPos);
-    }
-
-    public byte[] readBytes(int len) throws IOException {
+    public byte[] readBytes(int len) {
         checkLen(len);
 
         byte[] bytes = new byte[len];
@@ -91,29 +77,27 @@ public class LimitedByteBuffer {
         return bytes;
     }
 
-    private void checkLen(int len) throws IOException {
+    private void checkLen(int len) {
         if (len < 0) {
             throw new IllegalArgumentException("Bad argument len: " + len);
         }
         if (len > 0) {
             if (!available()) {
-                throw new IOException("Buffer EOF");
+                throw new IllegalArgumentException("Buffer EOF");
             }
             if (hasLeft() < len) {
-                throw new IOException("Out of Buffer");
+                throw new IllegalArgumentException("Out of Buffer");
             }
         }
     }
 
-    public void readBytes(byte[] bytes) throws IOException {
+    public void readBytes(byte[] bytes) {
         if (bytes == null) {
-            throw new IllegalArgumentException("Bad argument bytes: null");
+            throw new IllegalArgumentException("Invalid buffer");
         }
-        if (!available()) {
-            throw new IOException("Buffer EOF");
-        }
+
         if (hasLeft() < bytes.length) {
-            throw new IOException("Out of Buffer");
+            throw new IllegalArgumentException("Too much to read");
         }
 
         byteBuffer.get(bytes);

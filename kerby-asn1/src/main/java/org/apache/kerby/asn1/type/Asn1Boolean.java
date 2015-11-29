@@ -56,7 +56,7 @@ public class Asn1Boolean extends Asn1Simple<Boolean> {
 
     @Override
     protected void decodeBody(DecodeBuffer content) throws IOException {
-        if (content.hasLeft() != 1) {
+        if (content.remaining() != 1) {
             throw new IOException("More than 1 byte found for Boolean");
         }
         super.decodeBody(content);

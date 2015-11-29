@@ -62,6 +62,44 @@ public class DecodeBuffer {
         return byteBuffer.get();
     }
 
+    public int hasRead() {
+        return byteBuffer.position() - startOffset;
+    }
+
+    public byte[] readAllLeftBytes() {
+        return readBytes(remaining());
+    }
+
+    /**
+     * Read bytes of len.
+     * @param len
+     * @return bytes read
+     */
+    public byte[] readBytes(int len) {
+        if (len > 0 && len <= remaining()) {
+            byte[] bytes = new byte[len];
+            byteBuffer.get(bytes);
+            return bytes;
+        }
+        throw new IllegalArgumentException("Invalid len " + len);
+    }
+
+    /**
+     * Read bytes into buffer. The buffer shouldn't be too large.
+     * @param bytes
+     */
+    public void readBytes(byte[] bytes) {
+        if (bytes == null) {
+            throw new IllegalArgumentException("Invalid buffer");
+        }
+
+        if (remaining() < bytes.length) {
+            throw new IllegalArgumentException("Too much to read");
+        }
+
+        byteBuffer.get(bytes);
+    }
+
     /**
      * Skip bytes of len.
      * @param len

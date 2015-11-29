@@ -51,7 +51,7 @@ public class LimitedBuffer extends DecodeBuffer {
     }
 
     public int hasRead() {
-        return (int) byteBuffer.position() - startOffset;
+        return byteBuffer.position() - startOffset;
     }
 
     @Override
@@ -103,4 +103,5 @@ public class LimitedBuffer extends DecodeBuffer {
 
         byteBuffer.get(bytes);
     }
+
 }

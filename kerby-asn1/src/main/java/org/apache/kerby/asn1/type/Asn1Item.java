@@ -21,7 +21,6 @@ package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Factory;
 import org.apache.kerby.asn1.DecodeBuffer;
-import org.apache.kerby.asn1.LimitedBuffer;
 import org.apache.kerby.asn1.TaggingOption;
 
 import java.io.IOException;
@@ -44,18 +43,18 @@ import java.nio.ByteBuffer;
  * holder or hodler type.
  */
 public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
-    private LimitedBuffer bodyContent;
+    private DecodeBuffer bodyContent;
 
     public Asn1Item(Asn1Type value) {
         super(value.tagFlags(), value.tagNo(), value);
     }
 
-    public Asn1Item(int tag, int tagNo, LimitedBuffer bodyContent) {
+    public Asn1Item(int tag, int tagNo, DecodeBuffer bodyContent) {
         super(tag, tagNo);
         this.bodyContent = bodyContent;
     }
 
-    public LimitedBuffer getBodyContent() {
+    public DecodeBuffer getBodyContent() {
         return bodyContent;
     }
 
@@ -77,7 +76,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
     }
 
     @Override
-    protected void decodeBody(LimitedBuffer bodyContent) throws IOException {
+    protected void decodeBody(DecodeBuffer bodyContent) throws IOException {
         this.bodyContent = bodyContent;
     }
 

@@ -62,7 +62,7 @@ public class Asn1BmpString extends Asn1Simple<String> {
 
     @Override
     protected void decodeBody(DecodeBuffer content) throws IOException {
-        if (content.hasLeft() % 2 != 0) {
+        if (content.remaining() % 2 != 0) {
             throw new IOException("Bad stream, BMP string expecting multiple of 2 bytes");
         }
         super.decodeBody(content);

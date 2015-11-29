@@ -227,10 +227,8 @@ public abstract class Asn1Object implements Asn1Type {
 
         DecodeBuffer tmpBuffer;
         if (length == -1) {
-            useDefinitiveLength(false);
-            tmpBuffer = content;
+            tmpBuffer = new EndFlagBuffer(content);
         } else {
-            useDefinitiveLength(true);
             tmpBuffer = new LimitedBuffer(content, length);
         }
 
@@ -256,7 +254,7 @@ public abstract class Asn1Object implements Asn1Type {
         decodeBody(content);
     }
 
-    protected abstract void decodeBody(LimitedBuffer content) throws IOException;
+    protected abstract void decodeBody(DecodeBuffer content) throws IOException;
 
     protected int taggedEncodingLength(TaggingOption taggingOption) {
         int taggingTagNo = taggingOption.getTagNo();
@@ -308,10 +306,8 @@ public abstract class Asn1Object implements Asn1Type {
 
         DecodeBuffer tmpBuffer;
         if (taggingLength == -1) {
-            useDefinitiveLength(false);
-            tmpBuffer = content;
+            tmpBuffer = new EndFlagBuffer(content);
         } else {
-            useDefinitiveLength(true);
             tmpBuffer = new LimitedBuffer(content, taggingLength);
         }
 
@@ -344,16 +340,16 @@ public abstract class Asn1Object implements Asn1Type {
         int tagNo = readTagNo(content, tag);
         int length = readLength(content);
 
-        DecodeBuffer tmpBuffer;
+        DecodeBuffer valueBuffer;
         if (length == -1) {
-            tmpBuffer = content;
+            valueBuffer = new EndFlagBuffer(content);
+            content.skip(valueBuffer.remaining() + 2); // 2 end flag bytes (00)
         } else {
-            tmpBuffer = new LimitedBuffer(content, length);
+            valueBuffer = new LimitedBuffer(content, length);
+            content.skip(length);
         }
 
-        content.skip(length);
-
-        Asn1Item result = new Asn1Item(tag, tagNo, valueContent);
+        Asn1Item result = new Asn1Item(tag, tagNo, valueBuffer);
         if (result.isSimple()) {
             result.decodeValueAsSimple();
         }
@@ -368,7 +364,7 @@ public abstract class Asn1Object implements Asn1Type {
         int lengthForSkip = length;
         if (length == -1) {
             EndFlagBuffer tmpBuffer = new EndFlagBuffer(content);
-            lengthForSkip = tmpBuffer.skipToEnd();
+            lengthForSkip = tmpBuffer.remaining() + 2; // 2 bytes of end flags
         }
         content.skip(lengthForSkip);
     }

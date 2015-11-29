@@ -47,7 +47,7 @@ public class Asn1Null extends Asn1Simple<Object> {
 
     @Override
     protected void decodeBody(DecodeBuffer content) throws IOException {
-        if (content.hasLeft() != 0) {
+        if (content.remaining() != 0) {
             throw new IOException("Unexpected bytes found for NULL");
         }
     }

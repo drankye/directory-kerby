@@ -22,8 +22,7 @@ package org.apache.kerby.asn1;
 import java.nio.ByteBuffer;
 
 public class EndFlagBuffer extends DecodeBuffer {
-    private byte flagByte1 = -1;
-    private byte flagByte2 = -1;
+    private LimitedBuffer limitedBuffer;
 
     public EndFlagBuffer(byte[] bytes) {
         this(ByteBuffer.wrap(bytes));
@@ -36,48 +35,66 @@ public class EndFlagBuffer extends DecodeBuffer {
     public EndFlagBuffer(ByteBuffer byteBuffer) {
         super(byteBuffer);
 
-        if (byteBuffer.remaining() < 2) {
-            throw new IllegalArgumentException(
-                "Invalid buffer of less than 2 bytes");
+        int endFlagsPos = findEndFlags(byteBuffer.duplicate());
+        if (endFlagsPos < 1) {
+            throw new IllegalArgumentException("Not ended with 00 bytes");
         }
 
-        flagByte1 = byteBuffer.get();
-        flagByte2 = byteBuffer.get();
+        int limit = endFlagsPos - 1;
+        this.limitedBuffer = new LimitedBuffer(byteBuffer, limit);
     }
 
     @Override
     public boolean available() {
-        return flagByte1 == 0x00 && flagByte2 == 0x00;
+        return limitedBuffer.available();
     }
 
     @Override
     public byte readByte() {
-        byte result = flagByte1;
-        flagByte1 = flagByte2;
-        if (byteBuffer.remaining() > 0) {
-            flagByte2 = byteBuffer.get();
-        } else {
-            throw new RuntimeException("Buffer overflow");
-        }
-
-        return result;
+        return limitedBuffer.readByte();
     }
 
-    public long hasRead() {
-        return byteBuffer.position() - startOffset;
+    @Override
+    public byte[] readAllLeftBytes() {
+        return limitedBuffer.readAllLeftBytes();
+    }
+
+    @Override
+    public byte[] readBytes(int len) {
+        return limitedBuffer.readBytes(len);
+    }
+
+    @Override
+    public void readBytes(byte[] bytes) {
+        limitedBuffer.readBytes(bytes);
+    }
+
+    @Override
+    public int hasRead() {
+        return limitedBuffer.hasRead();
     }
 
     /**
-     * Skip the buffer content to the end, not including the end-flag bytes.
-     * @return the number of content bytes skipped
+     * @return the positon of the end flags as normal content limit.
      */
-    public int skipToEnd() {
-        int skipped = 0;
-        while (available()) {
-            readByte();
-            skipped++;
+    private int findEndFlags(ByteBuffer buffer) {
+        if (byteBuffer.remaining() < 2) {
+            return -1;
         }
 
-        return skipped;
+        byte flagByte1 = byteBuffer.get();
+        byte flagByte2 = byteBuffer.get();
+
+        while (true) {
+            if (flagByte1 == 0x00 && flagByte2 == 0x00) {
+                return buffer.position();
+            }
+            if (byteBuffer.remaining() > 0) {
+                flagByte1 = flagByte2;
+                flagByte2 = byteBuffer.get();
+            } else {
+                return -1;
+            }
+        }
     }
 }

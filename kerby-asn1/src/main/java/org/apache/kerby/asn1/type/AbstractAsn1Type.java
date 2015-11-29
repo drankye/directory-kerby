@@ -19,7 +19,10 @@
  */
 package org.apache.kerby.asn1.type;
 
+import org.apache.kerby.asn1.LimitedBuffer;
 import org.apache.kerby.asn1.TagClass;
+
+import java.io.IOException;
 
 /**
  * The abstract ASN1 type for all the ASN1 types. It provides basic
@@ -78,4 +81,6 @@ public abstract class AbstractAsn1Type<T> extends Asn1Object {
     public void setValue(T value) {
         this.value = value;
     }
+
+    protected abstract void decodeBody(LimitedBuffer bodyContent) throws IOException;
 }

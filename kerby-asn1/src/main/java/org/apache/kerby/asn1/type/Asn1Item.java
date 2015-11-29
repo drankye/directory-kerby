@@ -21,6 +21,7 @@ package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Factory;
 import org.apache.kerby.asn1.DecodeBuffer;
+import org.apache.kerby.asn1.LimitedBuffer;
 import org.apache.kerby.asn1.TaggingOption;
 
 import java.io.IOException;
@@ -29,28 +30,32 @@ import java.nio.ByteBuffer;
 /**
  * Asn1Item serves two purposes:
  * 1. Wrapping an existing Asn1Type value for Asn1Collection;
- * 2. Wrapping a half decoded value whose body content is left to be decoded later when appropriate.
- * Why not fully decoded at once? Lazy and decode on demand for collection, or impossible due to lacking
- * key parameters, like implicit encoded value for tagged value.
+ * 2. Wrapping a half decoded value whose body content is left to be decoded
+ * later when appropriate.
+ * Why not fully decoded at once? Lazy and decode on demand for collection, or
+ * impossible due to lacking key parameters, like implicit encoded value for
+ * tagged value.
  *
- * For not fully decoded value, you tell your case using isSimple/isCollection/isTagged/isContextSpecific etc.,
- * then call decodeValueAsSimple/decodeValueAsCollection/decodeValueAsImplicitTagged/decodeValueAsExplicitTagged etc.
- * to decode it fully. Or if you have already derived the value holder or the holder type, you can use decodeValueWith
- * or decodeValueAs with your holder or hodler type.
+ * For not fully decoded value, you tell your case using isSimple/isCollection/
+ * isTagged/isContextSpecific etc., then call decodeValueAsSimple/
+ * decodeValueAsCollection/decodeValueAsImplicitTagged/decodeValueAsExplicitTagged etc.
+ * to decode it fully. Or if you have already derived the value holder or
+ * the holder type, you can use decodeValueWith or decodeValueAs with your
+ * holder or hodler type.
  */
 public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
-    private DecodeBuffer bodyContent;
+    private LimitedBuffer bodyContent;
 
     public Asn1Item(Asn1Type value) {
         super(value.tagFlags(), value.tagNo(), value);
     }
 
-    public Asn1Item(int tag, int tagNo, DecodeBuffer bodyContent) {
+    public Asn1Item(int tag, int tagNo, LimitedBuffer bodyContent) {
         super(tag, tagNo);
         this.bodyContent = bodyContent;
     }
 
-    public DecodeBuffer getBodyContent() {
+    public LimitedBuffer getBodyContent() {
         return bodyContent;
     }
 
@@ -59,7 +64,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
         if (getValue() != null) {
             return ((AbstractAsn1Type<?>) getValue()).encodingBodyLength();
         }
-        return (int) bodyContent.hasLeft();
+        return (int) bodyContent.remaining();
     }
 
     @Override
@@ -72,7 +77,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
     }
 
     @Override
-    protected void decodeBody(DecodeBuffer bodyContent) throws IOException {
+    protected void decodeBody(LimitedBuffer bodyContent) throws IOException {
         this.bodyContent = bodyContent;
     }
 

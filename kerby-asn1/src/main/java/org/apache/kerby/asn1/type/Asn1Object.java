@@ -256,7 +256,7 @@ public abstract class Asn1Object implements Asn1Type {
         decodeBody(content);
     }
 
-    protected abstract void decodeBody(DecodeBuffer content) throws IOException;
+    protected abstract void decodeBody(LimitedBuffer content) throws IOException;
 
     protected int taggedEncodingLength(TaggingOption taggingOption) {
         int taggingTagNo = taggingOption.getTagNo();
@@ -305,10 +305,18 @@ public abstract class Asn1Object implements Asn1Type {
         int taggingTag = readTag(content);
         int taggingTagNo = readTagNo(content, taggingTag);
         int taggingLength = readLength(content);
-        DecodeBuffer newContent = new DecodeBuffer(content, taggingLength);
+
+        DecodeBuffer tmpBuffer;
+        if (taggingLength == -1) {
+            useDefinitiveLength(false);
+            tmpBuffer = content;
+        } else {
+            useDefinitiveLength(true);
+            tmpBuffer = new LimitedBuffer(content, taggingLength);
+        }
 
         int tmpTagFlags = taggingTag & 0xe0;
-        taggedDecode(tmpTagFlags, taggingTagNo, newContent, taggingOption);
+        taggedDecode(tmpTagFlags, taggingTagNo, tmpBuffer, taggingOption);
     }
 
     protected void taggedDecode(int taggingTagFlags, int taggingTagNo,
@@ -335,10 +343,14 @@ public abstract class Asn1Object implements Asn1Type {
         int tag = readTag(content);
         int tagNo = readTagNo(content, tag);
         int length = readLength(content);
-        if (length < 0) {
-            throw new IOException("Unexpected length");
+
+        DecodeBuffer tmpBuffer;
+        if (length == -1) {
+            tmpBuffer = content;
+        } else {
+            tmpBuffer = new LimitedBuffer(content, length);
         }
-        DecodeBuffer valueContent = new DecodeBuffer(content, length);
+
         content.skip(length);
 
         Asn1Item result = new Asn1Item(tag, tagNo, valueContent);
@@ -492,9 +504,9 @@ public abstract class Asn1Object implements Asn1Type {
             throw new IOException("Invalid length " + result);
         }
 
-        if (result > buffer.hasLeft()) {
+        if (result > buffer.remaining()) {
             throw new IOException("Corrupt stream - less data "
-                + buffer.hasLeft() + " than expected " + result);
+                + buffer.remaining() + " than expected " + result);
         }
 
         return result;

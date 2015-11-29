@@ -50,11 +50,12 @@ public class LimitedBuffer extends DecodeBuffer {
                 && byteBuffer.position() - startOffset < limit;
     }
 
-    public long hasRead() {
-        return byteBuffer.position() - startOffset;
+    public int hasRead() {
+        return (int) byteBuffer.position() - startOffset;
     }
 
-    public long hasLeft() {
+    @Override
+    public int remaining() {
         return limit - hasRead();
     }
 
@@ -64,7 +65,7 @@ public class LimitedBuffer extends DecodeBuffer {
     }
 
     public byte[] readAllLeftBytes() {
-        return readBytes((int) hasLeft());
+        return readBytes(remaining());
     }
 
     public byte[] readBytes(int len) {
@@ -85,7 +86,7 @@ public class LimitedBuffer extends DecodeBuffer {
             if (!available()) {
                 throw new IllegalArgumentException("Buffer EOF");
             }
-            if (hasLeft() < len) {
+            if (remaining() < len) {
                 throw new IllegalArgumentException("Out of Buffer");
             }
         }
@@ -96,7 +97,7 @@ public class LimitedBuffer extends DecodeBuffer {
             throw new IllegalArgumentException("Invalid buffer");
         }
 
-        if (hasLeft() < bytes.length) {
+        if (remaining() < bytes.length) {
             throw new IllegalArgumentException("Too much to read");
         }
 

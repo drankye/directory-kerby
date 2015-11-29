@@ -71,4 +71,10 @@ public class DecodeBuffer {
         byteBuffer.position(newPos);
     }
 
+    /**
+     * @return number of left bytes to be read
+     */
+    public int remaining() {
+        return byteBuffer.remaining();
+    }
 }

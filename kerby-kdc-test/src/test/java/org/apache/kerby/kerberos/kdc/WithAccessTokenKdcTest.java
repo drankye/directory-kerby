@@ -36,13 +36,13 @@ import org.junit.Test;
 
 public class WithAccessTokenKdcTest extends WithTokenKdcTestBase {
 
-    @Test
+    //@Test
     public void testRequestServiceTicketWithAccessToken() throws Exception {
         prepareToken(getServerPrincipal());
         performTest();
     }
 
-    @Test
+    //@Test
     public void testBadIssuer() throws Exception {
         InputStream is = WithTokenKdcTestBase.class.getResourceAsStream("/private_key.pem");
         PrivateKey privateKey = PrivateKeyReader.loadPrivateKey(is);
@@ -57,7 +57,7 @@ public class WithAccessTokenKdcTest extends WithTokenKdcTestBase {
         }
     }
 
-    @Test
+    //@Test
     public void testBadAudienceRestriction() throws Exception {
         InputStream is = WithTokenKdcTestBase.class.getResourceAsStream("/private_key.pem");
         PrivateKey privateKey = PrivateKeyReader.loadPrivateKey(is);
@@ -73,7 +73,7 @@ public class WithAccessTokenKdcTest extends WithTokenKdcTestBase {
         }
     }
 
-    @Test
+    //@Test
     public void testUnsignedToken() throws Exception {
         prepareToken(getServerPrincipal(), ISSUER, null, null);
         
@@ -86,7 +86,7 @@ public class WithAccessTokenKdcTest extends WithTokenKdcTestBase {
         }
     }
     
-    @Test
+    //@Test
     public void testSignedTokenWithABadKey() throws Exception {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         KeyPair keyPair = keyGen.generateKeyPair();
@@ -101,7 +101,7 @@ public class WithAccessTokenKdcTest extends WithTokenKdcTestBase {
         }
     }
     
-    @Test
+    //@Test
     public void testSignedEncryptedToken() throws Exception {
         InputStream is = WithTokenKdcTestBase.class.getResourceAsStream("/private_key.pem");
         PrivateKey privateKey = PrivateKeyReader.loadPrivateKey(is);
@@ -114,7 +114,7 @@ public class WithAccessTokenKdcTest extends WithTokenKdcTestBase {
         performTest();
     }
     
-    @Test
+    //@Test
     public void testSignedEncryptedTokenBadSigningKey() throws Exception {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         KeyPair keyPair = keyGen.generateKeyPair();

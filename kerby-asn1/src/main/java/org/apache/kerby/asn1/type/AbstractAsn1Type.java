@@ -19,11 +19,7 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.DecodeBuffer;
-import org.apache.kerby.asn1.LimitedBuffer;
 import org.apache.kerby.asn1.TagClass;
-
-import java.io.IOException;
 
 /**
  * The abstract ASN1 type for all the ASN1 types. It provides basic

@@ -19,9 +19,6 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.DecodeBuffer;
-import org.apache.kerby.asn1.EndFlagBuffer;
-import org.apache.kerby.asn1.LimitedBuffer;
 import org.apache.kerby.asn1.TagClass;
 import org.apache.kerby.asn1.TaggingOption;
 
@@ -176,12 +173,7 @@ public abstract class Asn1Object implements Asn1Type {
 
     @Override
     public void decode(byte[] content) throws IOException {
-        decode(new DecodeBuffer(content));
-    }
-
-    @Override
-    public void decode(ByteBuffer content) throws IOException {
-        decode(new DecodeBuffer(content));
+        decode(ByteBuffer.wrap(content));
     }
 
     @Override
@@ -219,24 +211,26 @@ public abstract class Asn1Object implements Asn1Type {
 
     protected abstract int encodingBodyLength();
 
-    protected void decode(DecodeBuffer content) throws IOException {
+    @Override
+    public void decode(ByteBuffer content) throws IOException {
         int tmpTag = readTag(content);
         int tmpTagNo = readTagNo(content, tmpTag);
         int tmpTagFlags = tmpTag & 0xe0;
         int length = readLength(content);
 
-        DecodeBuffer tmpBuffer;
+        ByteBuffer valueBuffer;
         if (length == -1) {
-            tmpBuffer = new EndFlagBuffer(content);
+            length = getContentLength(content, isSimple());
+            valueBuffer = dupWithLength(content, length, true);
         } else {
-            tmpBuffer = new LimitedBuffer(content, length);
+            valueBuffer = dupWithLength(content, length, false);
         }
 
-        decode(tmpTagFlags, tmpTagNo, tmpBuffer);
+        decode(tmpTagFlags, tmpTagNo, valueBuffer);
     }
 
     public void decode(int tagFlags, int tagNo,
-                       DecodeBuffer content) throws IOException {
+                       ByteBuffer content) throws IOException {
         if (tagClass() != TagClass.UNKNOWN && tagClass()
                 != TagClass.fromTagFlags(tagFlags)) {
             throw new IOException("Unexpected tagFlags " + tagFlags
@@ -254,7 +248,7 @@ public abstract class Asn1Object implements Asn1Type {
         decodeBody(content);
     }
 
-    protected abstract void decodeBody(DecodeBuffer content) throws IOException;
+    protected abstract void decodeBody(ByteBuffer content) throws IOException;
 
     protected int taggedEncodingLength(TaggingOption taggingOption) {
         int taggingTagNo = taggingOption.getTagNo();
@@ -293,30 +287,25 @@ public abstract class Asn1Object implements Asn1Type {
 
     @Override
     public void taggedDecode(ByteBuffer content,
-                             TaggingOption taggingOption) throws IOException {
-        DecodeBuffer limitedBuffer = new DecodeBuffer(content);
-        taggedDecode(limitedBuffer, taggingOption);
-    }
-
-    protected void taggedDecode(DecodeBuffer content,
                                 TaggingOption taggingOption) throws IOException {
         int taggingTag = readTag(content);
         int taggingTagNo = readTagNo(content, taggingTag);
         int taggingLength = readLength(content);
 
-        DecodeBuffer tmpBuffer;
+        ByteBuffer valueBuffer;
         if (taggingLength == -1) {
-            tmpBuffer = new EndFlagBuffer(content);
+            taggingLength = getContentLength(content, isSimple());
+            valueBuffer = dupWithLength(content, taggingLength, true);
         } else {
-            tmpBuffer = new LimitedBuffer(content, taggingLength);
+            valueBuffer = dupWithLength(content, taggingLength, false);
         }
 
         int tmpTagFlags = taggingTag & 0xe0;
-        taggedDecode(tmpTagFlags, taggingTagNo, tmpBuffer, taggingOption);
+        taggedDecode(tmpTagFlags, taggingTagNo, valueBuffer, taggingOption);
     }
 
     protected void taggedDecode(int taggingTagFlags, int taggingTagNo,
-                                DecodeBuffer content,
+                                ByteBuffer content,
                                 TaggingOption taggingOption) throws IOException {
         int expectedTaggingTagFlags = taggingOption.tagFlags(!isPrimitive());
         if (expectedTaggingTagFlags != taggingTagFlags) {
@@ -335,18 +324,17 @@ public abstract class Asn1Object implements Asn1Type {
         }
     }
 
-    public static Asn1Item decodeOne(DecodeBuffer content) throws IOException {
+    public static Asn1Item decodeOne(ByteBuffer content) throws IOException {
         int tag = readTag(content);
         int tagNo = readTagNo(content, tag);
         int length = readLength(content);
 
-        DecodeBuffer valueBuffer;
+        ByteBuffer valueBuffer;
         if (length == -1) {
-            valueBuffer = new EndFlagBuffer(content);
-            content.skip(valueBuffer.remaining() + 2); // 2 end flag bytes (00)
+            length = getContentLength(content, Asn1Simple.isSimple(tagNo));;
+            valueBuffer = dupWithLength(content, length, true);
         } else {
-            valueBuffer = new LimitedBuffer(content, length);
-            content.skip(length);
+            valueBuffer = dupWithLength(content, length, false);
         }
 
         Asn1Item result = new Asn1Item(tag, tagNo, valueBuffer);
@@ -356,17 +344,17 @@ public abstract class Asn1Object implements Asn1Type {
         return result;
     }
 
-    public static void skipOne(DecodeBuffer content) throws IOException {
+    public static void skipOne(ByteBuffer content) throws IOException {
         int tag = readTag(content);
         readTagNo(content, tag);
         int length = readLength(content);
 
         int lengthForSkip = length;
         if (length == -1) {
-            EndFlagBuffer tmpBuffer = new EndFlagBuffer(content);
-            lengthForSkip = tmpBuffer.remaining() + 2; // 2 bytes of end flags
+            //EndFlagBuffer tmpBuffer = new EndFlagBuffer(content);
+            //lengthForSkip = tmpBuffer.remaining() + 2; // 2 bytes of end flags
         }
-        content.skip(lengthForSkip);
+        content.position(content.position() + lengthForSkip);
     }
 
     public static int lengthOfBodyLength(int bodyLength) {
@@ -445,21 +433,21 @@ public abstract class Asn1Object implements Asn1Type {
         }
     }
 
-    public static int readTag(DecodeBuffer buffer) throws IOException {
-        int tag = buffer.readByte() & 0xff;
+    public static int readTag(ByteBuffer buffer) throws IOException {
+        int tag = buffer.get() & 0xff;
         if (tag == 0) {
             throw new IOException("Bad tag 0 found");
         }
         return tag;
     }
 
-    public static int readTagNo(DecodeBuffer buffer, int tag) throws IOException {
+    public static int readTagNo(ByteBuffer buffer, int tag) throws IOException {
         int tagNo = tag & 0x1f;
 
         if (tagNo == 0x1f) {
             tagNo = 0;
 
-            int b = buffer.readByte() & 0xff;
+            int b = buffer.get() & 0xff;
             if ((b & 0x7f) == 0) {
                 throw new IOException("Invalid high tag number found");
             }
@@ -467,7 +455,7 @@ public abstract class Asn1Object implements Asn1Type {
             while (b >= 0 && (b & 0x80) != 0) {
                 tagNo |= b & 0x7f;
                 tagNo <<= 7;
-                b = buffer.readByte();
+                b = buffer.get();
             }
 
             tagNo |= b & 0x7f;
@@ -476,8 +464,8 @@ public abstract class Asn1Object implements Asn1Type {
         return tagNo;
     }
 
-    public static int readLength(DecodeBuffer buffer) throws IOException {
-        int result = buffer.readByte() & 0xff;
+    public static int readLength(ByteBuffer buffer) throws IOException {
+        int result = buffer.get() & 0xff;
         if (result == 0x80) {
             return -1; // non-definitive length
         }
@@ -491,7 +479,7 @@ public abstract class Asn1Object implements Asn1Type {
             result = 0;
             int tmp;
             for (int i = 0; i < length; i++) {
-                tmp = buffer.readByte() & 0xff;
+                tmp = buffer.get() & 0xff;
                 result = (result << 8) + tmp;
             }
         }
@@ -505,6 +493,90 @@ public abstract class Asn1Object implements Asn1Type {
                 + buffer.remaining() + " than expected " + result);
         }
 
+        return result;
+    }
+
+    protected static int getContentLength(ByteBuffer buffer, boolean atEarly) {
+        int pos = atEarly ? findEndFlagsAtEarly(buffer)
+            : findEndFlagsAtLast(buffer);
+
+        if (pos != -1) {
+            return pos - buffer.position() - 1;
+        }
+
+        return -1;
+    }
+
+    /**
+     * @return the positon of the at last end flags as normal content limit.
+     */
+    protected static int findEndFlagsAtEarly(ByteBuffer buffer) {
+        if (buffer.remaining() < 2) {
+            return -1;
+        }
+
+        byte flagByte1, flagByte2;
+        flagByte1 = buffer.get();
+        flagByte2 = buffer.get();
+
+        while (true) {
+            if (flagByte1 == 0x00 && flagByte2 == 0x00) {
+                return buffer.position();
+            }
+            if (buffer.remaining() > 0) {
+                flagByte1 = flagByte2;
+                flagByte2 = buffer.get();
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    /**
+     * @return the positon of the at last end flags as normal content limit.
+     */
+    protected static int findEndFlagsAtLast(ByteBuffer buffer) {
+        if (buffer.remaining() < 2) {
+            return -1;
+        }
+
+        if (buffer.hasArray()) {
+            int lastPos = buffer.limit() - 1;
+            if (buffer.get(lastPos) == 0x00
+                && buffer.get(lastPos - 1) == 0x00) {
+                return lastPos;
+            }
+        }
+
+        byte flagByte1, flagByte2;
+        flagByte1 = buffer.get();
+        flagByte2 = buffer.get();
+
+        int lastEndFlagsPos = -1;
+        while (true) {
+            if (flagByte1 == 0x00 && flagByte2 == 0x00) {
+                lastEndFlagsPos = buffer.position();
+            }
+            if (buffer.remaining() > 0) {
+                flagByte1 = flagByte2;
+                flagByte2 = buffer.get();
+            } else {
+                return lastEndFlagsPos;
+            }
+        }
+    }
+
+    public static ByteBuffer dupWithLength(ByteBuffer buffer,
+                                           int length, boolean withEndFlags) {
+        ByteBuffer result = buffer.duplicate();
+        result.limit(buffer.position() + length);
+        buffer.position(buffer.position() + length + (withEndFlags ? 2 : 0));
+        return result;
+    }
+
+    protected static byte[] readAllLeftBytes(ByteBuffer buffer) {
+        byte[] result = new byte[buffer.remaining()];
+        buffer.get(result);
         return result;
     }
 }

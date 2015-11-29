@@ -19,10 +19,10 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.DecodeBuffer;
 import org.apache.kerby.asn1.UniversalTag;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * ASN1 Boolean type
@@ -55,7 +55,7 @@ public class Asn1Boolean extends Asn1Simple<Boolean> {
     }
 
     @Override
-    protected void decodeBody(DecodeBuffer content) throws IOException {
+    protected void decodeBody(ByteBuffer content) throws IOException {
         if (content.remaining() != 1) {
             throw new IOException("More than 1 byte found for Boolean");
         }

@@ -19,8 +19,6 @@
  */
 package org.apache.kerby.kerberos.kerb;
 
-import org.apache.kerby.asn1.DecodeBuffer;
-import org.apache.kerby.asn1.LimitedBuffer;
 import org.apache.kerby.asn1.type.Asn1Object;
 import org.apache.kerby.asn1.type.Asn1Type;
 import org.apache.kerby.kerberos.kerb.type.ap.ApReq;
@@ -64,14 +62,13 @@ public class KrbCodec {
         return (T) implObj;
     }
 
-    public static KrbMessage decodeMessage(ByteBuffer byteBuffer) throws IOException {
-        DecodeBuffer limitedBuffer = new DecodeBuffer(byteBuffer);
-        int tag = Asn1Object.readTag(limitedBuffer);
-        int tagNo = Asn1Object.readTagNo(limitedBuffer, tag);
+    public static KrbMessage decodeMessage(ByteBuffer buffer) throws IOException {
+        int tag = Asn1Object.readTag(buffer);
+        int tagNo = Asn1Object.readTagNo(buffer, tag);
         int tagFlags = tag & 0xe0;
         // Must definitive length (in Kerberos)
-        int length = Asn1Object.readLength(limitedBuffer);
-        DecodeBuffer valueBuffer = new LimitedBuffer(limitedBuffer, length);
+        int length = Asn1Object.readLength(buffer);
+        ByteBuffer valueBuffer = Asn1Object.dupWithLength(buffer, length, false);
 
         KrbMessage msg;
         KrbMessageType msgType = KrbMessageType.fromValue(tagNo);

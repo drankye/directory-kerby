@@ -31,12 +31,12 @@ public class TokenLoginWithTokenPreauthEnabledTest extends TokenLoginTestBase {
         return true;
     }
 
-    @Test
+    //@Test
     public void testLoginWithTokenStr() throws Exception {
         super.testLoginWithTokenStr();
     }
 
-    @Test
+    //@Test
     public void testLoginWithTokenCache() throws Exception {
         super.testLoginWithTokenCache();
     }

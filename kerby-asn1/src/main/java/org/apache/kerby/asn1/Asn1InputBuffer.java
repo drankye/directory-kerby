@@ -32,14 +32,14 @@ import java.nio.ByteBuffer;
  * and read until exhausted.
  */
 public class Asn1InputBuffer {
-    private final DecodeBuffer decodeBuffer;
+    private final ByteBuffer decodeBuffer;
 
     /**
      * Constructor with bytes.
      * @param bytes The bytes
      */
     public Asn1InputBuffer(byte[] bytes) {
-        this(new DecodeBuffer(bytes));
+        this(ByteBuffer.wrap(bytes));
     }
 
     /**
@@ -47,15 +47,7 @@ public class Asn1InputBuffer {
      * @param byteBuffer The byte buffer
      */
     public Asn1InputBuffer(ByteBuffer byteBuffer) {
-        this(new DecodeBuffer(byteBuffer));
-    }
-
-    /**
-     * Constructor with DecodeBuffer.
-     * @param decodeBuffer The limited byte buffer
-     */
-    public Asn1InputBuffer(DecodeBuffer decodeBuffer) {
-        this.decodeBuffer = decodeBuffer;
+        this.decodeBuffer = byteBuffer;
     }
 
     /**
@@ -65,7 +57,7 @@ public class Asn1InputBuffer {
      * @throws IOException e
      */
     public Asn1Type read() throws IOException {
-        if (!decodeBuffer.available()) {
+        if (decodeBuffer.remaining() < 1) {
             return null;
         }
         Asn1Item one = Asn1Object.decodeOne(decodeBuffer);

@@ -20,6 +20,7 @@
 package org.apache.kerby.kerberos.kerb.type.base;
 
 import org.apache.kerby.asn1.Asn1FieldInfo;
+import org.apache.kerby.asn1.EnumType;
 import org.apache.kerby.asn1.type.Asn1Integer;
 import org.apache.kerby.asn1.type.Asn1OctetString;
 import org.apache.kerby.asn1.ExplicitField;
@@ -34,12 +35,25 @@ import java.util.Arrays;
  }
  */
 public class CheckSum extends KrbSequenceType {
-    private static final int CKSUM_TYPE = 0;
-    private static final int CHECK_SUM = 1;
+    private static enum MyEnum implements EnumType {
+
+        @Override
+        public int getValue() {
+            return ordinal();
+        }
+
+        @Override
+        public String getName() {
+            return name();
+        }
+    }
+
+    CKSUM_TYPE = 0;
+    CHECK_SUM = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(CKSUM_TYPE, 0, Asn1Integer.class),
-        new ExplicitField(CHECK_SUM, 1, Asn1OctetString.class)
+        new ExplicitField(MyEnum.CKSUM_TYPE, 0, Asn1Integer.class),
+        new ExplicitField(MyEnum.CHECK_SUM, 1, Asn1OctetString.class)
     };
 
     public CheckSum() {

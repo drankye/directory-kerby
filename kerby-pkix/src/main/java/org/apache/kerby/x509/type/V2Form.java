@@ -37,14 +37,14 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class V2Form extends Asn1SequenceType {
-    private static final int ISSUER_NAME = 0;
-    private static final int BASE_CERTIFICATE_ID = 1;
-    private static final int OBJECT_DIGEST_INFO = 2;
+    ISSUER_NAME = 0;
+    BASE_CERTIFICATE_ID = 1;
+    OBJECT_DIGEST_INFO = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(ISSUER_NAME, GeneralNames.class),
-        new ExplicitField(BASE_CERTIFICATE_ID, 0, IssuerSerial.class),
-        new ExplicitField(OBJECT_DIGEST_INFO, 1, ObjectDigestInfo.class)
+        new ExplicitField(MyEnum.BASE_CERTIFICATE_ID, 0, IssuerSerial.class),
+        new ExplicitField(MyEnum.OBJECT_DIGEST_INFO, 1, ObjectDigestInfo.class)
     };
 
     public V2Form() {
@@ -52,7 +52,7 @@ public class V2Form extends Asn1SequenceType {
     }
 
     public GeneralNames getIssuerName() {
-        return getFieldAs(ISSUER_NAME, GeneralNames.class);
+        return getFieldAs(MyEnum.ISSUER_NAME, GeneralNames.class);
     }
 
     public void setIssuerName(GeneralNames issuerName) {
@@ -60,7 +60,7 @@ public class V2Form extends Asn1SequenceType {
     }
 
     public IssuerSerial getBaseCertificateID() {
-        return getFieldAs(BASE_CERTIFICATE_ID, IssuerSerial.class);
+        return getFieldAs(MyEnum.BASE_CERTIFICATE_ID, IssuerSerial.class);
     }
 
     public void setBaseCertificateId(IssuerSerial baseCertificateId) {
@@ -68,7 +68,7 @@ public class V2Form extends Asn1SequenceType {
     }
 
     public ObjectDigestInfo getObjectDigestInfo() {
-        return getFieldAs(OBJECT_DIGEST_INFO, ObjectDigestInfo.class);
+        return getFieldAs(MyEnum.OBJECT_DIGEST_INFO, ObjectDigestInfo.class);
     }
 
     public void setObjectDigestInfo(ObjectDigestInfo objectDigestInfo) {

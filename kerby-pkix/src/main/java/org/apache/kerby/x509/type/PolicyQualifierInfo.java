@@ -36,8 +36,8 @@ import org.apache.kerby.asn1.type.Asn1Type;
  * </pre>
  */
 public class PolicyQualifierInfo extends Asn1SequenceType {
-    private static final int POLICY_QUALIFIER_ID = 0;
-    private static final int QUALIFIER = 1;
+    POLICY_QUALIFIER_ID = 0;
+    QUALIFIER = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(POLICY_QUALIFIER_ID, PolicyQualifierId.class),
@@ -49,7 +49,7 @@ public class PolicyQualifierInfo extends Asn1SequenceType {
     }
 
     public PolicyQualifierId getPolicyQualifierId() {
-        return getFieldAs(POLICY_QUALIFIER_ID, PolicyQualifierId.class);
+        return getFieldAs(MyEnum.POLICY_QUALIFIER_ID, PolicyQualifierId.class);
     }
 
     public void setPolicyQualifierId(PolicyQualifierId policyQualifierId) {

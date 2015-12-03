@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class DHRepInfo extends KrbSequenceType {
-    private static final int DH_SIGNED_DATA = 0;
-    private static final int SERVER_DH_NONCE = 1;
+    DH_SIGNED_DATA = 0;
+    SERVER_DH_NONCE = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new ImplicitField(DH_SIGNED_DATA, Asn1OctetString.class),
-            new ExplicitField(SERVER_DH_NONCE, DHNonce.class)
+            new ExplicitField(MyEnum.SERVER_DH_NONCE, DHNonce.class)
     };
 
     public DHRepInfo() {
@@ -53,7 +53,7 @@ public class DHRepInfo extends KrbSequenceType {
     }
 
     public DHNonce getServerDhNonce() {
-        return getFieldAs(SERVER_DH_NONCE, DHNonce.class);
+        return getFieldAs(MyEnum.SERVER_DH_NONCE, DHNonce.class);
     }
 
     public void setServerDhNonce(DHNonce dhNonce) {

@@ -36,9 +36,9 @@ import org.apache.kerby.x509.type.AlgorithmIdentifier;
  */
 public class CompressedData extends Asn1SequenceType {
 
-    private static final int VERSION = 0;
-    private static final int COMPRESSION_ALGORITHM = 1;
-    private static final int ENCAP_CONTENT_INFO = 2;
+    VERSION = 0;
+    COMPRESSION_ALGORITHM = 1;
+    ENCAP_CONTENT_INFO = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(VERSION, CmsVersion.class),
@@ -51,7 +51,7 @@ public class CompressedData extends Asn1SequenceType {
     }
 
     public CmsVersion getVersion() {
-        return getFieldAs(VERSION, CmsVersion.class);
+        return getFieldAs(MyEnum.VERSION, CmsVersion.class);
     }
 
     public void setVersion(CmsVersion version) {
@@ -59,7 +59,7 @@ public class CompressedData extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getCompressionAlgorithm() {
-        return getFieldAs(COMPRESSION_ALGORITHM, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.COMPRESSION_ALGORITHM, AlgorithmIdentifier.class);
     }
 
     public void setCompressionAlgorithm(AlgorithmIdentifier compressionAlgorithm) {
@@ -67,7 +67,7 @@ public class CompressedData extends Asn1SequenceType {
     }
 
     public EncapsulatedContentInfo getEncapContentInfo() {
-        return getFieldAs(ENCAP_CONTENT_INFO, EncapsulatedContentInfo.class);
+        return getFieldAs(MyEnum.ENCAP_CONTENT_INFO, EncapsulatedContentInfo.class);
     }
 
     public void setEncapContentInfo(EncapsulatedContentInfo encapContentInfo) {

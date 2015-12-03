@@ -53,7 +53,7 @@ public class IetfAttrSyntaxChoice extends Asn1Choice {
     }
 
     public Asn1OctetString getOctets() {
-        return getFieldAs(OCTETS, Asn1OctetString.class);
+        return getFieldAs(MyEnum.OCTETS, Asn1OctetString.class);
     }
 
     public void setOctets(Asn1OctetString octets) {
@@ -61,7 +61,7 @@ public class IetfAttrSyntaxChoice extends Asn1Choice {
     }
 
     public Asn1ObjectIdentifier getOid() {
-        return getFieldAs(OID, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.OID, Asn1ObjectIdentifier.class);
     }
 
     public void setOid(Asn1ObjectIdentifier oid) {
@@ -69,7 +69,7 @@ public class IetfAttrSyntaxChoice extends Asn1Choice {
     }
 
     public Asn1ObjectIdentifier getUtf8() {
-        return getFieldAs(UTF8, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.UTF8, Asn1ObjectIdentifier.class);
     }
 
     public void setUtf8(Asn1ObjectIdentifier utf8) {

@@ -45,19 +45,19 @@ import org.apache.kerby.x500.type.Name;
  */
 public class TBSCertificate extends Asn1SequenceType {
 
-    private static final int VERSION = 0;
-    private static final int SERIAL_NUMBER = 1;
-    private static final int SIGNATURE = 2;
-    private static final int ISSUER = 3;
-    private static final int VALIDITY = 4;
-    private static final int SUBJECT = 5;
-    private static final int SUBJECT_PUBLIC_KEY_INFO = 6;
-    private static final int ISSUER_UNIQUE_ID = 7;
-    private static final int SUBJECT_UNIQUE_ID = 8;
-    private static final int EXTENSIONS = 9;
+    VERSION = 0;
+    SERIAL_NUMBER = 1;
+    SIGNATURE = 2;
+    ISSUER = 3;
+    VALIDITY = 4;
+    SUBJECT = 5;
+    SUBJECT_PUBLIC_KEY_INFO = 6;
+    ISSUER_UNIQUE_ID = 7;
+    SUBJECT_UNIQUE_ID = 8;
+    EXTENSIONS = 9;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(VERSION, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.VERSION, 0, Asn1Integer.class),
             new Asn1FieldInfo(SERIAL_NUMBER, CertificateSerialNumber.class),
             new Asn1FieldInfo(SIGNATURE, AlgorithmIdentifier.class),
             new Asn1FieldInfo(ISSUER, Name.class),
@@ -66,7 +66,7 @@ public class TBSCertificate extends Asn1SequenceType {
             new Asn1FieldInfo(SUBJECT_PUBLIC_KEY_INFO, SubjectPublicKeyInfo.class),
             new ImplicitField(ISSUER_UNIQUE_ID, 1, Asn1BitString.class),
             new ImplicitField(SUBJECT_UNIQUE_ID, 2, Asn1BitString.class),
-            new ExplicitField(EXTENSIONS, 3, Extensions.class)
+            new ExplicitField(MyEnum.EXTENSIONS, 3, Extensions.class)
     };
 
     public TBSCertificate() {
@@ -82,7 +82,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public CertificateSerialNumber getSerialNumber() {
-        return getFieldAs(SERIAL_NUMBER, CertificateSerialNumber.class);
+        return getFieldAs(MyEnum.SERIAL_NUMBER, CertificateSerialNumber.class);
     }
 
     public void setSerialNumber(CertificateSerialNumber certificateSerialNumber) {
@@ -90,7 +90,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getSignature() {
-        return getFieldAs(SIGNATURE, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE, AlgorithmIdentifier.class);
     }
 
     public void setSignature(AlgorithmIdentifier signature) {
@@ -98,7 +98,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public Name getIssuer() {
-        return getFieldAs(ISSUER, Name.class);
+        return getFieldAs(MyEnum.ISSUER, Name.class);
     }
 
     public void setIssuer(Name attCertIssuer) {
@@ -106,7 +106,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public AttCertValidityPeriod getValidity() {
-        return getFieldAs(VALIDITY, AttCertValidityPeriod.class);
+        return getFieldAs(MyEnum.VALIDITY, AttCertValidityPeriod.class);
     }
 
     public void setValidity(AttCertValidityPeriod validity) {
@@ -114,7 +114,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public Name getSubject() {
-        return getFieldAs(SUBJECT, Name.class);
+        return getFieldAs(MyEnum.SUBJECT, Name.class);
     }
 
     public void setSubject(Name subject) {
@@ -122,7 +122,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public SubjectPublicKeyInfo getSubjectPublicKeyInfo() {
-        return getFieldAs(SUBJECT_PUBLIC_KEY_INFO, SubjectPublicKeyInfo.class);
+        return getFieldAs(MyEnum.SUBJECT_PUBLIC_KEY_INFO, SubjectPublicKeyInfo.class);
     }
 
     public void setSubjectPublicKeyInfo(SubjectPublicKeyInfo subjectPublicKeyInfo) {
@@ -130,7 +130,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public byte[] getIssuerUniqueID() {
-        return getFieldAs(ISSUER_UNIQUE_ID, Asn1BitString.class).getValue();
+        return getFieldAs(MyEnum.ISSUER_UNIQUE_ID, Asn1BitString.class).getValue();
     }
 
     public void setIssuerUniqueId(byte[] issuerUniqueId) {
@@ -138,7 +138,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public byte[] getSubjectUniqueId() {
-        return getFieldAs(ISSUER_UNIQUE_ID, Asn1BitString.class).getValue();
+        return getFieldAs(MyEnum.ISSUER_UNIQUE_ID, Asn1BitString.class).getValue();
     }
 
     public void setSubjectUniqueId(byte[] issuerUniqueId) {
@@ -146,7 +146,7 @@ public class TBSCertificate extends Asn1SequenceType {
     }
 
     public Extensions getExtensions() {
-        return getFieldAs(EXTENSIONS, Extensions.class);
+        return getFieldAs(MyEnum.EXTENSIONS, Extensions.class);
     }
 
     public void setExtensions(Extensions extensions) {

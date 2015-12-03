@@ -30,10 +30,10 @@ import org.apache.kerby.kerberos.kerb.type.base.KrbToken;
  }
 */
 public class AdToken extends KrbSequenceType {
-    private static final int TOKEN = 0;
+    TOKEN;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(TOKEN, KrbToken.class)
+            new ExplicitField(MyEnum.TOKEN, KrbToken.class)
     };
 
     public AdToken() {
@@ -41,7 +41,7 @@ public class AdToken extends KrbSequenceType {
     }
 
     public KrbToken getToken() {
-        return getFieldAs(TOKEN, KrbToken.class);
+        return getFieldAs(MyEnum.TOKEN, KrbToken.class);
     }
 
     public void setToken(KrbToken token) {

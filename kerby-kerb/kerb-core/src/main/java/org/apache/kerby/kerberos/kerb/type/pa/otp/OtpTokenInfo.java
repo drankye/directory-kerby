@@ -42,26 +42,26 @@ import org.apache.kerby.kerberos.kerb.type.pa.pkinit.AlgorithmIdentifiers;
  }
  */
 public class OtpTokenInfo extends KrbSequenceType {
-    private static final int FLAGS = 0;
-    private static final int OTP_VENDOR = 1;
-    private static final int OTP_CHALLENGE = 2;
-    private static final int OTP_LENGTH = 3;
-    private static final int OTP_FORMAT = 4;
-    private static final int OTP_TOKEN_ID = 5;
-    private static final int OTP_ALG_ID = 6;
-    private static final int SUPPORTED_HASH_ALG = 7;
-    private static final int ITERATION_COUNT = 8;
+    FLAGS = 0;
+    OTP_VENDOR = 1;
+    OTP_CHALLENGE = 2;
+    OTP_LENGTH = 3;
+    OTP_FORMAT = 4;
+    OTP_TOKEN_ID = 5;
+    OTP_ALG_ID = 6;
+    SUPPORTED_HASH_ALG = 7;
+    ITERATION_COUNT = 8;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(FLAGS, Asn1OctetString.class),
-            new ExplicitField(OTP_VENDOR, Asn1Utf8String.class),
-            new ExplicitField(OTP_CHALLENGE, Asn1OctetString.class),
-            new ExplicitField(OTP_LENGTH, KerberosString.class),
-            new ExplicitField(OTP_FORMAT, Asn1OctetString.class),
-            new ExplicitField(OTP_TOKEN_ID, Asn1Utf8String.class),
-            new ExplicitField(OTP_ALG_ID, Asn1OctetString.class),
-            new ExplicitField(SUPPORTED_HASH_ALG, AlgorithmIdentifiers.class),
-            new ExplicitField(ITERATION_COUNT, Asn1Integer.class)
+            new ExplicitField(MyEnum.FLAGS, Asn1OctetString.class),
+            new ExplicitField(MyEnum.OTP_VENDOR, Asn1Utf8String.class),
+            new ExplicitField(MyEnum.OTP_CHALLENGE, Asn1OctetString.class),
+            new ExplicitField(MyEnum.OTP_LENGTH, KerberosString.class),
+            new ExplicitField(MyEnum.OTP_FORMAT, Asn1OctetString.class),
+            new ExplicitField(MyEnum.OTP_TOKEN_ID, Asn1Utf8String.class),
+            new ExplicitField(MyEnum.OTP_ALG_ID, Asn1OctetString.class),
+            new ExplicitField(MyEnum.SUPPORTED_HASH_ALG, AlgorithmIdentifiers.class),
+            new ExplicitField(MyEnum.ITERATION_COUNT, Asn1Integer.class)
     };
 
     public OtpTokenInfo() {

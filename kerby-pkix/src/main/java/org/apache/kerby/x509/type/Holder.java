@@ -38,14 +38,14 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class Holder extends Asn1SequenceType {
-    private static final int BASE_CERTIFICATE_ID = 0;
-    private static final int ENTITY_NAME = 1;
-    private static final int OBJECT_DIGEST_INFO = 2;
+    BASE_CERTIFICATE_ID = 0;
+    ENTITY_NAME = 1;
+    OBJECT_DIGEST_INFO = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(BASE_CERTIFICATE_ID, IssuerSerial.class),
-        new ExplicitField(ENTITY_NAME, GeneralNames.class),
-        new ExplicitField(OBJECT_DIGEST_INFO, ObjectDigestInfo.class)
+        new ExplicitField(MyEnum.BASE_CERTIFICATE_ID, IssuerSerial.class),
+        new ExplicitField(MyEnum.ENTITY_NAME, GeneralNames.class),
+        new ExplicitField(MyEnum.OBJECT_DIGEST_INFO, ObjectDigestInfo.class)
     };
 
     public Holder() {
@@ -53,7 +53,7 @@ public class Holder extends Asn1SequenceType {
     }
 
     public IssuerSerial getBaseCertificateID() {
-        return getFieldAs(BASE_CERTIFICATE_ID, IssuerSerial.class);
+        return getFieldAs(MyEnum.BASE_CERTIFICATE_ID, IssuerSerial.class);
     }
 
     public void setBaseCertificateId(IssuerSerial baseCertificateId) {
@@ -61,7 +61,7 @@ public class Holder extends Asn1SequenceType {
     }
 
     public GeneralNames getEntityName() {
-        return getFieldAs(ENTITY_NAME, GeneralNames.class);
+        return getFieldAs(MyEnum.ENTITY_NAME, GeneralNames.class);
     }
 
     public void setEntityName(GeneralNames entityName) {
@@ -69,7 +69,7 @@ public class Holder extends Asn1SequenceType {
     }
 
     public ObjectDigestInfo getObjectDigestInfo() {
-        return getFieldAs(OBJECT_DIGEST_INFO, ObjectDigestInfo.class);
+        return getFieldAs(MyEnum.OBJECT_DIGEST_INFO, ObjectDigestInfo.class);
     }
 
     public void setObjectDigestInfo(ObjectDigestInfo objectDigestInfo) {

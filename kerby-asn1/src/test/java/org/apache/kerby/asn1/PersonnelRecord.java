@@ -40,11 +40,11 @@ public class PersonnelRecord extends TaggingSet {
     private static final int CHILDREN = 5;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(NAME, -1, Name.class),
-            new ExplicitField(TITLE, 0, Asn1VisibleString.class),
-            new ExplicitField(NUMBER, -1, EmployeeNumber.class),
-            new ExplicitField(DATEOFHIRE, 1, Date.class),
-            new ExplicitField(NAMEOFSPOUSE, 2, Name.class),
+            new ExplicitField(MyEnum.NAME, -1, Name.class),
+            new ExplicitField(MyEnum.TITLE, 0, Asn1VisibleString.class),
+            new ExplicitField(MyEnum.NUMBER, -1, EmployeeNumber.class),
+            new ExplicitField(MyEnum.DATEOFHIRE, 1, Date.class),
+            new ExplicitField(MyEnum.NAMEOFSPOUSE, 2, Name.class),
             new ImplicitField(CHILDREN, 3, Children.class)
     };
 
@@ -57,7 +57,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Name getName() {
-        return getFieldAs(NAME, Name.class);
+        return getFieldAs(MyEnum.NAME, Name.class);
     }
 
     public void setTitle(String title) {
@@ -73,7 +73,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public EmployeeNumber getEmployeeNumber() {
-        return getFieldAs(NUMBER, EmployeeNumber.class);
+        return getFieldAs(MyEnum.NUMBER, EmployeeNumber.class);
     }
 
     public void setDateOfHire(Date dateOfHire) {
@@ -81,7 +81,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Date getDateOfHire() {
-        return getFieldAs(DATEOFHIRE, Date.class);
+        return getFieldAs(MyEnum.DATEOFHIRE, Date.class);
     }
 
     public void setNameOfSpouse(Name spouse) {
@@ -89,7 +89,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Name getNameOfSpouse() {
-        return getFieldAs(NAMEOFSPOUSE, Name.class);
+        return getFieldAs(MyEnum.NAMEOFSPOUSE, Name.class);
     }
 
     public void setChildren(Children children) {
@@ -97,7 +97,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Children getChildren() {
-        return getFieldAs(CHILDREN, Children.class);
+        return getFieldAs(MyEnum.CHILDREN, Children.class);
     }
 
     public static class Children extends Asn1SequenceOf<ChildInformation> {
@@ -118,8 +118,8 @@ public class PersonnelRecord extends TaggingSet {
         private static final int DATEOFBIRTH = 1;
 
         static Asn1FieldInfo[] tags = new Asn1FieldInfo[] {
-                new ExplicitField(NAME, -1, Name.class),
-                new ExplicitField(DATEOFBIRTH, 0, Date.class)
+                new ExplicitField(MyEnum.NAME, -1, Name.class),
+                new ExplicitField(MyEnum.DATEOFBIRTH, 0, Date.class)
         };
 
         public ChildInformation() {
@@ -131,7 +131,7 @@ public class PersonnelRecord extends TaggingSet {
         }
 
         public Name getName() {
-            return getFieldAs(NAME, Name.class);
+            return getFieldAs(MyEnum.NAME, Name.class);
         }
 
         public void setDateOfBirth(Date date) {
@@ -139,7 +139,7 @@ public class PersonnelRecord extends TaggingSet {
         }
 
         public Date getDateOfBirth() {
-            return getFieldAs(DATEOFBIRTH, Date.class);
+            return getFieldAs(MyEnum.DATEOFBIRTH, Date.class);
         }
     }
 
@@ -149,9 +149,9 @@ public class PersonnelRecord extends TaggingSet {
         private static final int FAMILYNAME = 2;
 
         static Asn1FieldInfo[] tags = new Asn1FieldInfo[] {
-                new ExplicitField(GIVENNAME, -1, Asn1VisibleString.class),
-                new ExplicitField(INITIAL, -1, Asn1VisibleString.class),
-                new ExplicitField(FAMILYNAME, -1, Asn1VisibleString.class)
+                new ExplicitField(MyEnum.GIVENNAME, -1, Asn1VisibleString.class),
+                new ExplicitField(MyEnum.INITIAL, -1, Asn1VisibleString.class),
+                new ExplicitField(MyEnum.FAMILYNAME, -1, Asn1VisibleString.class)
         };
 
         public Name() {

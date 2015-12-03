@@ -33,12 +33,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class PrivateKeyUsagePeriod extends Asn1SequenceType {
-    private static final int NOT_BEFORE = 0;
-    private static final int NOT_AFTER = 1;
+    NOT_BEFORE = 0;
+    NOT_AFTER = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(NOT_BEFORE, Asn1GeneralizedTime.class),
-        new ExplicitField(NOT_AFTER, Asn1GeneralizedTime.class)
+        new ExplicitField(MyEnum.NOT_BEFORE, Asn1GeneralizedTime.class),
+        new ExplicitField(MyEnum.NOT_AFTER, Asn1GeneralizedTime.class)
     };
 
     public PrivateKeyUsagePeriod() {
@@ -46,7 +46,7 @@ public class PrivateKeyUsagePeriod extends Asn1SequenceType {
     }
 
     public Asn1GeneralizedTime getNotBeforeTime() {
-        return getFieldAs(NOT_BEFORE, Asn1GeneralizedTime.class);
+        return getFieldAs(MyEnum.NOT_BEFORE, Asn1GeneralizedTime.class);
     }
 
     public void setNotBeforeTime(Asn1GeneralizedTime notBeforeTime) {
@@ -54,7 +54,7 @@ public class PrivateKeyUsagePeriod extends Asn1SequenceType {
     }
 
     public Asn1GeneralizedTime getNotAfterTime() {
-        return getFieldAs(NOT_AFTER, Asn1GeneralizedTime.class);
+        return getFieldAs(MyEnum.NOT_AFTER, Asn1GeneralizedTime.class);
     }
 
     public void setNotAfterTime(Asn1GeneralizedTime notAfterTime) {

@@ -32,8 +32,8 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  *
  */
 public class PolicyMapping extends Asn1SequenceType {
-    private static final int ISSUER_DOMAIN_POLICY = 0;
-    private static final int SUBJECT_DOMAIN_POLICY = 1;
+    ISSUER_DOMAIN_POLICY = 0;
+    SUBJECT_DOMAIN_POLICY = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(ISSUER_DOMAIN_POLICY, CertPolicyId.class),
@@ -45,7 +45,7 @@ public class PolicyMapping extends Asn1SequenceType {
     }
 
     public CertPolicyId getIssuerDomainPolicy() {
-        return  getFieldAs(ISSUER_DOMAIN_POLICY, CertPolicyId.class);
+        return  getFieldAs(MyEnum.ISSUER_DOMAIN_POLICY, CertPolicyId.class);
     }
 
     public void setIssuerDomainPolicy(CertPolicyId issuerDomainPolicy) {
@@ -53,7 +53,7 @@ public class PolicyMapping extends Asn1SequenceType {
     }
 
     public CertPolicyId getSubjectDomainPolicy() {
-        return getFieldAs(SUBJECT_DOMAIN_POLICY, CertPolicyId.class);
+        return getFieldAs(MyEnum.SUBJECT_DOMAIN_POLICY, CertPolicyId.class);
     }
 
     public void setSubjectDomainPolicy(CertPolicyId subjectDomainPolicy) {

@@ -33,12 +33,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class RoleSyntax extends Asn1SequenceType {
-    private static final int ROLE_AUTHORITY = 0;
-    private static final int ROLE_NAME = 1;
+    ROLE_AUTHORITY = 0;
+    ROLE_NAME = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(ROLE_AUTHORITY, GeneralNames.class),
-        new ExplicitField(ROLE_NAME, GeneralName.class)
+        new ExplicitField(MyEnum.ROLE_AUTHORITY, GeneralNames.class),
+        new ExplicitField(MyEnum.ROLE_NAME, GeneralName.class)
     };
 
     public RoleSyntax() {
@@ -46,7 +46,7 @@ public class RoleSyntax extends Asn1SequenceType {
     }
 
     public GeneralNames getRoleAuthority() {
-        return getFieldAs(ROLE_AUTHORITY, GeneralNames.class);
+        return getFieldAs(MyEnum.ROLE_AUTHORITY, GeneralNames.class);
     }
 
     public void setRoleAuthority(GeneralNames roleAuthority) {
@@ -54,7 +54,7 @@ public class RoleSyntax extends Asn1SequenceType {
     }
 
     public GeneralName getRoleName() {
-        return getFieldAs(ROLE_NAME, GeneralName.class);
+        return getFieldAs(MyEnum.ROLE_NAME, GeneralName.class);
     }
 
     public void setRoleName(GeneralName roleName) {

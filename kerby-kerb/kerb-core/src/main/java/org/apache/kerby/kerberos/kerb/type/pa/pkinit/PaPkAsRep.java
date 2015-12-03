@@ -32,11 +32,11 @@ import org.apache.kerby.asn1.ImplicitField;
  }
  */
 public class PaPkAsRep extends Asn1Choice {
-    private static final int DH_INFO = 0;
-    private static final int ENCKEY_PACK = 1;
+    DH_INFO = 0;
+    ENCKEY_PACK = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(DH_INFO, DHRepInfo.class),
+            new ExplicitField(MyEnum.DH_INFO, DHRepInfo.class),
             new ImplicitField(ENCKEY_PACK, Asn1OctetString.class)
     };
 
@@ -45,7 +45,7 @@ public class PaPkAsRep extends Asn1Choice {
     }
 
     public DHRepInfo getDHRepInfo() {
-        return getFieldAs(DH_INFO, DHRepInfo.class);
+        return getFieldAs(MyEnum.DH_INFO, DHRepInfo.class);
     }
 
     public void setDHRepInfo(DHRepInfo dhRepInfo) {

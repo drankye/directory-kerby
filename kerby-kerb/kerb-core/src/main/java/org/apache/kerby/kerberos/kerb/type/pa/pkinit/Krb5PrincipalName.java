@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.base.Realm;
  }
  */
 public class Krb5PrincipalName extends KrbSequenceType {
-    private static final int REALM = 0;
-    private static final int PRINCIPAL_NAME = 1;
+    REALM = 0;
+    PRINCIPAL_NAME = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(REALM, Realm.class),
-            new ExplicitField(PRINCIPAL_NAME, PrincipalName.class)
+            new ExplicitField(MyEnum.REALM, Realm.class),
+            new ExplicitField(MyEnum.PRINCIPAL_NAME, PrincipalName.class)
     };
 
     public Krb5PrincipalName() {
@@ -53,7 +53,7 @@ public class Krb5PrincipalName extends KrbSequenceType {
     }
 
     public PrincipalName getPrincipalName() {
-        return getFieldAs(PRINCIPAL_NAME, PrincipalName.class);
+        return getFieldAs(MyEnum.PRINCIPAL_NAME, PrincipalName.class);
     }
 
     public void setPrincipalName(PrincipalName principalName) {

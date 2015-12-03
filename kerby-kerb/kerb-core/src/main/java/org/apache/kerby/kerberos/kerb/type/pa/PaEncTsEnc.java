@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class PaEncTsEnc extends KrbSequenceType {
-    private static final int PATIMESTAMP = 0;
-    private static final int PAUSEC = 1;
+    PATIMESTAMP = 0;
+    PAUSEC = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PATIMESTAMP, 0, KerberosTime.class),
-            new ExplicitField(PAUSEC, 1, Asn1Integer.class)
+            new ExplicitField(MyEnum.PATIMESTAMP, 0, KerberosTime.class),
+            new ExplicitField(MyEnum.PAUSEC, 1, Asn1Integer.class)
     };
 
     public PaEncTsEnc() {

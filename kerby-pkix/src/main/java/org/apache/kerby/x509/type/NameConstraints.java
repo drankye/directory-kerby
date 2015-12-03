@@ -30,12 +30,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * }
  */
 public class NameConstraints extends Asn1SequenceType {
-    private static final int PERMITTED_SUBTREES = 0;
-    private static final int EXCLUDED_SUBTREES = 1;
+    PERMITTED_SUBTREES = 0;
+    EXCLUDED_SUBTREES = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(PERMITTED_SUBTREES, GeneralSubtrees.class),
-        new ExplicitField(EXCLUDED_SUBTREES, GeneralSubtrees.class)
+        new ExplicitField(MyEnum.PERMITTED_SUBTREES, GeneralSubtrees.class),
+        new ExplicitField(MyEnum.EXCLUDED_SUBTREES, GeneralSubtrees.class)
     };
 
     public NameConstraints() {
@@ -43,7 +43,7 @@ public class NameConstraints extends Asn1SequenceType {
     }
 
     public GeneralSubtrees getPermittedSubtrees() {
-        return getFieldAs(PERMITTED_SUBTREES, GeneralSubtrees.class);
+        return getFieldAs(MyEnum.PERMITTED_SUBTREES, GeneralSubtrees.class);
     }
 
     public void setPermittedSubtrees(GeneralSubtrees permittedSubtrees) {
@@ -51,7 +51,7 @@ public class NameConstraints extends Asn1SequenceType {
     }
 
     public GeneralSubtrees getExcludedSubtrees() {
-        return getFieldAs(EXCLUDED_SUBTREES, GeneralSubtrees.class);
+        return getFieldAs(MyEnum.EXCLUDED_SUBTREES, GeneralSubtrees.class);
     }
 
     public void setExcludedSubtrees(GeneralSubtrees excludedSubtrees) {

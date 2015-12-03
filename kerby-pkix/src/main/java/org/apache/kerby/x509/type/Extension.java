@@ -37,9 +37,9 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * </pre>
  */
 public class Extension extends Asn1SequenceType {
-    private static final int EXTN_ID = 0;
-    private static final int CRITICAL = 1;
-    private static final int EXTN_VALUE = 2;
+    EXTN_ID = 0;
+    CRITICAL = 1;
+    EXTN_VALUE = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(EXTN_ID, Asn1ObjectIdentifier.class),
@@ -52,7 +52,7 @@ public class Extension extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getExtnId() {
-        return getFieldAs(EXTN_ID, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.EXTN_ID, Asn1ObjectIdentifier.class);
     }
 
     public void setExtnId(Asn1ObjectIdentifier extnId) {
@@ -60,7 +60,7 @@ public class Extension extends Asn1SequenceType {
     }
 
     public boolean getCritical() {
-        return getFieldAs(CRITICAL, Asn1Boolean.class).getValue();
+        return getFieldAs(MyEnum.CRITICAL, Asn1Boolean.class).getValue();
     }
 
     public void setCritical(boolean critical) {

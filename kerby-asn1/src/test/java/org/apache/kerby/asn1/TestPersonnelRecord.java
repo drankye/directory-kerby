@@ -43,10 +43,10 @@ public class TestPersonnelRecord {
 
         /*
         System.out.println("Title:");
-        System.out.println(HexUtil.bytesToHexFriendly(pr.getFieldAs(1, Asn1VisibleString.class).encode()));
+        System.out.println(HexUtil.bytesToHexFriendly(pr.getFieldAs(MyEnum.1, Asn1VisibleString.class).encode()));
 
         System.out.println("EmployeeNumber:");
-        System.out.println(HexUtil.bytesToHexFriendly(pr.getFieldAs(2, EmployeeNumber.class).encode()));
+        System.out.println(HexUtil.bytesToHexFriendly(pr.getFieldAs(MyEnum.2, EmployeeNumber.class).encode()));
         */
 
             System.out.println("DateOfHire:");

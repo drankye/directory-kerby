@@ -34,12 +34,12 @@ import org.apache.kerby.kerberos.kerb.type.base.KrbMessageType;
  }
  */
 public class ApRep extends KrbMessage {
-    private static final int ENC_PART = 2;
+    ENC_PART = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PVNO, 0, Asn1Integer.class),
-            new ExplicitField(MSG_TYPE, 1, Asn1Integer.class),
-            new ExplicitField(ENC_PART, 2, EncryptedData.class)
+            new ExplicitField(MyEnum.PVNO, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.MSG_TYPE, 1, Asn1Integer.class),
+            new ExplicitField(MyEnum.ENC_PART, 2, EncryptedData.class)
     };
 
     public ApRep() {
@@ -57,7 +57,7 @@ public class ApRep extends KrbMessage {
     }
 
     public EncryptedData getEncryptedEncPart() {
-        return getFieldAs(ENC_PART, EncryptedData.class);
+        return getFieldAs(MyEnum.ENC_PART, EncryptedData.class);
     }
 
     public void setEncryptedEncPart(EncryptedData encryptedEncPart) {

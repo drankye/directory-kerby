@@ -34,14 +34,14 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class DistributionPoint extends Asn1SequenceType {
-    private static final int DISTRIBUTION_POINT = 0;
-    private static final int REASONS = 1;
-    private static final int CRL_ISSUER = 2;
+    DISTRIBUTION_POINT = 0;
+    REASONS = 1;
+    CRL_ISSUER = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(DISTRIBUTION_POINT, DistributionPointName.class),
-        new ExplicitField(REASONS, ReasonFlags.class),
-        new ExplicitField(CRL_ISSUER, GeneralNames.class)
+        new ExplicitField(MyEnum.DISTRIBUTION_POINT, DistributionPointName.class),
+        new ExplicitField(MyEnum.REASONS, ReasonFlags.class),
+        new ExplicitField(MyEnum.CRL_ISSUER, GeneralNames.class)
     };
 
     public DistributionPoint() {
@@ -49,7 +49,7 @@ public class DistributionPoint extends Asn1SequenceType {
     }
 
     public DistributionPointName getDistributionPoint() {
-        return getFieldAs(DISTRIBUTION_POINT, DistributionPointName.class);
+        return getFieldAs(MyEnum.DISTRIBUTION_POINT, DistributionPointName.class);
     }
 
     public void setDistributionPoint(DistributionPointName distributionPoint) {
@@ -57,7 +57,7 @@ public class DistributionPoint extends Asn1SequenceType {
     }
 
     public ReasonFlags getReasons() {
-        return getFieldAs(REASONS, ReasonFlags.class);
+        return getFieldAs(MyEnum.REASONS, ReasonFlags.class);
     }
 
     public void setReasons(ReasonFlags reasons) {
@@ -65,7 +65,7 @@ public class DistributionPoint extends Asn1SequenceType {
     }
 
     public GeneralNames getCRLIssuer() {
-        return getFieldAs(CRL_ISSUER, GeneralNames.class);
+        return getFieldAs(MyEnum.CRL_ISSUER, GeneralNames.class);
     }
 
     public void setCRLIssuer(GeneralNames crlIssuer) {

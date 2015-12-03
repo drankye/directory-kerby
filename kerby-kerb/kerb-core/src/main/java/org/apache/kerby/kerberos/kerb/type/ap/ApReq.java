@@ -37,16 +37,16 @@ import org.apache.kerby.kerberos.kerb.type.ticket.Ticket;
  }
  */
 public class ApReq extends KrbMessage {
-    private static final int AP_OPTIONS = 2;
-    private static final int TICKET = 3;
-    private static final int AUTHENTICATOR = 4;
+    AP_OPTIONS = 2;
+    TICKET = 3;
+    AUTHENTICATOR = 4;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PVNO, Asn1Integer.class),
-            new ExplicitField(MSG_TYPE, Asn1Integer.class),
-            new ExplicitField(AP_OPTIONS, ApOptions.class),
-            new ExplicitField(TICKET, Ticket.class),
-            new ExplicitField(AUTHENTICATOR, EncryptedData.class)
+            new ExplicitField(MyEnum.PVNO, Asn1Integer.class),
+            new ExplicitField(MyEnum.MSG_TYPE, Asn1Integer.class),
+            new ExplicitField(MyEnum.AP_OPTIONS, ApOptions.class),
+            new ExplicitField(MyEnum.TICKET, Ticket.class),
+            new ExplicitField(MyEnum.AUTHENTICATOR, EncryptedData.class)
     };
 
     private Authenticator authenticator;
@@ -56,7 +56,7 @@ public class ApReq extends KrbMessage {
     }
 
     public ApOptions getApOptions() {
-        return getFieldAs(AP_OPTIONS, ApOptions.class);
+        return getFieldAs(MyEnum.AP_OPTIONS, ApOptions.class);
     }
 
     public void setApOptions(ApOptions apOptions) {
@@ -64,7 +64,7 @@ public class ApReq extends KrbMessage {
     }
 
     public Ticket getTicket() {
-        return getFieldAs(TICKET, Ticket.class);
+        return getFieldAs(MyEnum.TICKET, Ticket.class);
     }
 
     public void setTicket(Ticket ticket) {
@@ -80,7 +80,7 @@ public class ApReq extends KrbMessage {
     }
 
     public EncryptedData getEncryptedAuthenticator() {
-        return getFieldAs(AUTHENTICATOR, EncryptedData.class);
+        return getFieldAs(MyEnum.AUTHENTICATOR, EncryptedData.class);
     }
 
     public void setEncryptedAuthenticator(EncryptedData encryptedAuthenticator) {

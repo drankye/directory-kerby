@@ -34,14 +34,14 @@ import org.apache.kerby.kerberos.kerb.type.pa.PaDataType;
  }
  */
 public class PaAuthnEntry extends KrbSequenceType {
-    private static final int PA_TYPE = 0;
-    private static final int PA_HINT = 1;
-    private static final int PA_VALUE = 2;
+    PA_TYPE = 0;
+    PA_HINT = 1;
+    PA_VALUE = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PA_TYPE, Asn1Integer.class),
-            new ExplicitField(PA_HINT, Asn1OctetString.class),
-            new ExplicitField(PA_VALUE, Asn1OctetString.class)
+            new ExplicitField(MyEnum.PA_TYPE, Asn1Integer.class),
+            new ExplicitField(MyEnum.PA_HINT, Asn1OctetString.class),
+            new ExplicitField(MyEnum.PA_VALUE, Asn1OctetString.class)
     };
 
     public PaAuthnEntry() {

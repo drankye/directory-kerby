@@ -40,11 +40,11 @@ import org.apache.kerby.asn1.type.Asn1Utf8String;
  */
 public class DirectoryString extends Asn1Choice {
 
-    private static final int TELETEX_STRING = 0;
-    private static final int PRINTABLE_STRING = 1;
-    private static final int UNIVERSAL_STRING = 2;
-    private static final int UTF8_STRING = 3;
-    private static final int BMP_STRING = 4;
+    TELETEX_STRING = 0;
+    PRINTABLE_STRING = 1;
+    UNIVERSAL_STRING = 2;
+    UTF8_STRING = 3;
+    BMP_STRING = 4;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
             new Asn1FieldInfo(TELETEX_STRING, Asn1T61String.class),
@@ -59,7 +59,7 @@ public class DirectoryString extends Asn1Choice {
     }
 
     public Asn1T61String getTeletexString() {
-        return getFieldAs(TELETEX_STRING, Asn1T61String.class);
+        return getFieldAs(MyEnum.TELETEX_STRING, Asn1T61String.class);
     }
 
     public void setTeletexString(Asn1T61String teletexString) {
@@ -67,7 +67,7 @@ public class DirectoryString extends Asn1Choice {
     }
 
     public Asn1PrintableString getPrintableString() {
-        return getFieldAs(PRINTABLE_STRING, Asn1PrintableString.class);
+        return getFieldAs(MyEnum.PRINTABLE_STRING, Asn1PrintableString.class);
     }
 
     public void setPrintableString(Asn1PrintableString printableString) {
@@ -75,7 +75,7 @@ public class DirectoryString extends Asn1Choice {
     }
 
     public Asn1UniversalString getUniversalString() {
-        return getFieldAs(UNIVERSAL_STRING, Asn1UniversalString.class);
+        return getFieldAs(MyEnum.UNIVERSAL_STRING, Asn1UniversalString.class);
     }
 
     public void setUniversalString(Asn1UniversalString universalString) {
@@ -83,7 +83,7 @@ public class DirectoryString extends Asn1Choice {
     }
 
     public Asn1Utf8String getUtf8String() {
-        return getFieldAs(UTF8_STRING, Asn1Utf8String.class);
+        return getFieldAs(MyEnum.UTF8_STRING, Asn1Utf8String.class);
     }
 
     public void setUtf8String(Asn1Utf8String utf8String) {
@@ -91,7 +91,7 @@ public class DirectoryString extends Asn1Choice {
     }
 
     public Asn1BmpString getBmpString() {
-        return getFieldAs(BMP_STRING, Asn1BmpString.class);
+        return getFieldAs(MyEnum.BMP_STRING, Asn1BmpString.class);
     }
 
     public void setBmpString(Asn1BmpString bmpString) {

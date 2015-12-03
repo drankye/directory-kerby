@@ -20,6 +20,7 @@
 package org.apache.kerby.kerberos.kerb.type.kdc;
 
 import org.apache.kerby.asn1.Asn1FieldInfo;
+import org.apache.kerby.asn1.EnumType;
 import org.apache.kerby.asn1.type.Asn1Integer;
 import org.apache.kerby.asn1.ExplicitField;
 import org.apache.kerby.kerberos.kerb.type.KerberosString;
@@ -60,32 +61,44 @@ import java.util.List;
  }
  */
 public class KdcReqBody extends KrbSequenceType {
-    private static final int KDC_OPTIONS = 0;
-    private static final int CNAME = 1;
-    private static final int REALM = 2;
-    private static final int SNAME = 3;
-    private static final int FROM = 4;
-    private static final int TILL = 5;
-    private static final int RTIME = 6;
-    private static final int NONCE = 7;
-    private static final int ETYPE = 8;
-    private static final int ADDRESSES = 9;
-    private static final int ENC_AUTHORIZATION_DATA = 10;
-    private static final int ADDITIONAL_TICKETS = 11;
+    private static enum MyEnum implements EnumType {
+        KDC_OPTIONS,
+        CNAME,
+        REALM,
+        SNAME,
+        FROM,
+        TILL,
+        RTIME,
+        NONCE,
+        ETYPE,
+        ADDRESSES,
+        ENC_AUTHORIZATION_DATA,
+        ADDITIONAL_TICKETS;
+
+        @Override
+        public int getValue() {
+            return ordinal();
+        }
+
+        @Override
+        public String getName() {
+            return name();
+        }
+    }
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(KDC_OPTIONS, KdcOptions.class),
-            new ExplicitField(CNAME, PrincipalName.class),
-            new ExplicitField(REALM, KerberosString.class),
-            new ExplicitField(SNAME, PrincipalName.class),
-            new ExplicitField(FROM, KerberosTime.class),
-            new ExplicitField(TILL, KerberosTime.class),
-            new ExplicitField(RTIME, KerberosTime.class),
-            new ExplicitField(NONCE, Asn1Integer.class),
-            new ExplicitField(ETYPE, KrbIntegers.class),
-            new ExplicitField(ADDRESSES, HostAddresses.class),
-            new ExplicitField(ENC_AUTHORIZATION_DATA, AuthorizationData.class),
-            new ExplicitField(ADDITIONAL_TICKETS, Tickets.class)
+            new ExplicitField(MyEnum.KDC_OPTIONS, KdcOptions.class),
+            new ExplicitField(MyEnum.CNAME, PrincipalName.class),
+            new ExplicitField(MyEnum.REALM, KerberosString.class),
+            new ExplicitField(MyEnum.SNAME, PrincipalName.class),
+            new ExplicitField(MyEnum.FROM, KerberosTime.class),
+            new ExplicitField(MyEnum.TILL, KerberosTime.class),
+            new ExplicitField(MyEnum.RTIME, KerberosTime.class),
+            new ExplicitField(MyEnum.NONCE, Asn1Integer.class),
+            new ExplicitField(MyEnum.ETYPE, KrbIntegers.class),
+            new ExplicitField(MyEnum.ADDRESSES, HostAddresses.class),
+            new ExplicitField(MyEnum.ENC_AUTHORIZATION_DATA, AuthorizationData.class),
+            new ExplicitField(MyEnum.ADDITIONAL_TICKETS, Tickets.class)
     };
 
     public KdcReqBody() {
@@ -95,7 +108,7 @@ public class KdcReqBody extends KrbSequenceType {
     private AuthorizationData authorizationData;
 
     public KerberosTime getFrom() {
-        return getFieldAs(FROM, KerberosTime.class);
+        return getFieldAs(MyEnum.FROM, KerberosTime.class);
     }
 
     public void setFrom(KerberosTime from) {
@@ -103,7 +116,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public KerberosTime getTill() {
-        return getFieldAs(TILL, KerberosTime.class);
+        return getFieldAs(MyEnum.TILL, KerberosTime.class);
     }
 
     public void setTill(KerberosTime till) {
@@ -111,7 +124,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public KerberosTime getRtime() {
-        return getFieldAs(RTIME, KerberosTime.class);
+        return getFieldAs(MyEnum.RTIME, KerberosTime.class);
     }
 
     public void setRtime(KerberosTime rtime) {
@@ -127,7 +140,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public List<EncryptionType> getEtypes() {
-        KrbIntegers values = getFieldAs(ETYPE, KrbIntegers.class);
+        KrbIntegers values = getFieldAs(MyEnum.ETYPE, KrbIntegers.class);
         if (values == null) {
             return Collections.emptyList();
         }
@@ -149,7 +162,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public HostAddresses getAddresses() {
-        return getFieldAs(ADDRESSES, HostAddresses.class);
+        return getFieldAs(MyEnum.ADDRESSES, HostAddresses.class);
     }
 
     public void setAddresses(HostAddresses addresses) {
@@ -157,7 +170,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public EncryptedData getEncryptedAuthorizationData() {
-        return getFieldAs(ENC_AUTHORIZATION_DATA, EncryptedData.class);
+        return getFieldAs(MyEnum.ENC_AUTHORIZATION_DATA, EncryptedData.class);
     }
 
     public void setEncryptedAuthorizationData(EncryptedData encAuthorizationData) {
@@ -173,7 +186,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public Tickets getAdditionalTickets() {
-        return getFieldAs(ADDITIONAL_TICKETS, Tickets.class);
+        return getFieldAs(MyEnum.ADDITIONAL_TICKETS, Tickets.class);
     }
 
     public void setAdditionalTickets(Tickets additionalTickets) {
@@ -181,7 +194,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public KdcOptions getKdcOptions() {
-        return getFieldAs(KDC_OPTIONS, KdcOptions.class);
+        return getFieldAs(MyEnum.KDC_OPTIONS, KdcOptions.class);
     }
 
     public void setKdcOptions(KdcOptions kdcOptions) {
@@ -189,7 +202,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public PrincipalName getSname() {
-        return getFieldAs(SNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.SNAME, PrincipalName.class);
     }
 
     public void setSname(PrincipalName sname) {
@@ -197,7 +210,7 @@ public class KdcReqBody extends KrbSequenceType {
     }
 
     public PrincipalName getCname() {
-        return getFieldAs(CNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.CNAME, PrincipalName.class);
     }
 
     public void setCname(PrincipalName cname) {

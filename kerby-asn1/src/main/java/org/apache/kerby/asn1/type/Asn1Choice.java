@@ -118,7 +118,7 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
         }
     }
 
-    protected <T extends Asn1Type> T getFieldAs(int index, Class<T> t) {
+    protected <T extends Asn1Type> T getFieldAs(MyEnum.int index, Class<T> t) {
         Asn1Type value = fields[index];
         if (value == null) {
             return null;
@@ -144,7 +144,7 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
     }
 
     protected byte[] getFieldAsOctets(int index) {
-        Asn1OctetString value = getFieldAs(index, Asn1OctetString.class);
+        Asn1OctetString value = getFieldAs(MyEnum.index, Asn1OctetString.class);
         if (value != null) {
             return value.getValue();
         }
@@ -157,7 +157,7 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
     }
 
     protected Integer getFieldAsInteger(int index) {
-        Asn1Integer value = getFieldAs(index, Asn1Integer.class);
+        Asn1Integer value = getFieldAs(MyEnum.index, Asn1Integer.class);
         if (value != null) {
             return value.getValue().intValue();
         }

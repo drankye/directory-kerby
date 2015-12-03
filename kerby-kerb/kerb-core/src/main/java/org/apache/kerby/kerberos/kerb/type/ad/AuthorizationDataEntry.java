@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class AuthorizationDataEntry extends KrbSequenceType {
-    private static final int AD_TYPE = 0;
-    private static final int AD_DATA = 1;
+    AD_TYPE = 0;
+    AD_DATA = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(AD_TYPE, 0, Asn1Integer.class),
-            new ExplicitField(AD_DATA, 1, Asn1OctetString.class)
+            new ExplicitField(MyEnum.AD_TYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.AD_DATA, 1, Asn1OctetString.class)
     };
 
     public AuthorizationDataEntry() {

@@ -30,9 +30,9 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * }
  */
 public class TargetCert extends Asn1SequenceType {
-    private static final int TARGET_CERTIFICATE = 0;
-    private static final int TARGET_NAME = 1;
-    private static final int CERT_DIGEST_INFO = 2;
+    TARGET_CERTIFICATE = 0;
+    TARGET_NAME = 1;
+    CERT_DIGEST_INFO = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(TARGET_CERTIFICATE, IssuerSerial.class),
@@ -45,7 +45,7 @@ public class TargetCert extends Asn1SequenceType {
     }
 
     public IssuerSerial getTargetCertificate() {
-        return getFieldAs(TARGET_CERTIFICATE, IssuerSerial.class);
+        return getFieldAs(MyEnum.TARGET_CERTIFICATE, IssuerSerial.class);
     }
 
     public void setTargetCertificate(IssuerSerial targetCertificate) {
@@ -53,7 +53,7 @@ public class TargetCert extends Asn1SequenceType {
     }
 
     public GeneralName getTargetName() {
-        return getFieldAs(TARGET_NAME, GeneralName.class);
+        return getFieldAs(MyEnum.TARGET_NAME, GeneralName.class);
     }
 
     public void setTargetName(GeneralName targetName) {
@@ -61,7 +61,7 @@ public class TargetCert extends Asn1SequenceType {
     }
 
     public ObjectDigestInfo getCertDigestInfo() {
-        return getFieldAs(CERT_DIGEST_INFO, ObjectDigestInfo.class);
+        return getFieldAs(MyEnum.CERT_DIGEST_INFO, ObjectDigestInfo.class);
     }
 
     public void setCerttDigestInfo(ObjectDigestInfo certDigestInfo) {

@@ -48,32 +48,32 @@ import org.apache.kerby.kerberos.kerb.type.ticket.TicketFlags;
  }
  */
 public abstract class EncKdcRepPart extends KrbAppSequenceType {
-    private static final int KEY = 0;
-    private static final int LAST_REQ = 1;
-    private static final int NONCE = 2;
-    private static final int KEY_EXPIRATION = 3;
-    private static final int FLAGS = 4;
-    private static final int AUTHTIME = 5;
-    private static final int STARTTIME = 6;
-    private static final int ENDTIME = 7;
-    private static final int RENEW_TILL = 8;
-    private static final int SREALM = 9;
-    private static final int SNAME = 10;
-    private static final int CADDR = 11;
+    KEY = 0;
+    LAST_REQ = 1;
+    NONCE = 2;
+    KEY_EXPIRATION = 3;
+    FLAGS = 4;
+    AUTHTIME = 5;
+    STARTTIME = 6;
+    ENDTIME = 7;
+    RENEW_TILL = 8;
+    SREALM = 9;
+    SNAME = 10;
+    CADDR = 11;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(KEY, EncryptionKey.class),
-            new ExplicitField(LAST_REQ, LastReq.class),
-            new ExplicitField(NONCE, Asn1Integer.class),
-            new ExplicitField(KEY_EXPIRATION, KerberosTime.class),
-            new ExplicitField(FLAGS, TicketFlags.class),
-            new ExplicitField(AUTHTIME, KerberosTime.class),
-            new ExplicitField(STARTTIME, KerberosTime.class),
-            new ExplicitField(ENDTIME, KerberosTime.class),
-            new ExplicitField(RENEW_TILL, KerberosTime.class),
-            new ExplicitField(SREALM, KerberosString.class),
-            new ExplicitField(SNAME, PrincipalName.class),
-            new ExplicitField(CADDR, HostAddresses.class)
+            new ExplicitField(MyEnum.KEY, EncryptionKey.class),
+            new ExplicitField(MyEnum.LAST_REQ, LastReq.class),
+            new ExplicitField(MyEnum.NONCE, Asn1Integer.class),
+            new ExplicitField(MyEnum.KEY_EXPIRATION, KerberosTime.class),
+            new ExplicitField(MyEnum.FLAGS, TicketFlags.class),
+            new ExplicitField(MyEnum.AUTHTIME, KerberosTime.class),
+            new ExplicitField(MyEnum.STARTTIME, KerberosTime.class),
+            new ExplicitField(MyEnum.ENDTIME, KerberosTime.class),
+            new ExplicitField(MyEnum.RENEW_TILL, KerberosTime.class),
+            new ExplicitField(MyEnum.SREALM, KerberosString.class),
+            new ExplicitField(MyEnum.SNAME, PrincipalName.class),
+            new ExplicitField(MyEnum.CADDR, HostAddresses.class)
     };
 
     public EncKdcRepPart(int tagNo) {
@@ -81,7 +81,7 @@ public abstract class EncKdcRepPart extends KrbAppSequenceType {
     }
 
     public EncryptionKey getKey() {
-        return getFieldAs(KEY, EncryptionKey.class);
+        return getFieldAs(MyEnum.KEY, EncryptionKey.class);
     }
 
     public void setKey(EncryptionKey key) {
@@ -89,7 +89,7 @@ public abstract class EncKdcRepPart extends KrbAppSequenceType {
     }
 
     public LastReq getLastReq() {
-        return getFieldAs(LAST_REQ, LastReq.class);
+        return getFieldAs(MyEnum.LAST_REQ, LastReq.class);
     }
 
     public void setLastReq(LastReq lastReq) {
@@ -113,7 +113,7 @@ public abstract class EncKdcRepPart extends KrbAppSequenceType {
     }
 
     public TicketFlags getFlags() {
-        return getFieldAs(FLAGS, TicketFlags.class);
+        return getFieldAs(MyEnum.FLAGS, TicketFlags.class);
     }
 
     public void setFlags(TicketFlags flags) {
@@ -161,7 +161,7 @@ public abstract class EncKdcRepPart extends KrbAppSequenceType {
     }
 
     public PrincipalName getSname() {
-        return getFieldAs(SNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.SNAME, PrincipalName.class);
     }
 
     public void setSname(PrincipalName sname) {
@@ -169,7 +169,7 @@ public abstract class EncKdcRepPart extends KrbAppSequenceType {
     }
 
     public HostAddresses getCaddr() {
-        return getFieldAs(CADDR, HostAddresses.class);
+        return getFieldAs(MyEnum.CADDR, HostAddresses.class);
     }
 
     public void setCaddr(HostAddresses caddr) {

@@ -36,18 +36,18 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class PaOtpChallenge extends KrbSequenceType {
-    private static final int NONCE = 0;
-    private static final int OTP_SERVICE = 1;
-    private static final int OTP_TOKEN_INFO = 2;
-    private static final int SALT = 3;
-    private static final int S2KPARAMS = 4;
+    NONCE = 0;
+    OTP_SERVICE = 1;
+    OTP_TOKEN_INFO = 2;
+    SALT = 3;
+    S2KPARAMS = 4;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(NONCE, Asn1OctetString.class),
-            new ExplicitField(OTP_SERVICE, Asn1Utf8String.class),
-            new ExplicitField(OTP_TOKEN_INFO, Asn1OctetString.class),
-            new ExplicitField(SALT, KerberosString.class),
-            new ExplicitField(S2KPARAMS, Asn1OctetString.class)
+            new ExplicitField(MyEnum.NONCE, Asn1OctetString.class),
+            new ExplicitField(MyEnum.OTP_SERVICE, Asn1Utf8String.class),
+            new ExplicitField(MyEnum.OTP_TOKEN_INFO, Asn1OctetString.class),
+            new ExplicitField(MyEnum.SALT, KerberosString.class),
+            new ExplicitField(MyEnum.S2KPARAMS, Asn1OctetString.class)
     };
 
     public PaOtpChallenge() {

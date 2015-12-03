@@ -35,12 +35,12 @@ HostAddress     ::= SEQUENCE  {
 }
  */
 public class HostAddress extends KrbSequenceType {
-    private static final int ADDR_TYPE = 0;
-    private static final int ADDRESS = 1;
+    ADDR_TYPE = 0;
+    ADDRESS = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(ADDR_TYPE, 0, Asn1Integer.class),
-            new ExplicitField(ADDRESS, 1, Asn1OctetString.class)
+            new ExplicitField(MyEnum.ADDR_TYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.ADDRESS, 1, Asn1OctetString.class)
     };
 
     public HostAddress() {

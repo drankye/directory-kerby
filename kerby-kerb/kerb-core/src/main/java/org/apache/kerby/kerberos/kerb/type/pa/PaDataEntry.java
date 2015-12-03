@@ -33,12 +33,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class PaDataEntry extends KrbSequenceType {
-    private static final int PADATA_TYPE = 0;
-    private static final int PADATA_VALUE = 1;
+    PADATA_TYPE = 0;
+    PADATA_VALUE = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PADATA_TYPE, 1, Asn1Integer.class),
-            new ExplicitField(PADATA_VALUE, 2, Asn1OctetString.class)
+            new ExplicitField(MyEnum.PADATA_TYPE, 1, Asn1Integer.class),
+            new ExplicitField(MyEnum.PADATA_VALUE, 2, Asn1OctetString.class)
     };
 
     public PaDataEntry() {

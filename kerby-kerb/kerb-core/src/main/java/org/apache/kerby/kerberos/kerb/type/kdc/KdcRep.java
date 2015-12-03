@@ -45,20 +45,20 @@ import org.apache.kerby.kerberos.kerb.type.ticket.Ticket;
  }
  */
 public class KdcRep extends KrbMessage {
-    private static final int PADATA = 2;
-    private static final int CREALM = 3;
-    private static final int CNAME = 4;
-    private static final int TICKET = 5;
-    private static final int ENC_PART = 6;
+    PADATA = 2;
+    CREALM = 3;
+    CNAME = 4;
+    TICKET = 5;
+    ENC_PART = 6;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PVNO, Asn1Integer.class),
-            new ExplicitField(MSG_TYPE, Asn1Integer.class),
-            new ExplicitField(PADATA, PaData.class),
-            new ExplicitField(CREALM, KerberosString.class),
-            new ExplicitField(CNAME, PrincipalName.class),
-            new ExplicitField(TICKET, Ticket.class),
-            new ExplicitField(ENC_PART, EncryptedData.class)
+            new ExplicitField(MyEnum.PVNO, Asn1Integer.class),
+            new ExplicitField(MyEnum.MSG_TYPE, Asn1Integer.class),
+            new ExplicitField(MyEnum.PADATA, PaData.class),
+            new ExplicitField(MyEnum.CREALM, KerberosString.class),
+            new ExplicitField(MyEnum.CNAME, PrincipalName.class),
+            new ExplicitField(MyEnum.TICKET, Ticket.class),
+            new ExplicitField(MyEnum.ENC_PART, EncryptedData.class)
     };
 
     private EncKdcRepPart encPart;
@@ -68,7 +68,7 @@ public class KdcRep extends KrbMessage {
     }
 
     public PaData getPaData() {
-        return getFieldAs(PADATA, PaData.class);
+        return getFieldAs(MyEnum.PADATA, PaData.class);
     }
 
     public void setPaData(PaData paData) {
@@ -76,7 +76,7 @@ public class KdcRep extends KrbMessage {
     }
 
     public PrincipalName getCname() {
-        return getFieldAs(CNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.CNAME, PrincipalName.class);
     }
 
     public void setCname(PrincipalName sname) {
@@ -92,7 +92,7 @@ public class KdcRep extends KrbMessage {
     }
 
     public Ticket getTicket() {
-        return getFieldAs(TICKET, Ticket.class);
+        return getFieldAs(MyEnum.TICKET, Ticket.class);
     }
 
     public void setTicket(Ticket ticket) {
@@ -100,7 +100,7 @@ public class KdcRep extends KrbMessage {
     }
 
     public EncryptedData getEncryptedEncPart() {
-        return getFieldAs(ENC_PART, EncryptedData.class);
+        return getFieldAs(MyEnum.ENC_PART, EncryptedData.class);
     }
 
     public void setEncryptedEncPart(EncryptedData encryptedEncPart) {

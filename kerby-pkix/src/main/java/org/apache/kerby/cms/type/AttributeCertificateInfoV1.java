@@ -47,15 +47,15 @@ import org.apache.kerby.x509.type.Extensions;
  */
 public class AttributeCertificateInfoV1 extends Asn1SequenceType {
 
-    private static final int VERSION = 0;
-    private static final int SUBJECT = 1;
-    private static final int ISSUER = 2;
-    private static final int SIGNATURE = 3;
-    private static final int SERIAL_NUMBER = 4;
-    private static final int ATTR_CERT_VALIDITY_PERIOD = 5;
-    private static final int ATTRIBUTES = 6;
-    private static final int ISSUER_UNIQUE_ID = 7;
-    private static final int EXTENSIONS = 8;
+    VERSION = 0;
+    SUBJECT = 1;
+    ISSUER = 2;
+    SIGNATURE = 3;
+    SERIAL_NUMBER = 4;
+    ATTR_CERT_VALIDITY_PERIOD = 5;
+    ATTRIBUTES = 6;
+    ISSUER_UNIQUE_ID = 7;
+    EXTENSIONS = 8;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(VERSION, Asn1Integer.class),
@@ -82,7 +82,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public Subject getSubject() {
-        return getFieldAs(SUBJECT, Subject.class);
+        return getFieldAs(MyEnum.SUBJECT, Subject.class);
     }
 
     public void setSubject(Subject subject) {
@@ -90,7 +90,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public AttCertIssuer getIssuer() {
-        return getFieldAs(ISSUER, AttCertIssuer.class);
+        return getFieldAs(MyEnum.ISSUER, AttCertIssuer.class);
     }
 
     public void setIssuer(AttCertIssuer attCertIssuer) {
@@ -98,7 +98,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getSignature() {
-        return getFieldAs(SIGNATURE, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE, AlgorithmIdentifier.class);
     }
 
     public void setSignature(AlgorithmIdentifier signature) {
@@ -106,7 +106,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public CertificateSerialNumber getSerialNumber() {
-        return getFieldAs(SERIAL_NUMBER, CertificateSerialNumber.class);
+        return getFieldAs(MyEnum.SERIAL_NUMBER, CertificateSerialNumber.class);
     }
 
     public void setSerialNumber(CertificateSerialNumber certificateSerialNumber) {
@@ -114,7 +114,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public AttCertValidityPeriod getAttrCertValidityPeriod() {
-        return getFieldAs(ATTR_CERT_VALIDITY_PERIOD, AttCertValidityPeriod.class);
+        return getFieldAs(MyEnum.ATTR_CERT_VALIDITY_PERIOD, AttCertValidityPeriod.class);
     }
 
     public void setAttrCertValidityPeriod(AttCertValidityPeriod attrCertValidityPeriod) {
@@ -122,7 +122,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public Attributes getAttributes() {
-        return getFieldAs(ATTRIBUTES, Attributes.class);
+        return getFieldAs(MyEnum.ATTRIBUTES, Attributes.class);
     }
 
     public void setAttributes(Attributes attributes) {
@@ -130,7 +130,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public byte[] getIssuerUniqueID() {
-        return getFieldAs(ISSUER_UNIQUE_ID, Asn1BitString.class).getValue();
+        return getFieldAs(MyEnum.ISSUER_UNIQUE_ID, Asn1BitString.class).getValue();
     }
 
     public void setIssuerUniqueId(byte[] issuerUniqueId) {
@@ -138,7 +138,7 @@ public class AttributeCertificateInfoV1 extends Asn1SequenceType {
     }
 
     public Extensions getExtensions() {
-        return getFieldAs(EXTENSIONS, Extensions.class);
+        return getFieldAs(MyEnum.EXTENSIONS, Extensions.class);
     }
 
     public void setExtensions(Extensions extensions) {

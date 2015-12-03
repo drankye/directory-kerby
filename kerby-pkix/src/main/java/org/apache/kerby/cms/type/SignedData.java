@@ -38,12 +38,12 @@ import org.apache.kerby.asn1.ImplicitField;
  *
  */
 public class SignedData extends Asn1SequenceType {
-    private static final int CMS_VERSION = 0;
-    private static final int DIGEST_ALGORITHMS = 1;
-    private static final int ENCAP_CONTENT_INFO = 2;
-    private static final int CERTIFICATES = 3;
-    private static final int CRLS = 4;
-    private static final int SIGNER_INFOS = 5;
+    CMS_VERSION = 0;
+    DIGEST_ALGORITHMS = 1;
+    ENCAP_CONTENT_INFO = 2;
+    CERTIFICATES = 3;
+    CRLS = 4;
+    SIGNER_INFOS = 5;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
         new Asn1FieldInfo(CMS_VERSION, CmsVersion.class),
@@ -67,7 +67,7 @@ public class SignedData extends Asn1SequenceType {
     }
 
     public DigestAlgorithmIdentifiers getDigestAlgorithms() {
-        return getFieldAs(DIGEST_ALGORITHMS, DigestAlgorithmIdentifiers.class);
+        return getFieldAs(MyEnum.DIGEST_ALGORITHMS, DigestAlgorithmIdentifiers.class);
     }
 
     public void setDigestAlgorithms(DigestAlgorithmIdentifiers digestAlgorithms) {
@@ -75,7 +75,7 @@ public class SignedData extends Asn1SequenceType {
     }
 
     public EncapsulatedContentInfo getEncapContentInfo() {
-        return getFieldAs(ENCAP_CONTENT_INFO, EncapsulatedContentInfo.class);
+        return getFieldAs(MyEnum.ENCAP_CONTENT_INFO, EncapsulatedContentInfo.class);
     }
 
     public void setEncapContentInfo(EncapsulatedContentInfo contentInfo) {
@@ -83,7 +83,7 @@ public class SignedData extends Asn1SequenceType {
     }
 
     public CertificateSet getCertificates() {
-        return getFieldAs(CERTIFICATES, CertificateSet.class);
+        return getFieldAs(MyEnum.CERTIFICATES, CertificateSet.class);
     }
 
     public void setCertificates(CertificateSet certificates) {
@@ -91,7 +91,7 @@ public class SignedData extends Asn1SequenceType {
     }
 
     public RevocationInfoChoices getCrls() {
-        return getFieldAs(CRLS, RevocationInfoChoices.class);
+        return getFieldAs(MyEnum.CRLS, RevocationInfoChoices.class);
     }
 
     public void setCrls(RevocationInfoChoices crls) {
@@ -99,7 +99,7 @@ public class SignedData extends Asn1SequenceType {
     }
 
     public SignerInfos getSignerInfos() {
-        return getFieldAs(SIGNER_INFOS, SignerInfos.class);
+        return getFieldAs(MyEnum.SIGNER_INFOS, SignerInfos.class);
     }
 
     public void setSignerInfos(SignerInfos signerInfos) {

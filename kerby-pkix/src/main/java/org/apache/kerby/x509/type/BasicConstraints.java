@@ -35,8 +35,8 @@ import java.math.BigInteger;
  * </pre>
  */
 public class BasicConstraints extends Asn1SequenceType {
-    private static final int CA = 0;
-    private static final int PATH_LEN_CONSTRAINT = 1;
+    CA = 0;
+    PATH_LEN_CONSTRAINT = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(CA, Asn1Boolean.class),
@@ -52,7 +52,7 @@ public class BasicConstraints extends Asn1SequenceType {
     }
 
     public boolean getCA() {
-        return getFieldAs(CA, Asn1Boolean.class).getValue();
+        return getFieldAs(MyEnum.CA, Asn1Boolean.class).getValue();
     }
 
     public void setCA(Asn1Boolean isCA) {
@@ -60,7 +60,7 @@ public class BasicConstraints extends Asn1SequenceType {
     }
 
     public BigInteger getPathLenConstraint() {
-        return getFieldAs(PATH_LEN_CONSTRAINT, Asn1Integer.class).getValue();
+        return getFieldAs(MyEnum.PATH_LEN_CONSTRAINT, Asn1Integer.class).getValue();
     }
 
     public void setPathLenConstraint(Asn1Integer pathLenConstraint) {

@@ -37,20 +37,20 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class IssuingDistributionPoint extends Asn1SequenceType {
-    private static final int DISTRIBUTION_POINT = 0;
-    private static final int ONLY_CONTAINS_USER_CERTS = 1;
-    private static final int ONLY_CONTAINS_CA_CERTS = 2;
-    private static final int ONLY_SOME_REASONS = 3;
-    private static final int INDIRECT_CRL = 4;
-    private static final int ONLY_CONTAINS_ATTRIBUTE_CERTS = 5;
+    DISTRIBUTION_POINT = 0;
+    ONLY_CONTAINS_USER_CERTS = 1;
+    ONLY_CONTAINS_CA_CERTS = 2;
+    ONLY_SOME_REASONS = 3;
+    INDIRECT_CRL = 4;
+    ONLY_CONTAINS_ATTRIBUTE_CERTS = 5;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(DISTRIBUTION_POINT, DistributionPointName.class),
-        new ExplicitField(ONLY_CONTAINS_USER_CERTS, Asn1Boolean.class),
-        new ExplicitField(ONLY_CONTAINS_CA_CERTS, Asn1Boolean.class),
-        new ExplicitField(ONLY_SOME_REASONS, ReasonFlags.class),
-        new ExplicitField(INDIRECT_CRL, Asn1Boolean.class),
-        new ExplicitField(ONLY_CONTAINS_ATTRIBUTE_CERTS, Asn1Boolean.class)
+        new ExplicitField(MyEnum.DISTRIBUTION_POINT, DistributionPointName.class),
+        new ExplicitField(MyEnum.ONLY_CONTAINS_USER_CERTS, Asn1Boolean.class),
+        new ExplicitField(MyEnum.ONLY_CONTAINS_CA_CERTS, Asn1Boolean.class),
+        new ExplicitField(MyEnum.ONLY_SOME_REASONS, ReasonFlags.class),
+        new ExplicitField(MyEnum.INDIRECT_CRL, Asn1Boolean.class),
+        new ExplicitField(MyEnum.ONLY_CONTAINS_ATTRIBUTE_CERTS, Asn1Boolean.class)
     };
 
     public IssuingDistributionPoint() {
@@ -58,7 +58,7 @@ public class IssuingDistributionPoint extends Asn1SequenceType {
     }
 
     public DistributionPointName getDistributionPoint() {
-        return getFieldAs(DISTRIBUTION_POINT, DistributionPointName.class);
+        return getFieldAs(MyEnum.DISTRIBUTION_POINT, DistributionPointName.class);
     }
 
     public void setDistributionPoint(DistributionPointName distributionPoint) {
@@ -66,7 +66,7 @@ public class IssuingDistributionPoint extends Asn1SequenceType {
     }
 
     public boolean getOnlyContainsUserCerts() {
-        return getFieldAs(ONLY_CONTAINS_USER_CERTS, Asn1Boolean.class).getValue();
+        return getFieldAs(MyEnum.ONLY_CONTAINS_USER_CERTS, Asn1Boolean.class).getValue();
     }
 
     public void setOnlyContainsUserCerts(boolean onlyContainsUserCerts) {
@@ -74,7 +74,7 @@ public class IssuingDistributionPoint extends Asn1SequenceType {
     }
 
     public boolean getOnlyContainsCACerts() {
-        return getFieldAs(ONLY_CONTAINS_CA_CERTS, Asn1Boolean.class).getValue();
+        return getFieldAs(MyEnum.ONLY_CONTAINS_CA_CERTS, Asn1Boolean.class).getValue();
     }
 
     public void setOnlyContainsCaCerts(boolean onlyContainsCaCerts) {
@@ -82,7 +82,7 @@ public class IssuingDistributionPoint extends Asn1SequenceType {
     }
 
     public ReasonFlags getOnlySomeReasons() {
-        return getFieldAs(ONLY_SOME_REASONS, ReasonFlags.class);
+        return getFieldAs(MyEnum.ONLY_SOME_REASONS, ReasonFlags.class);
     }
 
     public void setOnlySomeReasons(ReasonFlags onlySomeReasons) {
@@ -90,7 +90,7 @@ public class IssuingDistributionPoint extends Asn1SequenceType {
     }
 
     public boolean getIndirectCRL() {
-        return getFieldAs(INDIRECT_CRL, Asn1Boolean.class).getValue();
+        return getFieldAs(MyEnum.INDIRECT_CRL, Asn1Boolean.class).getValue();
     }
 
     public void setIndirectCrl(boolean indirectCrl) {
@@ -98,7 +98,7 @@ public class IssuingDistributionPoint extends Asn1SequenceType {
     }
 
     public boolean getOnlyContainsAttributeCerts() {
-        return getFieldAs(ONLY_CONTAINS_ATTRIBUTE_CERTS, Asn1Boolean.class).getValue();
+        return getFieldAs(MyEnum.ONLY_CONTAINS_ATTRIBUTE_CERTS, Asn1Boolean.class).getValue();
     }
 
     public void setOnlyContainsAttributeCerts(boolean onlyContainsAttributeCerts) {

@@ -35,9 +35,9 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * </pre>
  */
 public class CertificateList extends Asn1SequenceType {
-    private static final int TBS_CERT_LIST = 0;
-    private static final int SIGNATURE_ALGORITHMS = 1;
-    private static final int SIGNATURE_VALUE = 2;
+    TBS_CERT_LIST = 0;
+    SIGNATURE_ALGORITHMS = 1;
+    SIGNATURE_VALUE = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(TBS_CERT_LIST, TBSCertList.class),
@@ -50,7 +50,7 @@ public class CertificateList extends Asn1SequenceType {
     }
 
     public TBSCertList getTBSCertList() {
-        return getFieldAs(TBS_CERT_LIST, TBSCertList.class);
+        return getFieldAs(MyEnum.TBS_CERT_LIST, TBSCertList.class);
     }
 
     public void setTBSCertList(TBSCertList tbsCertList) {
@@ -58,7 +58,7 @@ public class CertificateList extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getSignatureAlgorithm() {
-        return getFieldAs(SIGNATURE_ALGORITHMS, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE_ALGORITHMS, AlgorithmIdentifier.class);
     }
 
     public void setSignatureAlgorithms(AlgorithmIdentifier signatureAlgorithms) {
@@ -66,7 +66,7 @@ public class CertificateList extends Asn1SequenceType {
     }
 
     public Asn1BitString getSignature() {
-        return getFieldAs(SIGNATURE_VALUE, Asn1BitString.class);
+        return getFieldAs(MyEnum.SIGNATURE_VALUE, Asn1BitString.class);
     }
 
     public void setSignatureValue(Asn1BitString signatureValue) {

@@ -33,13 +33,13 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class PaPkAsReq extends KrbSequenceType {
-    private static final int SIGNED_AUTH_PACK = 0;
-    private static final int TRUSTED_CERTIFIERS = 1;
-    private static final int KDC_PKID = 2;
+    SIGNED_AUTH_PACK = 0;
+    TRUSTED_CERTIFIERS = 1;
+    KDC_PKID = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new ImplicitField(SIGNED_AUTH_PACK, Asn1OctetString.class),
-            new ExplicitField(TRUSTED_CERTIFIERS, TrustedCertifiers.class),
+            new ExplicitField(MyEnum.TRUSTED_CERTIFIERS, TrustedCertifiers.class),
             new ImplicitField(KDC_PKID, Asn1OctetString.class)
     };
 
@@ -56,7 +56,7 @@ public class PaPkAsReq extends KrbSequenceType {
     }
 
     public TrustedCertifiers getTrustedCertifiers() {
-        return getFieldAs(TRUSTED_CERTIFIERS, TrustedCertifiers.class);
+        return getFieldAs(MyEnum.TRUSTED_CERTIFIERS, TrustedCertifiers.class);
     }
 
     public void setTrustedCertifiers(TrustedCertifiers trustedCertifiers) {

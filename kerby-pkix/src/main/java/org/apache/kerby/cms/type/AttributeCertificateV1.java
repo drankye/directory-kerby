@@ -33,9 +33,9 @@ import org.apache.kerby.x509.type.AttributeCertificateInfo;
  * }
  */
 public class AttributeCertificateV1 extends Asn1SequenceType {
-    private static final int ACI_INFO = 0;
-    private static final int SIGNATURE_ALGORITHM = 1;
-    private static final int SIGNATURE = 2;
+    ACI_INFO = 0;
+    SIGNATURE_ALGORITHM = 1;
+    SIGNATURE = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(ACI_INFO, AttributeCertificateInfoV1.class),
@@ -48,7 +48,7 @@ public class AttributeCertificateV1 extends Asn1SequenceType {
     }
 
     public AttributeCertificateInfo getAcinfo() {
-        return getFieldAs(ACI_INFO, AttributeCertificateInfo.class);
+        return getFieldAs(MyEnum.ACI_INFO, AttributeCertificateInfo.class);
     }
 
     public void setAciInfo(AttributeCertificateInfo aciInfo) {
@@ -56,7 +56,7 @@ public class AttributeCertificateV1 extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getSignatureAlgorithm() {
-        return getFieldAs(SIGNATURE_ALGORITHM, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE_ALGORITHM, AlgorithmIdentifier.class);
     }
 
     public void setSignatureAlgorithm(AlgorithmIdentifier signatureAlgorithm) {
@@ -64,7 +64,7 @@ public class AttributeCertificateV1 extends Asn1SequenceType {
     }
 
     public Asn1BitString getSignatureValue() {
-        return getFieldAs(SIGNATURE, Asn1BitString.class);
+        return getFieldAs(MyEnum.SIGNATURE, Asn1BitString.class);
     }
 
     public void setSignatureValue(Asn1BitString signatureValue) {

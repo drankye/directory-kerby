@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.base.EncryptionKey;
  }
  */
 public class ReplyKeyPack extends KrbSequenceType {
-    private static final int REPLY_KEY = 0;
-    private static final int AS_CHECKSUM = 1;
+    REPLY_KEY = 0;
+    AS_CHECKSUM = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(REPLY_KEY, EncryptionKey.class),
-            new ExplicitField(AS_CHECKSUM, CheckSum.class)
+            new ExplicitField(MyEnum.REPLY_KEY, EncryptionKey.class),
+            new ExplicitField(MyEnum.AS_CHECKSUM, CheckSum.class)
     };
 
     public ReplyKeyPack() {
@@ -45,7 +45,7 @@ public class ReplyKeyPack extends KrbSequenceType {
     }
 
     public EncryptionKey getReplyKey() {
-        return getFieldAs(REPLY_KEY, EncryptionKey.class);
+        return getFieldAs(MyEnum.REPLY_KEY, EncryptionKey.class);
     }
 
     public void setReplyKey(EncryptionKey replyKey) {
@@ -53,7 +53,7 @@ public class ReplyKeyPack extends KrbSequenceType {
     }
 
     public CheckSum getAsChecksum() {
-        return getFieldAs(AS_CHECKSUM, CheckSum.class);
+        return getFieldAs(MyEnum.AS_CHECKSUM, CheckSum.class);
     }
 
     public void setAsChecksum(CheckSum checkSum) {

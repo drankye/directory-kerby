@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class EtypeInfoEntry extends KrbSequenceType {
-    private static final int ETYPE = 0;
-    private static final int SALT = 1;
+    ETYPE = 0;
+    SALT = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(ETYPE, 0, Asn1Integer.class),
-            new ExplicitField(SALT, 1, Asn1OctetString.class)
+            new ExplicitField(MyEnum.ETYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.SALT, 1, Asn1OctetString.class)
     };
 
     public EtypeInfoEntry() {

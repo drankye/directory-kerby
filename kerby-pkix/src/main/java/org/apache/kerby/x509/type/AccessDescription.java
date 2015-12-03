@@ -33,8 +33,8 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * </pre>
  */
 public class AccessDescription extends Asn1SequenceType {
-    private static final int ACCESS_METHOD = 0;
-    private static final int ACCESS_LOCATION = 1;
+    ACCESS_METHOD = 0;
+    ACCESS_LOCATION = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(ACCESS_METHOD, Asn1ObjectIdentifier.class),
@@ -46,7 +46,7 @@ public class AccessDescription extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getAccessMethod() {
-        return getFieldAs(ACCESS_METHOD, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.ACCESS_METHOD, Asn1ObjectIdentifier.class);
     }
 
     public void setAccessMethod(Asn1ObjectIdentifier accessMethod) {
@@ -54,7 +54,7 @@ public class AccessDescription extends Asn1SequenceType {
     }
 
     public GeneralName getAccessLocation() {
-        return getFieldAs(ACCESS_LOCATION, GeneralName.class);
+        return getFieldAs(MyEnum.ACCESS_LOCATION, GeneralName.class);
     }
 
     public void setAccessLocation(GeneralName accessLocation) {

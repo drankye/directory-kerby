@@ -34,12 +34,12 @@ import org.apache.kerby.x500.type.RelativeDistinguishedName;
  * </pre>
  */
 public class DistributionPointName extends Asn1Choice {
-    private static final int FULL_NAME = 0;
-    private static final int NAME_RELATIVE_TO_CRL_ISSUER = 1;
+    FULL_NAME = 0;
+    NAME_RELATIVE_TO_CRL_ISSUER = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(FULL_NAME, GeneralNames.class),
-        new ExplicitField(NAME_RELATIVE_TO_CRL_ISSUER, RelativeDistinguishedName.class)
+        new ExplicitField(MyEnum.FULL_NAME, GeneralNames.class),
+        new ExplicitField(MyEnum.NAME_RELATIVE_TO_CRL_ISSUER, RelativeDistinguishedName.class)
     };
 
     public DistributionPointName() {
@@ -47,7 +47,7 @@ public class DistributionPointName extends Asn1Choice {
     }
 
     public GeneralNames getFullName() {
-        return getFieldAs(FULL_NAME, GeneralNames.class);
+        return getFieldAs(MyEnum.FULL_NAME, GeneralNames.class);
     }
 
     public void setFullName(GeneralNames fullName) {
@@ -55,7 +55,7 @@ public class DistributionPointName extends Asn1Choice {
     }
 
     public RelativeDistinguishedName getNameRelativeToCRLIssuer() {
-        return getFieldAs(NAME_RELATIVE_TO_CRL_ISSUER, RelativeDistinguishedName.class);
+        return getFieldAs(MyEnum.NAME_RELATIVE_TO_CRL_ISSUER, RelativeDistinguishedName.class);
     }
 
     public void setNameRelativeToCrlIssuer(RelativeDistinguishedName nameRelativeToCrlIssuer) {

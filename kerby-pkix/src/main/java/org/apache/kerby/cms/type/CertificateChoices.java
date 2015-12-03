@@ -33,11 +33,11 @@ import org.apache.kerby.asn1.ImplicitField;
  */
 public class CertificateChoices extends Asn1Choice {
 
-    private static final int CERTIFICATE = 0;
-    private static final int EXTENDED_CERTIFICATE = 1;
-    private static final int V1_ATTR_CERT = 2;
-    private static final int V2_ATTR_CERT = 3;
-    private static final int OTHER = 4;
+    CERTIFICATE = 0;
+    EXTENDED_CERTIFICATE = 1;
+    V1_ATTR_CERT = 2;
+    V2_ATTR_CERT = 3;
+    OTHER = 4;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(CERTIFICATE, Certificate.class),
@@ -52,7 +52,7 @@ public class CertificateChoices extends Asn1Choice {
     }
 
     public Certificate getCertificate() {
-        return getFieldAs(CERTIFICATE, Certificate.class);
+        return getFieldAs(MyEnum.CERTIFICATE, Certificate.class);
     }
 
     public void setCertificate(Certificate certificate) {
@@ -60,7 +60,7 @@ public class CertificateChoices extends Asn1Choice {
     }
 
     public ExtendedCertificate getExtendedCertificate() {
-        return getFieldAs(EXTENDED_CERTIFICATE, ExtendedCertificate.class);
+        return getFieldAs(MyEnum.EXTENDED_CERTIFICATE, ExtendedCertificate.class);
     }
 
     public void setExtendedCertificate(ExtendedCertificate extendedCertificate) {
@@ -68,7 +68,7 @@ public class CertificateChoices extends Asn1Choice {
     }
 
     public AttributeCertificateV1 getV1AttrCert() {
-        return getFieldAs(V1_ATTR_CERT, AttributeCertificateV1.class);
+        return getFieldAs(MyEnum.V1_ATTR_CERT, AttributeCertificateV1.class);
     }
 
     public void setV1AttrCert(AttributeCertificateV1 v1AttrCert) {
@@ -76,7 +76,7 @@ public class CertificateChoices extends Asn1Choice {
     }
 
     public AttributeCertificateV2 getV2AttrCert() {
-        return getFieldAs(V2_ATTR_CERT, AttributeCertificateV2.class);
+        return getFieldAs(MyEnum.V2_ATTR_CERT, AttributeCertificateV2.class);
     }
 
     public void setV2AttrCert(AttributeCertificateV2 v2AttrCert) {
@@ -84,7 +84,7 @@ public class CertificateChoices extends Asn1Choice {
     }
 
     public OtherCertificateFormat getOther() {
-        return getFieldAs(OTHER, OtherCertificateFormat.class);
+        return getFieldAs(MyEnum.OTHER, OtherCertificateFormat.class);
     }
 
     public void setOther(OtherCertificateFormat other) {

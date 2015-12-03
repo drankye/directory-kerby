@@ -43,10 +43,10 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * 
  */
 public class ObjectDigestInfo extends Asn1SequenceType {
-    private static final int DIGESTED_OBJECT_TYPE = 0;
-    private static final int OTHER_OBJECT_TYPE_ID = 1;
-    private static final int DIGEST_ALGORITHM = 2;
-    private static final int OBJECT_DIGEST = 3;
+    DIGESTED_OBJECT_TYPE = 0;
+    OTHER_OBJECT_TYPE_ID = 1;
+    DIGEST_ALGORITHM = 2;
+    OBJECT_DIGEST = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(DIGESTED_OBJECT_TYPE, DigestedObjectType.class),
@@ -60,7 +60,7 @@ public class ObjectDigestInfo extends Asn1SequenceType {
     }
 
     public DigestedObjectType getDigestedObjectType() {
-        return getFieldAs(DIGESTED_OBJECT_TYPE, DigestedObjectType.class);
+        return getFieldAs(MyEnum.DIGESTED_OBJECT_TYPE, DigestedObjectType.class);
     }
 
     public void setDigestedObjectType(DigestedObjectType digestedObjectType) {
@@ -68,7 +68,7 @@ public class ObjectDigestInfo extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getOtherObjectTypeID() {
-        return getFieldAs(OTHER_OBJECT_TYPE_ID, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.OTHER_OBJECT_TYPE_ID, Asn1ObjectIdentifier.class);
     }
 
     public void setOtherObjectTypeId(Asn1ObjectIdentifier otherObjectTypeID) {
@@ -76,7 +76,7 @@ public class ObjectDigestInfo extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getDigestAlgorithm() {
-        return getFieldAs(DIGEST_ALGORITHM, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.DIGEST_ALGORITHM, AlgorithmIdentifier.class);
     }
 
     public void setDigestAlgorithm(AlgorithmIdentifier digestAlgorithm) {
@@ -84,7 +84,7 @@ public class ObjectDigestInfo extends Asn1SequenceType {
     }
 
     public Asn1BitString getObjectDigest() {
-        return getFieldAs(OBJECT_DIGEST, Asn1BitString.class);
+        return getFieldAs(MyEnum.OBJECT_DIGEST, Asn1BitString.class);
     }
 
     public void setObjectDigest(Asn1BitString objectDigest) {

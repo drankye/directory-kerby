@@ -32,11 +32,11 @@ import org.apache.kerby.kerberos.kerb.type.base.EncryptedData;
  }
  */
 public class KrbFastArmoredRep extends KrbSequenceType {
-    private static final int ENC_FAST_REP = 0;
+    ENC_FAST_REP = 0;
 
     //private
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(ENC_FAST_REP, EncryptedData.class)
+            new ExplicitField(MyEnum.ENC_FAST_REP, EncryptedData.class)
     };
 
     public KrbFastArmoredRep() {
@@ -44,7 +44,7 @@ public class KrbFastArmoredRep extends KrbSequenceType {
     }
 
     public EncryptedData getEncFastRep() {
-        return getFieldAs(ENC_FAST_REP, EncryptedData.class);
+        return getFieldAs(MyEnum.ENC_FAST_REP, EncryptedData.class);
     }
 
     public void setEncFastRep(EncryptedData encFastRep) {

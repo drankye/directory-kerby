@@ -32,8 +32,8 @@ import org.apache.kerby.asn1.type.Asn1Type;
  * }
  */
 public class OtherRevocationInfoFormat extends Asn1SequenceType {
-    private static final int OTHER_REV_INFO_FORMAT = 0;
-    private static final int OTHER_REV_INFO = 1;
+    OTHER_REV_INFO_FORMAT = 0;
+    OTHER_REV_INFO = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(OTHER_REV_INFO_FORMAT, Asn1ObjectIdentifier.class),
@@ -45,7 +45,7 @@ public class OtherRevocationInfoFormat extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getOtherRevInfoFormat() {
-        return getFieldAs(OTHER_REV_INFO_FORMAT, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.OTHER_REV_INFO_FORMAT, Asn1ObjectIdentifier.class);
     }
 
     public void setOtherRevInfoFormat(Asn1ObjectIdentifier otherRevInfoFormat) {

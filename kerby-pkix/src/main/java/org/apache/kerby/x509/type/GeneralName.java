@@ -46,27 +46,27 @@ import org.apache.kerby.x500.type.Name;
  */
 public class GeneralName extends Asn1Choice {
 
-    private static final int OTHER_NAME = 0;
-    private static final int RFC822_NAME = 1;
-    private static final int DNS_NAME = 2;
-    private static final int X400_ADDRESS = 3;
-    private static final int DIRECTORY_NAME = 4;
-    private static final int EDI_PARTY_NAME = 5;
-    private static final int UNIFORM_RESOURCE_IDENTIFIER = 6;
-    private static final int IP_ADDRESS = 7;
-    private static final int REGISTERED_ID = 8;
+    OTHER_NAME = 0;
+    RFC822_NAME = 1;
+    DNS_NAME = 2;
+    X400_ADDRESS = 3;
+    DIRECTORY_NAME = 4;
+    EDI_PARTY_NAME = 5;
+    UNIFORM_RESOURCE_IDENTIFIER = 6;
+    IP_ADDRESS = 7;
+    REGISTERED_ID = 8;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(OTHER_NAME, OtherName.class),
-        new ExplicitField(RFC822_NAME, Asn1IA5String.class),
-        new ExplicitField(DNS_NAME, Asn1IA5String.class),
+        new ExplicitField(MyEnum.OTHER_NAME, OtherName.class),
+        new ExplicitField(MyEnum.RFC822_NAME, Asn1IA5String.class),
+        new ExplicitField(MyEnum.DNS_NAME, Asn1IA5String.class),
         // ORAddress is to be defined.
-        new ExplicitField(X400_ADDRESS, Asn1Item.class),
-        new ExplicitField(DIRECTORY_NAME, Name.class),
-        new ExplicitField(EDI_PARTY_NAME, EDIPartyName.class),
-        new ExplicitField(UNIFORM_RESOURCE_IDENTIFIER, Asn1IA5String.class),
-        new ExplicitField(IP_ADDRESS, Asn1OctetString.class),
-        new ExplicitField(REGISTERED_ID, Asn1ObjectIdentifier.class)
+        new ExplicitField(MyEnum.X400_ADDRESS, Asn1Item.class),
+        new ExplicitField(MyEnum.DIRECTORY_NAME, Name.class),
+        new ExplicitField(MyEnum.EDI_PARTY_NAME, EDIPartyName.class),
+        new ExplicitField(MyEnum.UNIFORM_RESOURCE_IDENTIFIER, Asn1IA5String.class),
+        new ExplicitField(MyEnum.IP_ADDRESS, Asn1OctetString.class),
+        new ExplicitField(MyEnum.REGISTERED_ID, Asn1ObjectIdentifier.class)
     };
 
     public GeneralName() {
@@ -74,7 +74,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public OtherName getOtherName() {
-        return getFieldAs(OTHER_NAME, OtherName.class);
+        return getFieldAs(MyEnum.OTHER_NAME, OtherName.class);
     }
 
     public void setOtherName(OtherName otherName) {
@@ -82,7 +82,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Asn1IA5String getRfc822Name() {
-        return getFieldAs(RFC822_NAME, Asn1IA5String.class);
+        return getFieldAs(MyEnum.RFC822_NAME, Asn1IA5String.class);
     }
 
     public void setRfc822Name(Asn1IA5String rfc822Name) {
@@ -90,7 +90,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Asn1IA5String getDNSName() {
-        return getFieldAs(DNS_NAME, Asn1IA5String.class);
+        return getFieldAs(MyEnum.DNS_NAME, Asn1IA5String.class);
     }
 
     public void setDNSName(Asn1IA5String dnsName) {
@@ -98,7 +98,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Asn1Item getX400Address() {
-        return getFieldAs(X400_ADDRESS, Asn1Item.class);
+        return getFieldAs(MyEnum.X400_ADDRESS, Asn1Item.class);
     }
 
     public void setX400Address(Asn1Item x400Address) {
@@ -106,7 +106,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Name getDirectoryName() {
-        return getFieldAs(DIRECTORY_NAME, Name.class);
+        return getFieldAs(MyEnum.DIRECTORY_NAME, Name.class);
     }
 
     public void setDirectoryName(Name directoryName) {
@@ -114,7 +114,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public EDIPartyName getEdiPartyName() {
-        return getFieldAs(EDI_PARTY_NAME, EDIPartyName.class);
+        return getFieldAs(MyEnum.EDI_PARTY_NAME, EDIPartyName.class);
     }
 
     public void setEdiPartyName(EDIPartyName ediPartyName) {
@@ -122,7 +122,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Asn1IA5String getUniformResourceIdentifier() {
-        return getFieldAs(UNIFORM_RESOURCE_IDENTIFIER, Asn1IA5String.class);
+        return getFieldAs(MyEnum.UNIFORM_RESOURCE_IDENTIFIER, Asn1IA5String.class);
     }
 
     public void setUniformResourceIdentifier(Asn1IA5String uniformResourceIdentifier) {
@@ -130,7 +130,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Asn1OctetString getIPAddress() {
-        return getFieldAs(IP_ADDRESS, Asn1OctetString.class);
+        return getFieldAs(MyEnum.IP_ADDRESS, Asn1OctetString.class);
     }
 
     public void setIpAddress(Asn1OctetString ipAddress) {
@@ -138,7 +138,7 @@ public class GeneralName extends Asn1Choice {
     }
 
     public Asn1ObjectIdentifier getRegisteredID() {
-        return getFieldAs(REGISTERED_ID, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.REGISTERED_ID, Asn1ObjectIdentifier.class);
     }
 
     public void setRegisteredID(Asn1ObjectIdentifier registeredID) {

@@ -33,8 +33,8 @@ import org.apache.kerby.asn1.type.Asn1Type;
  */
 public class OtherCertificateFormat extends Asn1SequenceType {
 
-    private static final int OTHER_CERT_FORMAT = 0;
-    private static final int OTHER_CERT = 1;
+    OTHER_CERT_FORMAT = 0;
+    OTHER_CERT = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(OTHER_CERT_FORMAT, Asn1ObjectIdentifier.class),
@@ -46,7 +46,7 @@ public class OtherCertificateFormat extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getOtherCertFormat() {
-        return getFieldAs(OTHER_CERT_FORMAT, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.OTHER_CERT_FORMAT, Asn1ObjectIdentifier.class);
     }
 
     public void setOtherCertFormat(Asn1ObjectIdentifier otherCertFormat) {

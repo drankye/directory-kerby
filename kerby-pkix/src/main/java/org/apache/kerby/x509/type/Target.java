@@ -34,14 +34,14 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class Target extends Asn1Choice {
-    private static final int TARGET_NAME = 0;
-    private static final int TARGET_GROUP = 1;
-    private static final int TARGET_CERT = 1;
+    TARGET_NAME = 0;
+    TARGET_GROUP = 1;
+    TARGET_CERT = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(TARGET_NAME, GeneralName.class),
-        new ExplicitField(TARGET_GROUP, GeneralName.class),
-        new ExplicitField(TARGET_CERT, TargetCert.class),
+        new ExplicitField(MyEnum.TARGET_NAME, GeneralName.class),
+        new ExplicitField(MyEnum.TARGET_GROUP, GeneralName.class),
+        new ExplicitField(MyEnum.TARGET_CERT, TargetCert.class),
     };
 
     public Target() {
@@ -49,7 +49,7 @@ public class Target extends Asn1Choice {
     }
 
     public GeneralName getTargetName() {
-        return getFieldAs(TARGET_NAME, GeneralName.class);
+        return getFieldAs(MyEnum.TARGET_NAME, GeneralName.class);
     }
 
     public void setTargetName(GeneralName targetName) {
@@ -57,7 +57,7 @@ public class Target extends Asn1Choice {
     }
 
     public GeneralName getTargetGroup() {
-        return getFieldAs(TARGET_GROUP, GeneralName.class);
+        return getFieldAs(MyEnum.TARGET_GROUP, GeneralName.class);
     }
 
     public void setTargetGroup(GeneralName targetGroup) {
@@ -65,7 +65,7 @@ public class Target extends Asn1Choice {
     }
 
     public TargetCert targetCert() {
-        return getFieldAs(TARGET_CERT, TargetCert.class);
+        return getFieldAs(MyEnum.TARGET_CERT, TargetCert.class);
     }
 
     public void setTargetCert(TargetCert targetCert) {

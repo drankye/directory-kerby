@@ -30,9 +30,9 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * }
  */
 public class ExtendedCertificate extends Asn1SequenceType {
-    private static final int EXTENDED_CERTIFICATE_INFO = 0;
-    private static final int SIGNATURE_ALGORITHMS = 1;
-    private static final int SIGNATURE = 2;
+    EXTENDED_CERTIFICATE_INFO = 0;
+    SIGNATURE_ALGORITHMS = 1;
+    SIGNATURE = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(EXTENDED_CERTIFICATE_INFO, ExtendedCertificateInfo.class),
@@ -45,7 +45,7 @@ public class ExtendedCertificate extends Asn1SequenceType {
     }
 
     public ExtendedCertificateInfo getExtendedCertificateInfo() {
-        return getFieldAs(EXTENDED_CERTIFICATE_INFO, ExtendedCertificateInfo.class);
+        return getFieldAs(MyEnum.EXTENDED_CERTIFICATE_INFO, ExtendedCertificateInfo.class);
     }
 
     public void setCmsVersion(ExtendedCertificateInfo extendedCertificateInfo) {
@@ -53,7 +53,7 @@ public class ExtendedCertificate extends Asn1SequenceType {
     }
 
     public SignatureAlgorithmIdentifier getSignatureAlgorithmIdentifier() {
-        return getFieldAs(SIGNATURE_ALGORITHMS, SignatureAlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE_ALGORITHMS, SignatureAlgorithmIdentifier.class);
     }
 
     public void setSignatureAlgorithmIdentifier(SignatureAlgorithmIdentifier signatureAlgorithmIdentifier) {
@@ -61,7 +61,7 @@ public class ExtendedCertificate extends Asn1SequenceType {
     }
 
     public Signature getSignature() {
-        return getFieldAs(SIGNATURE, Signature.class);
+        return getFieldAs(MyEnum.SIGNATURE, Signature.class);
     }
 
     public void setSignature(Signature signature) {

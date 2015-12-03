@@ -34,14 +34,14 @@ import java.util.Arrays;
  }
  */
 public class EncryptionKey extends KrbSequenceType {
-    private static final int KEY_TYPE = 0;
-    private static final int KEY_VALUE = 1;
+    KEY_TYPE = 0;
+    KEY_VALUE = 1;
 
     private int kvno = -1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(KEY_TYPE, 0, Asn1Integer.class),
-            new ExplicitField(KEY_VALUE, 1, Asn1OctetString.class)
+            new ExplicitField(MyEnum.KEY_TYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.KEY_VALUE, 1, Asn1OctetString.class)
     };
 
     public EncryptionKey() {

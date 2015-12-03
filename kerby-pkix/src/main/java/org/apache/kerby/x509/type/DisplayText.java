@@ -37,10 +37,10 @@ import org.apache.kerby.asn1.type.Asn1VisibleString;
  * </pre>
  */
 public class DisplayText extends Asn1Choice {
-   private static final int IA5_STRING = 0;
-   private static final int VISIBLE_STRING = 1;
-   private static final int BMP_STRING = 2;
-   private static final int UTF8_STRING = 3;
+   IA5_STRING = 0;
+   VISIBLE_STRING = 1;
+   BMP_STRING = 2;
+   UTF8_STRING = 3;
 
    static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
            new Asn1FieldInfo(IA5_STRING, Asn1IA5String.class),
@@ -54,7 +54,7 @@ public class DisplayText extends Asn1Choice {
    }
 
    public Asn1IA5String getIA5String() {
-      return getFieldAs(IA5_STRING, Asn1IA5String.class);
+      return getFieldAs(MyEnum.IA5_STRING, Asn1IA5String.class);
    }
 
    public void setIA5String(Asn1IA5String ia5String) {
@@ -62,7 +62,7 @@ public class DisplayText extends Asn1Choice {
    }
 
    public Asn1VisibleString getVisibleString() {
-      return getFieldAs(VISIBLE_STRING, Asn1VisibleString.class);
+      return getFieldAs(MyEnum.VISIBLE_STRING, Asn1VisibleString.class);
    }
 
    public void setVisibleString(Asn1VisibleString visibleString) {
@@ -70,7 +70,7 @@ public class DisplayText extends Asn1Choice {
    }
 
    public Asn1BmpString getBmpString() {
-      return getFieldAs(BMP_STRING, Asn1BmpString.class);
+      return getFieldAs(MyEnum.BMP_STRING, Asn1BmpString.class);
    }
 
    public void setBmpString(Asn1BmpString bmpString) {
@@ -78,7 +78,7 @@ public class DisplayText extends Asn1Choice {
    }
 
    public Asn1Utf8String getUtf8String() {
-      return getFieldAs(UTF8_STRING, Asn1Utf8String.class);
+      return getFieldAs(MyEnum.UTF8_STRING, Asn1Utf8String.class);
    }
 
    public void setUtf8String(Asn1Utf8String utf8String) {

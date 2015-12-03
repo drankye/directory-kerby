@@ -33,9 +33,9 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * </pre>
  */
 public class IssuerSerial extends Asn1SequenceType {
-    private static final int ISSUER = 0;
-    private static final int SERIAL = 1;
-    private static final int ISSUER_UID = 2;
+    ISSUER = 0;
+    SERIAL = 1;
+    ISSUER_UID = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(ISSUER, GeneralNames.class),
@@ -48,7 +48,7 @@ public class IssuerSerial extends Asn1SequenceType {
     }
 
     public GeneralNames getIssuer() {
-        return getFieldAs(ISSUER, GeneralNames.class);
+        return getFieldAs(MyEnum.ISSUER, GeneralNames.class);
     }
 
     public void setIssuer(GeneralNames issuer) {
@@ -56,7 +56,7 @@ public class IssuerSerial extends Asn1SequenceType {
     }
 
     public CertificateSerialNumber getSerial() {
-        return getFieldAs(SERIAL, CertificateSerialNumber.class);
+        return getFieldAs(MyEnum.SERIAL, CertificateSerialNumber.class);
     }
 
     public void setSerial(CertificateSerialNumber serial) {
@@ -64,7 +64,7 @@ public class IssuerSerial extends Asn1SequenceType {
     }
 
     public Asn1BitString getIssuerUID() {
-        return getFieldAs(ISSUER_UID, Asn1BitString.class);
+        return getFieldAs(MyEnum.ISSUER_UID, Asn1BitString.class);
     }
 
     public void setIssuerUID(Asn1BitString issuerUID) {

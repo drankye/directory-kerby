@@ -32,12 +32,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class EDIPartyName extends Asn1Choice {
-    private static final int NAME_ASSIGNER = 0;
-    private static final int PARTY_NAME = 1;
+    NAME_ASSIGNER = 0;
+    PARTY_NAME = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
-            new ExplicitField(NAME_ASSIGNER, DirectoryString.class),
-            new ExplicitField(PARTY_NAME, DirectoryString.class)
+            new ExplicitField(MyEnum.NAME_ASSIGNER, DirectoryString.class),
+            new ExplicitField(MyEnum.PARTY_NAME, DirectoryString.class)
     };
 
     public EDIPartyName() {
@@ -45,7 +45,7 @@ public class EDIPartyName extends Asn1Choice {
     }
 
     public DirectoryString getNameAssigner() {
-        return getFieldAs(NAME_ASSIGNER, DirectoryString.class);
+        return getFieldAs(MyEnum.NAME_ASSIGNER, DirectoryString.class);
     }
 
     public void setNameAssigner(DirectoryString nameAssigner) {
@@ -53,7 +53,7 @@ public class EDIPartyName extends Asn1Choice {
     }
 
     public DirectoryString getPartyName() {
-        return getFieldAs(PARTY_NAME, DirectoryString.class);
+        return getFieldAs(MyEnum.PARTY_NAME, DirectoryString.class);
     }
 
     public void setPartyName(DirectoryString partyName) {

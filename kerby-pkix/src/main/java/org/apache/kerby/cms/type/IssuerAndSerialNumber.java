@@ -36,8 +36,8 @@ import org.apache.kerby.x500.type.Name;
  * </pre>
  */
 public class IssuerAndSerialNumber extends Asn1SequenceType {
-    private static final int ISSUER = 0;
-    private static final int SERIAL_NUMBER = 1;
+    ISSUER = 0;
+    SERIAL_NUMBER = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
         new Asn1FieldInfo(ISSUER, Name.class),
@@ -49,7 +49,7 @@ public class IssuerAndSerialNumber extends Asn1SequenceType {
     }
 
     public Name getIssuer() {
-        return getFieldAs(ISSUER, Name.class);
+        return getFieldAs(MyEnum.ISSUER, Name.class);
     }
 
     public void setIssuer(Name name) {
@@ -57,7 +57,7 @@ public class IssuerAndSerialNumber extends Asn1SequenceType {
     }
 
     public Asn1Integer getSerialNumber() {
-        return getFieldAs(SERIAL_NUMBER, Asn1Integer.class);
+        return getFieldAs(MyEnum.SERIAL_NUMBER, Asn1Integer.class);
     }
 
     public void setSerialNumber(int serialNumber) {

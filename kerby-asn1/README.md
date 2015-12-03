@@ -135,7 +135,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Name getName() {
-        return getFieldAs(NAME, Name.class);
+        return getFieldAs(MyEnum.NAME, Name.class);
     }
 
     public void setTitle(String title) {
@@ -151,7 +151,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public EmployeeNumber getEmployeeNumber() {
-        return getFieldAs(NUMBER, EmployeeNumber.class);
+        return getFieldAs(MyEnum.NUMBER, EmployeeNumber.class);
     }
 
     public void setDateOfHire(Date dateOfHire) {
@@ -159,7 +159,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Date getDateOfHire() {
-        return getFieldAs(DATEOFHIRE, Date.class);
+        return getFieldAs(MyEnum.DATEOFHIRE, Date.class);
     }
 
     public void setNameOfSpouse(Name spouse) {
@@ -167,7 +167,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Name getNameOfSpouse() {
-        return getFieldAs(NAMEOFSPOUSE, Name.class);
+        return getFieldAs(MyEnum.NAMEOFSPOUSE, Name.class);
     }
 
     public void setChildren(Children children) {
@@ -175,7 +175,7 @@ public class PersonnelRecord extends TaggingSet {
     }
 
     public Children getChildren() {
-        return getFieldAs(CHILDREN, Children.class);
+        return getFieldAs(MyEnum.CHILDREN, Children.class);
     }
 
     public static class Children extends Asn1SequenceOf<ChildInformation> {
@@ -209,7 +209,7 @@ public class PersonnelRecord extends TaggingSet {
         }
 
         public Name getName() {
-            return getFieldAs(NAME, Name.class);
+            return getFieldAs(MyEnum.NAME, Name.class);
         }
 
         public void setDateOfBirth(Date date) {
@@ -217,7 +217,7 @@ public class PersonnelRecord extends TaggingSet {
         }
 
         public Date getDateOfBirth() {
-            return getFieldAs(DATEOFBIRTH, Date.class);
+            return getFieldAs(MyEnum.DATEOFBIRTH, Date.class);
         }
     }
 

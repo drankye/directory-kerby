@@ -34,14 +34,14 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class KdcDHKeyInfo extends KrbSequenceType {
-    private static final int SUBJECT_PUBLICK_KEY = 0;
-    private static final int NONCE = 1;
-    private static final int DH_KEY_EXPIRATION = 2;
+    SUBJECT_PUBLICK_KEY = 0;
+    NONCE = 1;
+    DH_KEY_EXPIRATION = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(SUBJECT_PUBLICK_KEY, Asn1BitString.class),
-            new ExplicitField(NONCE, Asn1Integer.class),
-            new ExplicitField(DH_KEY_EXPIRATION, KerberosTime.class)
+            new ExplicitField(MyEnum.SUBJECT_PUBLICK_KEY, Asn1BitString.class),
+            new ExplicitField(MyEnum.NONCE, Asn1Integer.class),
+            new ExplicitField(MyEnum.DH_KEY_EXPIRATION, KerberosTime.class)
     };
 
     public KdcDHKeyInfo() {

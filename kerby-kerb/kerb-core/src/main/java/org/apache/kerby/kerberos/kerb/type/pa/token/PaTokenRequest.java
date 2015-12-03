@@ -31,12 +31,12 @@ import org.apache.kerby.kerberos.kerb.type.base.KrbToken;
  }
 */
 public class PaTokenRequest extends KrbSequenceType {
-    private static final int TOKEN_INFO = 0;
-    private static final int TOKEN = 1;
+    TOKEN_INFO = 0;
+    TOKEN = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(TOKEN_INFO, TokenInfo.class),
-            new ExplicitField(TOKEN, KrbToken.class)
+            new ExplicitField(MyEnum.TOKEN_INFO, TokenInfo.class),
+            new ExplicitField(MyEnum.TOKEN, KrbToken.class)
     };
 
     public PaTokenRequest() {
@@ -44,7 +44,7 @@ public class PaTokenRequest extends KrbSequenceType {
     }
 
     public KrbToken getToken() {
-        return getFieldAs(TOKEN, KrbToken.class);
+        return getFieldAs(MyEnum.TOKEN, KrbToken.class);
     }
 
     public void setToken(KrbToken token) {
@@ -52,7 +52,7 @@ public class PaTokenRequest extends KrbSequenceType {
     }
 
     public TokenInfo getTokenInfo() {
-        return getFieldAs(TOKEN_INFO, TokenInfo.class);
+        return getFieldAs(MyEnum.TOKEN_INFO, TokenInfo.class);
     }
 
     public void setTokenInfo(TokenInfo tokenInfo) {

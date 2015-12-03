@@ -36,8 +36,8 @@ import java.util.Date;
  * </pre>
  */
 public class Time extends Asn1Choice {
-    private static final int UTC_TIME = 0;
-    private static final int GENERAL_TIME = 1;
+    UTC_TIME = 0;
+    GENERAL_TIME = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(UTC_TIME, Asn1UtcTime.class),
@@ -49,7 +49,7 @@ public class Time extends Asn1Choice {
     }
 
     public Date getUtcTime() {
-        return getFieldAs(UTC_TIME, Asn1UtcTime.class).getValue();
+        return getFieldAs(MyEnum.UTC_TIME, Asn1UtcTime.class).getValue();
     }
 
     public void setUtcTime(Asn1UtcTime utcTime) {
@@ -57,7 +57,7 @@ public class Time extends Asn1Choice {
     }
 
     public Date generalizedTime() {
-        return getFieldAs(GENERAL_TIME, Asn1GeneralizedTime.class).getValue();
+        return getFieldAs(MyEnum.GENERAL_TIME, Asn1GeneralizedTime.class).getValue();
     }
 
     public void setGeneralTime(Asn1GeneralizedTime generalTime) {

@@ -39,12 +39,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class ContentInfo extends Asn1SequenceType {
-    private static final int CONTENT_TYPE = 0;
-    private static final int CONTENT = 1;
+    CONTENT_TYPE = 0;
+    CONTENT = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
         new Asn1FieldInfo(CONTENT_TYPE, Asn1ObjectIdentifier.class),
-        new ExplicitField(CONTENT, 0, Asn1Any.class),
+        new ExplicitField(MyEnum.CONTENT, 0, Asn1Any.class),
     };
 
     public ContentInfo() {
@@ -52,7 +52,7 @@ public class ContentInfo extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getContentType() {
-        return getFieldAs(CONTENT_TYPE, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.CONTENT_TYPE, Asn1ObjectIdentifier.class);
     }
 
     public void setContentType(Asn1ObjectIdentifier contentType) {

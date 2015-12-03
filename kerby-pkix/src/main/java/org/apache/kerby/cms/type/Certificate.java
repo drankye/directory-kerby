@@ -36,9 +36,9 @@ import org.apache.kerby.x509.type.TBSCertificate;
  */
 public class Certificate extends Asn1SequenceType {
 
-    private static final int TBS_CERTIFICATE = 0;
-    private static final int SIGNATURE_ALGORITHM = 1;
-    private static final int SIGNATURE = 2;
+    TBS_CERTIFICATE = 0;
+    SIGNATURE_ALGORITHM = 1;
+    SIGNATURE = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(TBS_CERTIFICATE, TBSCertificate.class),
@@ -51,7 +51,7 @@ public class Certificate extends Asn1SequenceType {
     }
 
     public TBSCertificate getTBSCertificate() {
-        return getFieldAs(TBS_CERTIFICATE, TBSCertificate.class);
+        return getFieldAs(MyEnum.TBS_CERTIFICATE, TBSCertificate.class);
     }
 
     public void setTbsCertificate(TBSCertificate tbsCertificate) {
@@ -59,7 +59,7 @@ public class Certificate extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getSignatureAlgorithm() {
-        return getFieldAs(SIGNATURE_ALGORITHM, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE_ALGORITHM, AlgorithmIdentifier.class);
     }
 
     public void setSignatureAlgorithm(AlgorithmIdentifier signatureAlgorithm) {
@@ -67,7 +67,7 @@ public class Certificate extends Asn1SequenceType {
     }
 
     public Asn1BitString getSignature() {
-        return getFieldAs(SIGNATURE, Asn1BitString.class);
+        return getFieldAs(MyEnum.SIGNATURE, Asn1BitString.class);
     }
 
     public void setSignature(Asn1BitString signature) {

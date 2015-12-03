@@ -33,12 +33,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class AttCertIssuer extends Asn1Choice {
-    private static final int V1_FORM = 0;
-    private static final int V2_FORM = 1;
+    V1_FORM = 0;
+    V2_FORM = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(V1_FORM, GeneralNames.class),
-        new ExplicitField(V2_FORM, 0, V2Form.class)
+        new ExplicitField(MyEnum.V2_FORM, 0, V2Form.class)
     };
 
     public AttCertIssuer() {
@@ -46,7 +46,7 @@ public class AttCertIssuer extends Asn1Choice {
     }
 
     public GeneralNames getV1Form() {
-        return getFieldAs(V1_FORM, GeneralNames.class);
+        return getFieldAs(MyEnum.V1_FORM, GeneralNames.class);
     }
 
     public void setV1Form(GeneralNames v1Form) {
@@ -54,7 +54,7 @@ public class AttCertIssuer extends Asn1Choice {
     }
 
     public V2Form getV2Form() {
-        return getFieldAs(V2_FORM, V2Form.class);
+        return getFieldAs(MyEnum.V2_FORM, V2Form.class);
     }
 
     public void setV2Form(V2Form v2Form) {

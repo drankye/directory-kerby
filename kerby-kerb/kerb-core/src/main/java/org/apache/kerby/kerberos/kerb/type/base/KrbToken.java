@@ -44,14 +44,14 @@ public class KrbToken extends KrbSequenceType implements AuthToken {
     private static TokenEncoder tokenEncoder;
     private static TokenDecoder tokenDecoder;
 
-    private static final int TOKEN_FORMAT = 0;
-    private static final int TOKEN_VALUE = 1;
+    TOKEN_FORMAT = 0;
+    TOKEN_VALUE = 1;
 
     private AuthToken innerToken = null;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
-            new ExplicitField(TOKEN_FORMAT, 0, Asn1Integer.class),
-            new ExplicitField(TOKEN_VALUE, 1, Asn1OctetString.class)
+            new ExplicitField(MyEnum.TOKEN_FORMAT, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.TOKEN_VALUE, 1, Asn1OctetString.class)
     };
 
 

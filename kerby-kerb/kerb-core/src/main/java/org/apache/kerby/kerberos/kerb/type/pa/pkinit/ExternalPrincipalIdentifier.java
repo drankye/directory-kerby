@@ -32,9 +32,9 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class ExternalPrincipalIdentifier extends KrbSequenceType {
-    private static final int SUBJECT_NAME = 0;
-    private static final int ISSUER_AND_SERIAL_NUMBER = 1;
-    private static final int SUBJECT_KEY_IDENTIFIER = 2;
+    SUBJECT_NAME = 0;
+    ISSUER_AND_SERIAL_NUMBER = 1;
+    SUBJECT_KEY_IDENTIFIER = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new ImplicitField(SUBJECT_NAME, Asn1OctetString.class),

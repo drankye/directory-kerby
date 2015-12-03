@@ -32,8 +32,8 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * </pre>
  */
 public class Attribute extends Asn1SequenceType {
-    private static final int ATTR_TYPE = 0;
-    private static final int ATTR_VALUES = 1;
+    ATTR_TYPE = 0;
+    ATTR_VALUES = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(ATTR_TYPE, Asn1ObjectIdentifier.class),
@@ -45,7 +45,7 @@ public class Attribute extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getAttrType() {
-        return getFieldAs(ATTR_TYPE, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.ATTR_TYPE, Asn1ObjectIdentifier.class);
     }
 
     public void setAttrType(Asn1ObjectIdentifier attrType) {
@@ -53,7 +53,7 @@ public class Attribute extends Asn1SequenceType {
     }
 
     public AttributeValues getAttrValues() {
-        return getFieldAs(ATTR_VALUES, AttributeValues.class);
+        return getFieldAs(MyEnum.ATTR_VALUES, AttributeValues.class);
     }
 
     public void setAttrValues(AttributeValues attrValues) {

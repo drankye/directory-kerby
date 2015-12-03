@@ -34,14 +34,14 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class EtypeInfo2Entry extends KrbSequenceType {
-    private static final int ETYPE = 0;
-    private static final int SALT = 1;
-    private static final int S2KPARAMS = 2;
+    ETYPE = 0;
+    SALT = 1;
+    S2KPARAMS = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(ETYPE, 0, Asn1Integer.class),
-            new ExplicitField(SALT, 1, KerberosString.class),
-            new ExplicitField(S2KPARAMS, 2, Asn1OctetString.class)
+            new ExplicitField(MyEnum.ETYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.SALT, 1, KerberosString.class),
+            new ExplicitField(MyEnum.S2KPARAMS, 2, Asn1OctetString.class)
     };
 
     public EtypeInfo2Entry() {

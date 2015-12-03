@@ -34,12 +34,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class KrbFastArmor extends KrbSequenceType {
-    private static final int ARMOR_TYPE = 0;
-    private static final int ARMOR_VALUE = 1;
+    ARMOR_TYPE = 0;
+    ARMOR_VALUE = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(ARMOR_TYPE, Asn1Integer.class),
-            new ExplicitField(ARMOR_VALUE, Asn1OctetString.class)
+            new ExplicitField(MyEnum.ARMOR_TYPE, Asn1Integer.class),
+            new ExplicitField(MyEnum.ARMOR_VALUE, Asn1OctetString.class)
     };
 
     public KrbFastArmor() {

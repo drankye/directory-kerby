@@ -37,14 +37,14 @@ import org.apache.kerby.asn1.ExplicitField;
  * 
  */
 public class GeneralSubtree extends Asn1SequenceType {
-    private static final int BASE = 0;
-    private static final int MINIMUM = 1;
-    private static final int MAXMUM = 2;
+    BASE = 0;
+    MINIMUM = 1;
+    MAXMUM = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(BASE, GeneralName.class),
-        new ExplicitField(MINIMUM, 0, Asn1Integer.class),
-        new ExplicitField(MAXMUM, 1, Asn1Integer.class)
+        new ExplicitField(MyEnum.MINIMUM, 0, Asn1Integer.class),
+        new ExplicitField(MyEnum.MAXMUM, 1, Asn1Integer.class)
     };
 
     public GeneralSubtree() {
@@ -52,7 +52,7 @@ public class GeneralSubtree extends Asn1SequenceType {
     }
 
     public GeneralName getBase() {
-        return getFieldAs(BASE, GeneralName.class);
+        return getFieldAs(MyEnum.BASE, GeneralName.class);
     }
 
     public void setBase(GeneralName base) {

@@ -37,12 +37,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class PolicyConstraints extends Asn1SequenceType {
-    private static final int REQUIRE_EXPLICIT_POLICY = 0;
-    private static final int INHIBIT_POLICY_MAPPING = 1;
+    REQUIRE_EXPLICIT_POLICY = 0;
+    INHIBIT_POLICY_MAPPING = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(REQUIRE_EXPLICIT_POLICY, Asn1Integer.class),
-        new ExplicitField(INHIBIT_POLICY_MAPPING, Asn1Integer.class)
+        new ExplicitField(MyEnum.REQUIRE_EXPLICIT_POLICY, Asn1Integer.class),
+        new ExplicitField(MyEnum.INHIBIT_POLICY_MAPPING, Asn1Integer.class)
     };
 
     public PolicyConstraints() {
@@ -50,7 +50,7 @@ public class PolicyConstraints extends Asn1SequenceType {
     }
 
     public Asn1Integer getRequireExplicitPolicy() {
-        return getFieldAs(REQUIRE_EXPLICIT_POLICY, Asn1Integer.class);
+        return getFieldAs(MyEnum.REQUIRE_EXPLICIT_POLICY, Asn1Integer.class);
     }
 
     public void setRequireExplicitPolicy(Asn1Integer requireExplicitPolicy) {
@@ -58,7 +58,7 @@ public class PolicyConstraints extends Asn1SequenceType {
     }
 
     public Asn1Integer getInhibitPolicyMapping() {
-        return getFieldAs(INHIBIT_POLICY_MAPPING, Asn1Integer.class);
+        return getFieldAs(MyEnum.INHIBIT_POLICY_MAPPING, Asn1Integer.class);
     }
 
     public void setInhibitPolicyMapping(Asn1Integer inhibitPolicyMapping) {

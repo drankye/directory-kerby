@@ -33,16 +33,16 @@ import org.apache.kerby.x509.type.SubjectPublicKeyInfo;
  }
  */
 public class AuthPack extends KrbSequenceType {
-    private static final int PK_AUTHENTICATOR = 0;
-    private static final int CLIENT_PUBLIC_VALUE = 1;
-    private static final int SUPPORTED_CMS_TYPES = 2;
-    private static final int CLIENT_DH_NONCE = 3;
+    PK_AUTHENTICATOR = 0;
+    CLIENT_PUBLIC_VALUE = 1;
+    SUPPORTED_CMS_TYPES = 2;
+    CLIENT_DH_NONCE = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PK_AUTHENTICATOR, PkAuthenticator.class),
-            new ExplicitField(CLIENT_PUBLIC_VALUE, SubjectPublicKeyInfo.class),
-            new ExplicitField(SUPPORTED_CMS_TYPES, AlgorithmIdentifiers.class),
-            new ExplicitField(CLIENT_DH_NONCE, DHNonce.class)
+            new ExplicitField(MyEnum.PK_AUTHENTICATOR, PkAuthenticator.class),
+            new ExplicitField(MyEnum.CLIENT_PUBLIC_VALUE, SubjectPublicKeyInfo.class),
+            new ExplicitField(MyEnum.SUPPORTED_CMS_TYPES, AlgorithmIdentifiers.class),
+            new ExplicitField(MyEnum.CLIENT_DH_NONCE, DHNonce.class)
     };
 
     public AuthPack() {
@@ -50,7 +50,7 @@ public class AuthPack extends KrbSequenceType {
     }
 
     public PkAuthenticator getPkAuthenticator() {
-        return getFieldAs(PK_AUTHENTICATOR, PkAuthenticator.class);
+        return getFieldAs(MyEnum.PK_AUTHENTICATOR, PkAuthenticator.class);
     }
 
     public void setPkAuthenticator(PkAuthenticator pkAuthenticator) {
@@ -58,7 +58,7 @@ public class AuthPack extends KrbSequenceType {
     }
 
     public SubjectPublicKeyInfo getClientPublicValue() {
-        return getFieldAs(CLIENT_PUBLIC_VALUE, SubjectPublicKeyInfo.class);
+        return getFieldAs(MyEnum.CLIENT_PUBLIC_VALUE, SubjectPublicKeyInfo.class);
     }
 
     public void setClientPublicValue(SubjectPublicKeyInfo clientPublicValue) {
@@ -66,7 +66,7 @@ public class AuthPack extends KrbSequenceType {
     }
 
     public AlgorithmIdentifiers getsupportedCmsTypes() {
-        return getFieldAs(CLIENT_DH_NONCE, AlgorithmIdentifiers.class);
+        return getFieldAs(MyEnum.CLIENT_DH_NONCE, AlgorithmIdentifiers.class);
     }
 
     public void setsupportedCmsTypes(AlgorithmIdentifiers supportedCMSTypes) {
@@ -74,7 +74,7 @@ public class AuthPack extends KrbSequenceType {
     }
 
     public DHNonce getClientDhNonce() {
-        return getFieldAs(CLIENT_DH_NONCE, DHNonce.class);
+        return getFieldAs(MyEnum.CLIENT_DH_NONCE, DHNonce.class);
     }
 
     public void setClientDhNonce(DHNonce dhNonce) {

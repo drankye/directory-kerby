@@ -134,8 +134,8 @@ public abstract class TaggingCollection extends AbstractAsn1Type<Asn1CollectionT
         tagging.decodeBody(content);
     }
 
-    protected <T extends Asn1Type> T getFieldAs(int index, Class<T> t) {
-        return tagged.getFieldAs(index, t);
+    protected <T extends Asn1Type> T getFieldAs(MyEnum.int index, Class<T> t) {
+        return tagged.getFieldAs(MyEnum.index, t);
     }
 
     protected void setFieldAs(int index, Asn1Type value) {

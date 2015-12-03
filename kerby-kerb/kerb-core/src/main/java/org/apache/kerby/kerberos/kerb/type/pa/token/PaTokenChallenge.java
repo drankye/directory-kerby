@@ -29,10 +29,10 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
 */
 public class PaTokenChallenge extends KrbSequenceType {
-    private static final int TOKENINFOS = 0;
+    TOKENINFOS = 0;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(TOKENINFOS, TokenInfos.class)
+            new ExplicitField(MyEnum.TOKENINFOS, TokenInfos.class)
     };
 
     public PaTokenChallenge() {

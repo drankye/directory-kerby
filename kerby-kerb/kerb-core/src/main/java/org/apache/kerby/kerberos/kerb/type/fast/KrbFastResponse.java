@@ -41,16 +41,16 @@ import org.apache.kerby.kerberos.kerb.type.pa.PaData;
  }
  */
 public class KrbFastResponse extends KrbSequenceType {
-    private static final int PADATA = 0;
-    private static final int STRENGTHEN_KEY = 1;
-    private static final int FINISHED = 2;
-    private static final int NONCE = 3;
+    PADATA = 0;
+    STRENGTHEN_KEY = 1;
+    FINISHED = 2;
+    NONCE = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PADATA, PaData.class),
-            new ExplicitField(STRENGTHEN_KEY, EncryptionKey.class),
-            new ExplicitField(FINISHED, KrbFastFinished.class),
-            new ExplicitField(NONCE, Asn1Integer.class)
+            new ExplicitField(MyEnum.PADATA, PaData.class),
+            new ExplicitField(MyEnum.STRENGTHEN_KEY, EncryptionKey.class),
+            new ExplicitField(MyEnum.FINISHED, KrbFastFinished.class),
+            new ExplicitField(MyEnum.NONCE, Asn1Integer.class)
     };
 
     public KrbFastResponse() {
@@ -58,7 +58,7 @@ public class KrbFastResponse extends KrbSequenceType {
     }
 
     public PaData getPaData() {
-        return getFieldAs(PADATA, PaData.class);
+        return getFieldAs(MyEnum.PADATA, PaData.class);
     }
 
     public void setPaData(PaData paData) {
@@ -66,7 +66,7 @@ public class KrbFastResponse extends KrbSequenceType {
     }
 
     public EncryptionKey getStrengthenKey() {
-        return getFieldAs(STRENGTHEN_KEY, EncryptionKey.class);
+        return getFieldAs(MyEnum.STRENGTHEN_KEY, EncryptionKey.class);
     }
 
     public void setStrengthenKey(EncryptionKey strengthenKey) {
@@ -74,7 +74,7 @@ public class KrbFastResponse extends KrbSequenceType {
     }
 
     public KrbFastFinished getFastFinished() {
-        return getFieldAs(FINISHED, KrbFastFinished.class);
+        return getFieldAs(MyEnum.FINISHED, KrbFastFinished.class);
     }
 
     public void setFastFinished(KrbFastFinished fastFinished) {

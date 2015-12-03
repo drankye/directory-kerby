@@ -39,14 +39,14 @@ import org.apache.kerby.kerberos.kerb.type.pa.PaData;
  }
  */
 public class KrbFastReq extends KrbSequenceType {
-    private static final int FAST_OPTIONS = 0;
-    private static final int PADATA = 1;
-    private static final int REQ_BODY = 2;
+    FAST_OPTIONS = 0;
+    PADATA = 1;
+    REQ_BODY = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(FAST_OPTIONS, FastOptions.class),
-            new ExplicitField(PADATA, PaData.class),
-            new ExplicitField(REQ_BODY, KdcReqBody.class),
+            new ExplicitField(MyEnum.FAST_OPTIONS, FastOptions.class),
+            new ExplicitField(MyEnum.PADATA, PaData.class),
+            new ExplicitField(MyEnum.REQ_BODY, KdcReqBody.class),
     };
 
     public KrbFastReq() {
@@ -54,7 +54,7 @@ public class KrbFastReq extends KrbSequenceType {
     }
 
     public FastOptions getFastOptions() {
-        return getFieldAs(FAST_OPTIONS, FastOptions.class);
+        return getFieldAs(MyEnum.FAST_OPTIONS, FastOptions.class);
     }
 
     public void setFastOptions(FastOptions fastOptions) {
@@ -62,7 +62,7 @@ public class KrbFastReq extends KrbSequenceType {
     }
 
     public PaData getPaData() {
-        return getFieldAs(PADATA, PaData.class);
+        return getFieldAs(MyEnum.PADATA, PaData.class);
     }
 
     public void setPaData(PaData paData) {
@@ -70,7 +70,7 @@ public class KrbFastReq extends KrbSequenceType {
     }
 
     public KdcReqBody getKdcReqBody() {
-        return getFieldAs(REQ_BODY, KdcReqBody.class);
+        return getFieldAs(MyEnum.REQ_BODY, KdcReqBody.class);
     }
 
     public void setKdcReqBody(KdcReqBody kdcReqBody) {

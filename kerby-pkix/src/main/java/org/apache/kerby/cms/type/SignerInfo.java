@@ -39,13 +39,13 @@ import org.apache.kerby.asn1.ImplicitField;
  * </pre>
  */
 public class SignerInfo extends Asn1SequenceType {
-    private static final int CMS_VERSION = 0;
-    private static final int SID = 1;
-    private static final int DIGEST_ALGORITHM = 2;
-    private static final int SIGNED_ATTRS = 3;
-    private static final int SIGNATURE_ALGORITHMS = 4;
-    private static final int SIGNATURE = 5;
-    private static final int UNSIGNED_ATTRS = 6;
+    CMS_VERSION = 0;
+    SID = 1;
+    DIGEST_ALGORITHM = 2;
+    SIGNED_ATTRS = 3;
+    SIGNATURE_ALGORITHMS = 4;
+    SIGNATURE = 5;
+    UNSIGNED_ATTRS = 6;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
         new Asn1FieldInfo(CMS_VERSION, CmsVersion.class),
@@ -70,7 +70,7 @@ public class SignerInfo extends Asn1SequenceType {
     }
 
     public SignerIdentifier getSignerIdentifier() {
-        return getFieldAs(SID, SignerIdentifier.class);
+        return getFieldAs(MyEnum.SID, SignerIdentifier.class);
     }
 
     public void setSignerIdentifier(SignerIdentifier signerIdentifier) {
@@ -78,7 +78,7 @@ public class SignerInfo extends Asn1SequenceType {
     }
 
     public DigestAlgorithmIdentifier getDigestAlgorithmIdentifier() {
-        return getFieldAs(DIGEST_ALGORITHM, DigestAlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.DIGEST_ALGORITHM, DigestAlgorithmIdentifier.class);
     }
 
     public void setDigestAlgorithmIdentifier(DigestAlgorithmIdentifier digestAlgorithmIdentifier) {
@@ -86,7 +86,7 @@ public class SignerInfo extends Asn1SequenceType {
     }
 
     public SignedAttributes getSignedAttributes() {
-        return getFieldAs(SIGNED_ATTRS, SignedAttributes.class);
+        return getFieldAs(MyEnum.SIGNED_ATTRS, SignedAttributes.class);
     }
 
     public void setSignedAttributes(SignedAttributes signedAttributes) {
@@ -94,7 +94,7 @@ public class SignerInfo extends Asn1SequenceType {
     }
 
     public SignatureAlgorithmIdentifier getSignatureAlgorithmIdentifier() {
-        return getFieldAs(SIGNATURE_ALGORITHMS, SignatureAlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE_ALGORITHMS, SignatureAlgorithmIdentifier.class);
     }
 
     public void setSignatureAlgorithmIdentifier(SignatureAlgorithmIdentifier signatureAlgorithmIdentifier) {
@@ -102,7 +102,7 @@ public class SignerInfo extends Asn1SequenceType {
     }
 
     public SignatureValue getSignatureValue() {
-        return getFieldAs(SIGNATURE, SignatureValue.class);
+        return getFieldAs(MyEnum.SIGNATURE, SignatureValue.class);
     }
 
     public void setSignatureValue(SignatureValue signatureValue) {
@@ -110,7 +110,7 @@ public class SignerInfo extends Asn1SequenceType {
     }
 
     public UnsignedAttributes getUnsignedAttributes() {
-        return getFieldAs(UNSIGNED_ATTRS, UnsignedAttributes.class);
+        return getFieldAs(MyEnum.UNSIGNED_ATTRS, UnsignedAttributes.class);
     }
 
     public void setUnsignedAttributes(UnsignedAttributes unsignedAttributes) {

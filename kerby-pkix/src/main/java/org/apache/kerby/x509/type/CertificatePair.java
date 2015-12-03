@@ -34,12 +34,12 @@ import org.apache.kerby.asn1.ExplicitField;
  * </pre>
  */
 public class CertificatePair extends Asn1SequenceType {
-    private static final int FORWARD = 0;
-    private static final int REVERSE = 1;
+    FORWARD = 0;
+    REVERSE = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(FORWARD, Certificate.class),
-        new ExplicitField(REVERSE, Certificate.class)
+        new ExplicitField(MyEnum.FORWARD, Certificate.class),
+        new ExplicitField(MyEnum.REVERSE, Certificate.class)
     };
 
     public CertificatePair() {
@@ -47,7 +47,7 @@ public class CertificatePair extends Asn1SequenceType {
     }
 
     public Certificate getForward() {
-        return getFieldAs(FORWARD, Certificate.class);
+        return getFieldAs(MyEnum.FORWARD, Certificate.class);
     }
 
     public void setForward(Certificate forward) {
@@ -55,7 +55,7 @@ public class CertificatePair extends Asn1SequenceType {
     }
 
     public Certificate getReverse() {
-        return getFieldAs(REVERSE, Certificate.class);
+        return getFieldAs(MyEnum.REVERSE, Certificate.class);
     }
 
     public void setReverse(Certificate reverse) {

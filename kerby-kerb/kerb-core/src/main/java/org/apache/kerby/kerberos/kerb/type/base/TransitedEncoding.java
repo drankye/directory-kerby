@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class TransitedEncoding extends KrbSequenceType {
-    private static final int TR_TYPE = 0;
-    private static final int CONTENTS = 1;
+    TR_TYPE = 0;
+    CONTENTS = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(TR_TYPE, 0, Asn1Integer.class),
-            new ExplicitField(CONTENTS, 1, Asn1OctetString.class)
+            new ExplicitField(MyEnum.TR_TYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.CONTENTS, 1, Asn1OctetString.class)
     };
 
     public TransitedEncoding() {

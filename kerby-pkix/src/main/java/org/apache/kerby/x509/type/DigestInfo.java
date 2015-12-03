@@ -32,8 +32,8 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * </pre>
  */
 public class DigestInfo extends Asn1SequenceType {
-    private static final int DIGEST_ALGORITHM = 0;
-    private static final int DIGEST = 1;
+    DIGEST_ALGORITHM = 0;
+    DIGEST = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(DIGEST_ALGORITHM, AlgorithmIdentifier.class),
@@ -45,7 +45,7 @@ public class DigestInfo extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getAlgorithmId() {
-        return getFieldAs(DIGEST_ALGORITHM, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.DIGEST_ALGORITHM, AlgorithmIdentifier.class);
     }
 
     public void setDigestAlgorithm(AlgorithmIdentifier digestAlgorithm) {

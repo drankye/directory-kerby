@@ -33,8 +33,8 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  *
  */
 public class NoticeReference extends Asn1SequenceType {
-    private static final int ORGANIZATION = 0;
-    private static final int NOTICE_NUMBERS = 1;
+    ORGANIZATION = 0;
+    NOTICE_NUMBERS = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(ORGANIZATION, DisplayText.class),
@@ -46,7 +46,7 @@ public class NoticeReference extends Asn1SequenceType {
     }
 
     public DisplayText getOrganization() {
-        return getFieldAs(ORGANIZATION, DisplayText.class);
+        return getFieldAs(MyEnum.ORGANIZATION, DisplayText.class);
     }
 
     public void setOrganization(DisplayText organization) {
@@ -54,7 +54,7 @@ public class NoticeReference extends Asn1SequenceType {
     }
 
     public NoticeNumbers getNoticeNumbers() {
-        return getFieldAs(NOTICE_NUMBERS, NoticeNumbers.class);
+        return getFieldAs(MyEnum.NOTICE_NUMBERS, NoticeNumbers.class);
     }
 
     public void setNoticeNumbers(NoticeNumbers noticeNumbers) {

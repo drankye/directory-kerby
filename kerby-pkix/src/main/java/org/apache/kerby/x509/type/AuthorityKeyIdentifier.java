@@ -39,9 +39,9 @@ import org.apache.kerby.asn1.ImplicitField;
  *
  */
 public class AuthorityKeyIdentifier extends Asn1SequenceType {
-    private static final int KEY_IDENTIFIER = 0;
-    private static final int AUTHORITY_CERT_ISSUER = 1;
-    private static final int AUTHORITY_CERT_SERIAL_NUMBER = 2;
+    KEY_IDENTIFIER = 0;
+    AUTHORITY_CERT_ISSUER = 1;
+    AUTHORITY_CERT_SERIAL_NUMBER = 2;
 
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
@@ -55,7 +55,7 @@ public class AuthorityKeyIdentifier extends Asn1SequenceType {
     }
 
     public KeyIdentifier getKeyIdentifier() {
-        return getFieldAs(KEY_IDENTIFIER, KeyIdentifier.class);
+        return getFieldAs(MyEnum.KEY_IDENTIFIER, KeyIdentifier.class);
     }
 
     public void setKeyIdentifier(KeyIdentifier keyIdentifier) {
@@ -63,7 +63,7 @@ public class AuthorityKeyIdentifier extends Asn1SequenceType {
     }
 
     public GeneralNames getAuthorityCertIssuer() {
-        return getFieldAs(AUTHORITY_CERT_ISSUER, GeneralNames.class);
+        return getFieldAs(MyEnum.AUTHORITY_CERT_ISSUER, GeneralNames.class);
     }
 
     public void setAuthorityCertIssuer(GeneralNames authorityCertIssuer) {
@@ -71,7 +71,7 @@ public class AuthorityKeyIdentifier extends Asn1SequenceType {
     }
     
     public CertificateSerialNumber getAuthorityCertSerialNumber() {
-        return getFieldAs(AUTHORITY_CERT_SERIAL_NUMBER, CertificateSerialNumber.class);
+        return getFieldAs(MyEnum.AUTHORITY_CERT_SERIAL_NUMBER, CertificateSerialNumber.class);
     }
 
     public void setAuthorityCertSerialNumber(CertificateSerialNumber authorityCertSerialNumber) {

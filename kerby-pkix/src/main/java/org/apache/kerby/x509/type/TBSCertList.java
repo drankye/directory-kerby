@@ -48,13 +48,13 @@ import org.apache.kerby.x500.type.Name;
  */
 public class TBSCertList extends Asn1SequenceType {
 
-    private static final int VERSION = 0;
-    private static final int SIGNATURE = 1;
-    private static final int ISSUER = 2;
-    private static final int THIS_UPDATA = 3;
-    private static final int NEXT_UPDATE = 4;
-    private static final int REVOKED_CERTIFICATES = 5;
-    private static final int CRL_EXTENSIONS = 6;
+    VERSION = 0;
+    SIGNATURE = 1;
+    ISSUER = 2;
+    THIS_UPDATA = 3;
+    NEXT_UPDATE = 4;
+    REVOKED_CERTIFICATES = 5;
+    CRL_EXTENSIONS = 6;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(VERSION, Asn1Integer.class),
@@ -63,7 +63,7 @@ public class TBSCertList extends Asn1SequenceType {
         new Asn1FieldInfo(THIS_UPDATA, Time.class),
         new Asn1FieldInfo(NEXT_UPDATE, Time.class),
         new Asn1FieldInfo(REVOKED_CERTIFICATES, RevokedCertificates.class),
-        new ExplicitField(CRL_EXTENSIONS, 0, Extensions.class)
+        new ExplicitField(MyEnum.CRL_EXTENSIONS, 0, Extensions.class)
     };
 
     public TBSCertList() {
@@ -71,7 +71,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public Asn1Integer getVersion() {
-        return getFieldAs(VERSION, Asn1Integer.class);
+        return getFieldAs(MyEnum.VERSION, Asn1Integer.class);
     }
 
     public void setVersion(Asn1Integer version) {
@@ -79,7 +79,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getSignature() {
-        return getFieldAs(SIGNATURE, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.SIGNATURE, AlgorithmIdentifier.class);
     }
 
     public void setSignature(AlgorithmIdentifier signature) {
@@ -87,7 +87,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public Name getIssuer() {
-        return getFieldAs(ISSUER, Name.class);
+        return getFieldAs(MyEnum.ISSUER, Name.class);
     }
 
     public void setIssuer(Name issuer) {
@@ -95,7 +95,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public Time getThisUpdate() {
-        return getFieldAs(THIS_UPDATA, Time.class);
+        return getFieldAs(MyEnum.THIS_UPDATA, Time.class);
     }
 
     public void setThisUpdata(Time thisUpdata) {
@@ -103,7 +103,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public Time getNextUpdate() {
-        return getFieldAs(NEXT_UPDATE, Time.class);
+        return getFieldAs(MyEnum.NEXT_UPDATE, Time.class);
     }
 
     public void setNextUpdate(Time nextUpdate) {
@@ -111,7 +111,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public RevokedCertificates getRevokedCertificates() {
-        return getFieldAs(REVOKED_CERTIFICATES, RevokedCertificates.class);
+        return getFieldAs(MyEnum.REVOKED_CERTIFICATES, RevokedCertificates.class);
     }
 
     public void setRevokedCertificates(RevokedCertificates revokedCertificates) {
@@ -119,7 +119,7 @@ public class TBSCertList extends Asn1SequenceType {
     }
 
     public Extensions getCrlExtensions() {
-        return getFieldAs(CRL_EXTENSIONS, Extensions.class);
+        return getFieldAs(MyEnum.CRL_EXTENSIONS, Extensions.class);
     }
 
     public void setCrlExtensions(Extensions crlExtensions) {

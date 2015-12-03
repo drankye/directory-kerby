@@ -26,9 +26,9 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
 import java.math.BigInteger;
 
 public class DSAParameter extends Asn1SequenceType {
-    private static final int P = 0;
-    private static final int Q = 1;
-    private static final int G = 2;
+    P = 0;
+    Q = 1;
+    G = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
         new Asn1FieldInfo(P, Asn1Integer.class),
@@ -41,7 +41,7 @@ public class DSAParameter extends Asn1SequenceType {
     }
 
     public BigInteger getP() {
-        return getFieldAs(P, Asn1Integer.class).getValue();
+        return getFieldAs(MyEnum.P, Asn1Integer.class).getValue();
     }
 
     public void setP(BigInteger p) {
@@ -49,7 +49,7 @@ public class DSAParameter extends Asn1SequenceType {
     }
 
     public BigInteger getQ() {
-        return getFieldAs(Q, Asn1Integer.class).getValue();
+        return getFieldAs(MyEnum.Q, Asn1Integer.class).getValue();
     }
 
     public void setQ(BigInteger q) {
@@ -57,7 +57,7 @@ public class DSAParameter extends Asn1SequenceType {
     }
 
     public BigInteger getG() {
-        return getFieldAs(G, Asn1Integer.class).getValue();
+        return getFieldAs(MyEnum.G, Asn1Integer.class).getValue();
     }
 
     public void setG(BigInteger g) {

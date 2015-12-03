@@ -30,8 +30,8 @@ import org.apache.kerby.asn1.type.Asn1SequenceType;
  * }
  */
 public class SubjectPublicKeyInfo extends Asn1SequenceType {
-    private static final int ALGORITHM = 0;
-    private static final int SUBJECT_PUBLIC_KEY = 1;
+    ALGORITHM = 0;
+    SUBJECT_PUBLIC_KEY = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(ALGORITHM, AlgorithmIdentifier.class),
@@ -43,7 +43,7 @@ public class SubjectPublicKeyInfo extends Asn1SequenceType {
     }
 
     public AlgorithmIdentifier getAlgorithm() {
-        return getFieldAs(ALGORITHM, AlgorithmIdentifier.class);
+        return getFieldAs(MyEnum.ALGORITHM, AlgorithmIdentifier.class);
     }
 
     public void setAlgorithm(AlgorithmIdentifier algorithm) {

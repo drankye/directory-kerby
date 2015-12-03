@@ -36,12 +36,12 @@ import org.apache.kerby.x509.type.SubjectKeyIdentifier;
  * </pre>
  */
 public class SignerIdentifier extends Asn1Choice {
-    private static final int ISSUER_AND_SERIAL_NUMBER = 0;
-    private static final int SUBJECT_KEY_IDENTIFIER = 1;
+    ISSUER_AND_SERIAL_NUMBER = 0;
+    SUBJECT_KEY_IDENTIFIER = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
         new Asn1FieldInfo(ISSUER_AND_SERIAL_NUMBER, IssuerAndSerialNumber.class),
-        new ExplicitField(SUBJECT_KEY_IDENTIFIER, 0, SubjectKeyIdentifier.class)
+        new ExplicitField(MyEnum.SUBJECT_KEY_IDENTIFIER, 0, SubjectKeyIdentifier.class)
     };
 
     public SignerIdentifier() {
@@ -49,7 +49,7 @@ public class SignerIdentifier extends Asn1Choice {
     }
 
     public IssuerAndSerialNumber getIssuerAndSerialNumber() {
-        return getFieldAs(ISSUER_AND_SERIAL_NUMBER, IssuerAndSerialNumber.class);
+        return getFieldAs(MyEnum.ISSUER_AND_SERIAL_NUMBER, IssuerAndSerialNumber.class);
     }
 
     public void setIssuerAndSerialNumber(IssuerAndSerialNumber issuerAndSerialNumber) {
@@ -57,7 +57,7 @@ public class SignerIdentifier extends Asn1Choice {
     }
 
     public SubjectKeyIdentifier getSubjectKeyIdentifier() {
-        return getFieldAs(SUBJECT_KEY_IDENTIFIER, SubjectKeyIdentifier.class);
+        return getFieldAs(MyEnum.SUBJECT_KEY_IDENTIFIER, SubjectKeyIdentifier.class);
     }
 
     public void setSubjectKeyIdentifier(SubjectKeyIdentifier subjectKeyIdentifier) {

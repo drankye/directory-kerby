@@ -29,7 +29,7 @@ import org.apache.kerby.asn1.Asn1FieldInfo;
  * </pre>
  */
 public class Name extends Asn1Choice {
-    private static final int RDN_SEQUENCE = 0;
+    RDN_SEQUENCE = 0;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
         new Asn1FieldInfo(RDN_SEQUENCE, RDNSequence.class),
@@ -40,7 +40,7 @@ public class Name extends Asn1Choice {
     }
 
     public RDNSequence getName() {
-        return getFieldAs(RDN_SEQUENCE, RDNSequence.class);
+        return getFieldAs(MyEnum.RDN_SEQUENCE, RDNSequence.class);
     }
 
     public void setName(RDNSequence name) {

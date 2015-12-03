@@ -36,16 +36,16 @@ import org.apache.kerby.kerberos.kerb.type.base.EncryptionKey;
  */
 public class EncAPRepPart extends KrbAppSequenceType {
     public static final int TAG = 27;
-    private static final int CTIME = 0;
-    private static final int CUSEC = 1;
-    private static final int SUBKEY = 2;
-    private static final int SEQ_NUMBER = 3;
+    CTIME = 0;
+    CUSEC = 1;
+    SUBKEY = 2;
+    SEQ_NUMBER = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(CTIME, 0, KerberosTime.class),
-            new ExplicitField(CUSEC, 1, Asn1Integer.class),
-            new ExplicitField(SUBKEY, 2, EncryptionKey.class),
-            new ExplicitField(SEQ_NUMBER, 3, Asn1Integer.class)
+            new ExplicitField(MyEnum.CTIME, 0, KerberosTime.class),
+            new ExplicitField(MyEnum.CUSEC, 1, Asn1Integer.class),
+            new ExplicitField(MyEnum.SUBKEY, 2, EncryptionKey.class),
+            new ExplicitField(MyEnum.SEQ_NUMBER, 3, Asn1Integer.class)
     };
 
     public EncAPRepPart() {
@@ -69,7 +69,7 @@ public class EncAPRepPart extends KrbAppSequenceType {
     }
 
     public EncryptionKey getSubkey() {
-        return getFieldAs(SUBKEY, EncryptionKey.class);
+        return getFieldAs(MyEnum.SUBKEY, EncryptionKey.class);
     }
 
     public void setSubkey(EncryptionKey subkey) {

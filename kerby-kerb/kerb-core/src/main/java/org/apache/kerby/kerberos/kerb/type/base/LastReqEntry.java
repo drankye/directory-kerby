@@ -32,12 +32,12 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class LastReqEntry extends KrbSequenceType {
-    private static final int LR_TYPE = 0;
-    private static final int LR_VALUE = 1;
+    LR_TYPE = 0;
+    LR_VALUE = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(LR_TYPE, 0, Asn1Integer.class),
-            new ExplicitField(LR_VALUE, 1, KerberosTime.class)
+            new ExplicitField(MyEnum.LR_TYPE, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.LR_VALUE, 1, KerberosTime.class)
     };
 
     public LastReqEntry() {
@@ -54,7 +54,7 @@ public class LastReqEntry extends KrbSequenceType {
     }
 
     public KerberosTime getLrValue() {
-        return getFieldAs(LR_VALUE, KerberosTime.class);
+        return getFieldAs(MyEnum.LR_VALUE, KerberosTime.class);
     }
 
     public void setLrValue(KerberosTime lrValue) {

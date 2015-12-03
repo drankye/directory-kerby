@@ -32,8 +32,8 @@ import org.apache.kerby.asn1.type.Asn1Type;
  * }
  */
 public class AlgorithmIdentifier extends Asn1SequenceType {
-    private static final int ALGORITHM = 0;
-    private static final int PARAMETERS = 1;
+    ALGORITHM = 0;
+    PARAMETERS = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(ALGORITHM, Asn1ObjectIdentifier.class),
@@ -45,7 +45,7 @@ public class AlgorithmIdentifier extends Asn1SequenceType {
     }
 
     public Asn1ObjectIdentifier getAlgorithm() {
-        return getFieldAs(ALGORITHM, Asn1ObjectIdentifier.class);
+        return getFieldAs(MyEnum.ALGORITHM, Asn1ObjectIdentifier.class);
     }
 
     public void setAlgorithm(Asn1ObjectIdentifier algorithm) {

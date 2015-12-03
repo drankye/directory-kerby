@@ -40,16 +40,16 @@ public class Ticket extends KrbAppSequenceType {
     public static final int TKT_KVNO = KrbConstant.KRB_V5;
     public static final int TAG = 1;
 
-    private static final int TKT_VNO = 0;
-    private static final int REALM = 1;
-    private static final int SNAME = 2;
-    private static final int ENC_PART = 3;
+    TKT_VNO = 0;
+    REALM = 1;
+    SNAME = 2;
+    ENC_PART = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(TKT_VNO, 0, Asn1Integer.class),
-            new ExplicitField(REALM, 1, KerberosString.class),
-            new ExplicitField(SNAME, 2, PrincipalName.class),
-            new ExplicitField(ENC_PART, 3, EncryptedData.class)
+            new ExplicitField(MyEnum.TKT_VNO, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.REALM, 1, KerberosString.class),
+            new ExplicitField(MyEnum.SNAME, 2, PrincipalName.class),
+            new ExplicitField(MyEnum.ENC_PART, 3, EncryptedData.class)
     };
 
     public Ticket() {
@@ -67,7 +67,7 @@ public class Ticket extends KrbAppSequenceType {
         setFieldAsInt(TKT_VNO, kvno);
     }
     public PrincipalName getSname() {
-        return getFieldAs(SNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.SNAME, PrincipalName.class);
     }
 
     public void setSname(PrincipalName sname) {
@@ -83,7 +83,7 @@ public class Ticket extends KrbAppSequenceType {
     }
 
     public EncryptedData getEncryptedEncPart() {
-        return getFieldAs(ENC_PART, EncryptedData.class);
+        return getFieldAs(MyEnum.ENC_PART, EncryptedData.class);
     }
 
     public void setEncryptedEncPart(EncryptedData encryptedEncPart) {

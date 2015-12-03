@@ -43,14 +43,14 @@ import org.apache.kerby.kerberos.kerb.type.pa.PaData;
  }
  */
 public class KrbFastFinished extends KrbSequenceType {
-    private static final int FAST_OPTIONS = 0;
-    private static final int PADATA = 1;
-    private static final int REQ_BODY = 2;
+    FAST_OPTIONS = 0;
+    PADATA = 1;
+    REQ_BODY = 2;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(FAST_OPTIONS, KrbFastArmor.class),
-            new ExplicitField(PADATA, PaData.class),
-            new ExplicitField(REQ_BODY, EncryptedData.class),
+            new ExplicitField(MyEnum.FAST_OPTIONS, KrbFastArmor.class),
+            new ExplicitField(MyEnum.PADATA, PaData.class),
+            new ExplicitField(MyEnum.REQ_BODY, EncryptedData.class),
     };
 
     public KrbFastFinished() {
@@ -58,7 +58,7 @@ public class KrbFastFinished extends KrbSequenceType {
     }
 
     public KrbFastArmor getArmor() {
-        return getFieldAs(FAST_OPTIONS, KrbFastArmor.class);
+        return getFieldAs(MyEnum.FAST_OPTIONS, KrbFastArmor.class);
     }
 
     public void setArmor(KrbFastArmor armor) {
@@ -66,7 +66,7 @@ public class KrbFastFinished extends KrbSequenceType {
     }
 
     public CheckSum getReqChecksum() {
-        return getFieldAs(PADATA, CheckSum.class);
+        return getFieldAs(MyEnum.PADATA, CheckSum.class);
     }
 
     public void setReqChecksum(CheckSum checkSum) {
@@ -74,7 +74,7 @@ public class KrbFastFinished extends KrbSequenceType {
     }
 
     public EncryptedData getEncFastReq() {
-        return getFieldAs(REQ_BODY, EncryptedData.class);
+        return getFieldAs(MyEnum.REQ_BODY, EncryptedData.class);
     }
 
     public void setEncFastReq(EncryptedData encFastReq) {

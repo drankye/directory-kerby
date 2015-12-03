@@ -42,16 +42,16 @@ import org.apache.kerby.kerberos.kerb.type.KrbSequenceType;
  }
  */
 public class PkAuthenticator extends KrbSequenceType {
-    private static final int CUSEC = 0;
-    private static final int CTIME = 1;
-    private static final int NONCE = 2;
-    private static final int PA_CHECKSUM = 3;
+    CUSEC = 0;
+    CTIME = 1;
+    NONCE = 2;
+    PA_CHECKSUM = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(CUSEC, Asn1Integer.class),
-            new ExplicitField(CTIME, KerberosTime.class),
-            new ExplicitField(NONCE, Asn1Integer.class),
-            new ExplicitField(PA_CHECKSUM, Asn1OctetString.class)
+            new ExplicitField(MyEnum.CUSEC, Asn1Integer.class),
+            new ExplicitField(MyEnum.CTIME, KerberosTime.class),
+            new ExplicitField(MyEnum.NONCE, Asn1Integer.class),
+            new ExplicitField(MyEnum.PA_CHECKSUM, Asn1OctetString.class)
     };
 
     public PkAuthenticator() {

@@ -45,32 +45,32 @@ import org.apache.kerby.kerberos.kerb.type.KerberosTime;
  }
  */
 public class KrbError extends KrbMessage {
-    private static final int CTIME = 2;
-    private static final int CUSEC = 3;
-    private static final int STIME = 4;
-    private static final int SUSEC = 5;
-    private static final int ERROR_CODE = 6;
-    private static final int CREALM = 7;
-    private static final int CNAME = 8;
-    private static final int REALM = 9;
-    private static final int SNAME = 10;
-    private static final int ETEXT = 11;
-    private static final int EDATA = 12;
+    CTIME = 2;
+    CUSEC = 3;
+    STIME = 4;
+    SUSEC = 5;
+    ERROR_CODE = 6;
+    CREALM = 7;
+    CNAME = 8;
+    REALM = 9;
+    SNAME = 10;
+    ETEXT = 11;
+    EDATA = 12;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PVNO, Asn1Integer.class),
-            new ExplicitField(MSG_TYPE, Asn1Integer.class),
-            new ExplicitField(CTIME, KerberosTime.class),
-            new ExplicitField(CUSEC, Asn1Integer.class),
-            new ExplicitField(STIME, KerberosTime.class),
-            new ExplicitField(SUSEC, Asn1Integer.class),
-            new ExplicitField(ERROR_CODE, Asn1Integer.class),
-            new ExplicitField(CREALM, KerberosString.class),
-            new ExplicitField(CNAME, PrincipalName.class),
-            new ExplicitField(REALM, KerberosString.class),
-            new ExplicitField(SNAME, PrincipalName.class),
-            new ExplicitField(ETEXT, KerberosString.class),
-            new ExplicitField(EDATA, Asn1OctetString.class)
+            new ExplicitField(MyEnum.PVNO, Asn1Integer.class),
+            new ExplicitField(MyEnum.MSG_TYPE, Asn1Integer.class),
+            new ExplicitField(MyEnum.CTIME, KerberosTime.class),
+            new ExplicitField(MyEnum.CUSEC, Asn1Integer.class),
+            new ExplicitField(MyEnum.STIME, KerberosTime.class),
+            new ExplicitField(MyEnum.SUSEC, Asn1Integer.class),
+            new ExplicitField(MyEnum.ERROR_CODE, Asn1Integer.class),
+            new ExplicitField(MyEnum.CREALM, KerberosString.class),
+            new ExplicitField(MyEnum.CNAME, PrincipalName.class),
+            new ExplicitField(MyEnum.REALM, KerberosString.class),
+            new ExplicitField(MyEnum.SNAME, PrincipalName.class),
+            new ExplicitField(MyEnum.ETEXT, KerberosString.class),
+            new ExplicitField(MyEnum.EDATA, Asn1OctetString.class)
     };
 
     public KrbError() {
@@ -78,7 +78,7 @@ public class KrbError extends KrbMessage {
     }
 
     public KerberosTime getCtime() {
-        return getFieldAs(CTIME, KerberosTime.class);
+        return getFieldAs(MyEnum.CTIME, KerberosTime.class);
     }
 
     public void setCtime(KerberosTime ctime) {
@@ -94,7 +94,7 @@ public class KrbError extends KrbMessage {
     }
 
     public KerberosTime getStime() {
-        return getFieldAs(STIME, KerberosTime.class);
+        return getFieldAs(MyEnum.STIME, KerberosTime.class);
     }
 
     public void setStime(KerberosTime stime) {
@@ -126,7 +126,7 @@ public class KrbError extends KrbMessage {
     }
 
     public PrincipalName getCname() {
-        return getFieldAs(CNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.CNAME, PrincipalName.class);
     }
 
     public void setCname(PrincipalName sname) {
@@ -134,7 +134,7 @@ public class KrbError extends KrbMessage {
     }
 
     public PrincipalName getSname() {
-        return getFieldAs(SNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.SNAME, PrincipalName.class);
     }
 
     public void setSname(PrincipalName sname) {

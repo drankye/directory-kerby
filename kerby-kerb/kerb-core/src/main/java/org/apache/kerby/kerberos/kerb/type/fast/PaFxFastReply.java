@@ -29,10 +29,10 @@ import org.apache.kerby.asn1.ExplicitField;
  }
  */
 public class PaFxFastReply extends Asn1Choice {
-    private static final int ARMORED_DATA = 0;
+    ARMORED_DATA = 0;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(ARMORED_DATA, KrbFastArmoredRep.class)
+            new ExplicitField(MyEnum.ARMORED_DATA, KrbFastArmoredRep.class)
     };
 
     public PaFxFastReply() {
@@ -40,7 +40,7 @@ public class PaFxFastReply extends Asn1Choice {
     }
 
     public KrbFastArmoredRep getFastArmoredRep() {
-        return getFieldAs(ARMORED_DATA, KrbFastArmoredRep.class);
+        return getFieldAs(MyEnum.ARMORED_DATA, KrbFastArmoredRep.class);
     }
 
     public void setFastArmoredRep(KrbFastArmoredRep fastArmoredRep) {

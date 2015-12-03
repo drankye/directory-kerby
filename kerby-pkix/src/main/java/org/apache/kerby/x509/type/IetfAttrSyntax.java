@@ -43,7 +43,7 @@ public class IetfAttrSyntax extends Asn1SequenceType {
     public static final int VALUES = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-        new ExplicitField(POLICY_AUTHORITY, GeneralNames.class),
+        new ExplicitField(MyEnum.POLICY_AUTHORITY, GeneralNames.class),
         new Asn1FieldInfo(VALUES, IetfAttrSyntaxChoices.class)
     };
 
@@ -52,7 +52,7 @@ public class IetfAttrSyntax extends Asn1SequenceType {
     }
 
     public GeneralNames getPolicyAuthority() {
-        return getFieldAs(POLICY_AUTHORITY, GeneralNames.class);
+        return getFieldAs(MyEnum.POLICY_AUTHORITY, GeneralNames.class);
     }
 
     public void setPolicyAuthority(GeneralNames policyAuthority) {
@@ -60,7 +60,7 @@ public class IetfAttrSyntax extends Asn1SequenceType {
     }
 
     public IetfAttrSyntaxChoices getValues() {
-        return getFieldAs(VALUES, IetfAttrSyntaxChoices.class);
+        return getFieldAs(MyEnum.VALUES, IetfAttrSyntaxChoices.class);
     }
 
     public void setValues(IetfAttrSyntaxChoices values) {

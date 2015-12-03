@@ -35,12 +35,12 @@ import org.apache.kerby.x509.type.IssuerSerial;
  *
  */
 public class Subject extends Asn1Choice {
-    private static final int BASE_CERTIFICATE_ID = 0;
-    private static final int SUBJECT_NAME = 1;
+    BASE_CERTIFICATE_ID = 0;
+    SUBJECT_NAME = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[]{
-            new ExplicitField(BASE_CERTIFICATE_ID, IssuerSerial.class),
-            new ExplicitField(SUBJECT_NAME, GeneralNames.class)
+            new ExplicitField(MyEnum.BASE_CERTIFICATE_ID, IssuerSerial.class),
+            new ExplicitField(MyEnum.SUBJECT_NAME, GeneralNames.class)
     };
 
     public Subject() {
@@ -48,7 +48,7 @@ public class Subject extends Asn1Choice {
     }
 
     public IssuerSerial getBaseCertificateID() {
-        return getFieldAs(BASE_CERTIFICATE_ID, IssuerSerial.class);
+        return getFieldAs(MyEnum.BASE_CERTIFICATE_ID, IssuerSerial.class);
     }
 
     public void setBaseCertificateID(IssuerSerial baseCertificateID) {
@@ -56,7 +56,7 @@ public class Subject extends Asn1Choice {
     }
 
     public GeneralNames getSubjectName() {
-        return getFieldAs(SUBJECT_NAME, GeneralNames.class);
+        return getFieldAs(MyEnum.SUBJECT_NAME, GeneralNames.class);
     }
 
     public void setSubjectName(GeneralNames subjectName) {

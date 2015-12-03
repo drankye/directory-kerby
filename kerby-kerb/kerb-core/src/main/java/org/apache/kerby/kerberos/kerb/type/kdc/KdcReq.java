@@ -38,14 +38,14 @@ import org.apache.kerby.kerberos.kerb.type.pa.PaDataEntry;
  }
  */
 public class KdcReq extends KrbMessage {
-    private static final int PADATA = 2;
-    private static final int REQ_BODY = 3;
+    PADATA = 2;
+    REQ_BODY = 3;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(PVNO, 1, Asn1Integer.class),
-            new ExplicitField(MSG_TYPE, 2, Asn1Integer.class),
-            new ExplicitField(PADATA, 3, PaData.class),
-            new ExplicitField(REQ_BODY, 4, KdcReqBody.class)
+            new ExplicitField(MyEnum.PVNO, 1, Asn1Integer.class),
+            new ExplicitField(MyEnum.MSG_TYPE, 2, Asn1Integer.class),
+            new ExplicitField(MyEnum.PADATA, 3, PaData.class),
+            new ExplicitField(MyEnum.REQ_BODY, 4, KdcReqBody.class)
     };
 
     public KdcReq(KrbMessageType msgType) {
@@ -53,7 +53,7 @@ public class KdcReq extends KrbMessage {
     }
 
     public PaData getPaData() {
-        return getFieldAs(PADATA, PaData.class);
+        return getFieldAs(MyEnum.PADATA, PaData.class);
     }
 
     public void setPaData(PaData paData) {
@@ -68,7 +68,7 @@ public class KdcReq extends KrbMessage {
     }
 
     public KdcReqBody getReqBody() {
-        return getFieldAs(REQ_BODY, KdcReqBody.class);
+        return getFieldAs(MyEnum.REQ_BODY, KdcReqBody.class);
     }
 
     public void setReqBody(KdcReqBody reqBody) {

@@ -45,26 +45,26 @@ import org.apache.kerby.kerberos.kerb.type.base.PrincipalName;
  */
 public class Authenticator extends KrbAppSequenceType {
     public static final int TAG = 2;
-    private static final int AUTHENTICATOR_VNO = 0;
-    private static final int CREALM = 1;
-    private static final int CNAME = 2;
-    private static final int CKSUM = 3;
-    private static final int CUSEC = 4;
-    private static final int CTIME = 5;
-    private static final int SUBKEY = 6;
-    private static final int SEQ_NUMBER = 7;
-    private static final int AUTHORIZATION_DATA = 8;
+    AUTHENTICATOR_VNO = 0;
+    CREALM = 1;
+    CNAME = 2;
+    CKSUM = 3;
+    CUSEC = 4;
+    CTIME = 5;
+    SUBKEY = 6;
+    SEQ_NUMBER = 7;
+    AUTHORIZATION_DATA = 8;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(AUTHENTICATOR_VNO, 0, Asn1Integer.class),
-            new ExplicitField(CREALM, 1, KerberosString.class),
-            new ExplicitField(CNAME, 2, PrincipalName.class),
-            new ExplicitField(CKSUM, 3, CheckSum.class),
-            new ExplicitField(CUSEC, 4, Asn1Integer.class),
-            new ExplicitField(CTIME, 5, KerberosTime.class),
-            new ExplicitField(SUBKEY, 6, EncryptionKey.class),
-            new ExplicitField(SEQ_NUMBER, 7, Asn1Integer.class),
-            new ExplicitField(AUTHORIZATION_DATA, 8, AuthorizationData.class)
+            new ExplicitField(MyEnum.AUTHENTICATOR_VNO, 0, Asn1Integer.class),
+            new ExplicitField(MyEnum.CREALM, 1, KerberosString.class),
+            new ExplicitField(MyEnum.CNAME, 2, PrincipalName.class),
+            new ExplicitField(MyEnum.CKSUM, 3, CheckSum.class),
+            new ExplicitField(MyEnum.CUSEC, 4, Asn1Integer.class),
+            new ExplicitField(MyEnum.CTIME, 5, KerberosTime.class),
+            new ExplicitField(MyEnum.SUBKEY, 6, EncryptionKey.class),
+            new ExplicitField(MyEnum.SEQ_NUMBER, 7, Asn1Integer.class),
+            new ExplicitField(MyEnum.AUTHORIZATION_DATA, 8, AuthorizationData.class)
     };
 
     public Authenticator() {
@@ -88,7 +88,7 @@ public class Authenticator extends KrbAppSequenceType {
     }
 
     public PrincipalName getCname() {
-        return getFieldAs(CNAME, PrincipalName.class);
+        return getFieldAs(MyEnum.CNAME, PrincipalName.class);
     }
 
     public void setCname(PrincipalName cname) {
@@ -96,7 +96,7 @@ public class Authenticator extends KrbAppSequenceType {
     }
 
     public CheckSum getCksum() {
-        return getFieldAs(CKSUM, CheckSum.class);
+        return getFieldAs(MyEnum.CKSUM, CheckSum.class);
     }
 
     public void setCksum(CheckSum cksum) {
@@ -120,7 +120,7 @@ public class Authenticator extends KrbAppSequenceType {
     }
 
     public EncryptionKey getSubKey() {
-        return getFieldAs(SUBKEY, EncryptionKey.class);
+        return getFieldAs(MyEnum.SUBKEY, EncryptionKey.class);
     }
 
     public void setSubKey(EncryptionKey subKey) {
@@ -136,7 +136,7 @@ public class Authenticator extends KrbAppSequenceType {
     }
 
     public AuthorizationData getAuthorizationData() {
-        return getFieldAs(AUTHORIZATION_DATA, AuthorizationData.class);
+        return getFieldAs(MyEnum.AUTHORIZATION_DATA, AuthorizationData.class);
     }
 
     public void setAuthorizationData(AuthorizationData authorizationData) {

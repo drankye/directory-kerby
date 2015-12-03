@@ -20,6 +20,7 @@
 package org.apache.kerby.kerberos.kerb.type.base;
 
 import org.apache.kerby.asn1.Asn1FieldInfo;
+import org.apache.kerby.asn1.EnumType;
 import org.apache.kerby.asn1.type.Asn1Integer;
 import org.apache.kerby.asn1.ExplicitField;
 import org.apache.kerby.kerberos.kerb.type.KerberosStrings;
@@ -36,11 +37,24 @@ import java.util.List;
  }
  */
 public class PrincipalName extends KrbSequenceType {
-    private static final int NAME_TYPE = 0;
-    private static final int NAME_STRING = 1;
+    private static enum MyEnum implements EnumType {
+
+        @Override
+        public int getValue() {
+            return ordinal();
+        }
+
+        @Override
+        public String getName() {
+            return name();
+        }
+    }
+
+    NAME_TYPE = 0;
+    NAME_STRING = 1;
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
-            new ExplicitField(NAME_TYPE, Asn1Integer.class),
-            new ExplicitField(NAME_STRING, KerberosStrings.class)
+            new ExplicitField(MyEnum.NAME_TYPE, Asn1Integer.class),
+            new ExplicitField(MyEnum.NAME_STRING, KerberosStrings.class)
     };
     private String realm;
 
@@ -108,7 +122,7 @@ public class PrincipalName extends KrbSequenceType {
     }
 
     public List<String> getNameStrings() {
-        KerberosStrings krbStrings = getFieldAs(NAME_STRING, KerberosStrings.class);
+        KerberosStrings krbStrings = getFieldAs(MyEnum.NAME_STRING, KerberosStrings.class);
         if (krbStrings != null) {
             return krbStrings.getAsStrings();
         }

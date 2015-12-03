@@ -30,8 +30,8 @@ import org.apache.kerby.asn1.ImplicitField;
  * }
  */
 public class RevocationInfoChoice extends Asn1Choice {
-    private static final int CRL = 0;
-    private static final int OTHER = 1;
+    CRL = 0;
+    OTHER = 1;
 
     static Asn1FieldInfo[] fieldInfos = new Asn1FieldInfo[] {
             new Asn1FieldInfo(CRL, CertificateList.class),
@@ -43,7 +43,7 @@ public class RevocationInfoChoice extends Asn1Choice {
     }
 
     public CertificateList getCRL() {
-        return getFieldAs(CRL, CertificateList.class);
+        return getFieldAs(MyEnum.CRL, CertificateList.class);
     }
 
     public void setCRL(CertificateList crl) {
@@ -51,7 +51,7 @@ public class RevocationInfoChoice extends Asn1Choice {
     }
 
     public OtherRevocationInfoFormat getOther() {
-        return getFieldAs(OTHER, OtherRevocationInfoFormat.class);
+        return getFieldAs(MyEnum.OTHER, OtherRevocationInfoFormat.class);
     }
 
     public void setOther(OtherRevocationInfoFormat other) {

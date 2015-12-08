@@ -19,12 +19,10 @@
  */
 package org.apache.kerby.asn1;
 
-import org.apache.kerby.asn1.util.IOUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class TestAsn1Dump {
 
@@ -44,7 +42,7 @@ public class TestAsn1Dump {
 
     @Test
     public void testDump1WithCompressedData() throws IOException {
-        String hexStr = readTxtFile("/compressed-data.txt");
+        String hexStr = TestUtil.readStringFromTxtFile("/compressed-data.txt");
         try {
             Asn1.dump(hexStr);
         } catch (Exception e) {
@@ -55,7 +53,7 @@ public class TestAsn1Dump {
 
     @Test
     public void testDump1WithSignedData() throws IOException {
-        String hexStr = readTxtFile("/signed-data.txt");
+        String hexStr = TestUtil.readStringFromTxtFile("/signed-data.txt");
         try {
             Asn1.dump(hexStr);
         } catch (Exception e) {
@@ -66,22 +64,12 @@ public class TestAsn1Dump {
 
     @Test
     public void testDump1WithDerData() throws IOException {
-        byte[] data = readBinFile("/der-data.dat");
+        byte[] data = TestUtil.readBytesFromBinFile("/der-data.dat");
         try {
             Asn1.dump(data);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
         }
-    }
-
-    static String readTxtFile(String resource) throws IOException {
-        InputStream is = TestAsn1Dump.class.getResourceAsStream(resource);
-        return IOUtil.readInput(is);
-    }
-
-    static byte[] readBinFile(String resource) throws IOException {
-        InputStream is = TestAsn1Dump.class.getResourceAsStream(resource);
-        return IOUtil.readInputStream(is);
     }
 }

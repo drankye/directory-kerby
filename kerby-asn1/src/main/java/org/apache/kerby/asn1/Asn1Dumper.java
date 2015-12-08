@@ -19,8 +19,9 @@
  */
 package org.apache.kerby.asn1;
 
+import org.apache.kerby.asn1.parse.ParsingResult;
 import org.apache.kerby.asn1.type.Asn1Any;
-import org.apache.kerby.asn1.type.Asn1ParsingItem;
+import org.apache.kerby.asn1.parse.ParsingItem;
 import org.apache.kerby.asn1.type.Asn1Simple;
 import org.apache.kerby.asn1.type.Asn1Type;
 
@@ -69,13 +70,28 @@ public final class Asn1Dumper {
             indent(indents).append("Null");
         } else if (value instanceof Asn1Simple) {
             indent(indents).append(value.toString());
-        }  else if (value instanceof Asn1ParsingItem) {
+        }  else if (value instanceof ParsingItem) {
             indent(indents).append(value.toString());
         } else if (value instanceof Asn1Dumpable) {
             Asn1Dumpable dumpable = (Asn1Dumpable) value;
             dumpable.dumpWith(this, indents);
         } else if (value instanceof Asn1Any) {
             indent(indents).append("<Any>");
+        } else {
+            indent(indents).append("<Unknown>");
+        }
+
+        return this;
+    }
+
+    public Asn1Dumper dumpType(int indents, ParsingResult value) {
+        if (value == null) {
+            indent(indents).append("Null");
+        } if (value instanceof ParsingItem) {
+            indent(indents).append(value.toString());
+        } else if (value instanceof Asn1Dumpable) {
+            Asn1Dumpable dumpable = (Asn1Dumpable) value;
+            dumpable.dumpWith(this, indents);
         } else {
             indent(indents).append("<Unknown>");
         }

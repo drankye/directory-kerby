@@ -199,7 +199,7 @@ public abstract class Asn1Object implements Asn1Type {
         return tag.isSpecific();
     }
 
-    protected boolean isEOC() {
+    public boolean isEOC() {
         return tag().isEOC();
     }
 

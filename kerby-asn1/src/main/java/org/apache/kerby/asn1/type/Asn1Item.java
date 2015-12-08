@@ -21,8 +21,8 @@ package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Factory;
 import org.apache.kerby.asn1.Asn1Header;
-import org.apache.kerby.asn1.Tag;
 import org.apache.kerby.asn1.TaggingOption;
+import org.apache.kerby.asn1.parse.ParsingResult;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -44,20 +44,11 @@ import java.nio.ByteBuffer;
  * holder or hodler type.
  */
 public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
-    private final Asn1ParsingResult parsingResult;
+    private final ParsingResult parsingResult;
 
-    public Asn1Item(Asn1ParsingResult parsingResult) {
+    public Asn1Item(ParsingResult parsingResult) {
         super(parsingResult.tag());
         this.parsingResult = parsingResult;
-    }
-
-    public Asn1Item(Tag tag, Asn1ParsingResult parsingResult) {
-        super(tag);
-        this.parsingResult = parsingResult;
-    }
-
-    public Asn1ParsingResult getParsingResult() {
-        return parsingResult;
     }
 
     @Override
@@ -65,7 +56,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
         if (getValue() != null) {
             return ((AbstractAsn1Type<?>) getValue()).encodingBodyLength();
         }
-        return parsingResult.encodingBodyLength();
+        return parsingResult.getBodyLength();
     }
 
     @Override
@@ -77,7 +68,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
 
     @Override
     protected void decodeBody(Asn1Header header) throws IOException {
-        this.parsingResult.decodeBody(header);
+        // NOT USED
     }
 
     public boolean isFullyDecoded() {
@@ -129,7 +120,8 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
         ((Asn1Object) value).decode(parsingResult.getHeader());
     }
 
-    public void decodeValueWith(Asn1Type value, TaggingOption taggingOption) throws IOException {
+    public void decodeValueWith(Asn1Type value,
+                                TaggingOption taggingOption) throws IOException {
         if (!isTagSpecific()) {
             throw new IllegalArgumentException(
                 "Attempting to decode non-tagged value using tagging way");

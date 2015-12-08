@@ -17,35 +17,31 @@
  *  under the License. 
  *  
  */
-package org.apache.kerby.cms;
+package org.apache.kerby.asn1;
 
-import org.apache.kerby.asn1.Asn1;
-import org.apache.kerby.cms.type.CompressedData;
-import org.apache.kerby.cms.type.ContentInfo;
-import org.junit.Assert;
-import org.junit.Test;
+import org.apache.kerby.asn1.util.HexUtil;
+import org.apache.kerby.asn1.util.IOUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 
-public class TestCompressedData extends CmsTestBase {
+public final class TestUtil {
+    private TestUtil() {
 
-    //@Test
-    public void testDump1WithCompressedData() throws IOException {
-        byte[] data = readDataFile("/compressed-data.txt");
-        try {
-            Asn1.dump(data);
+    }
 
-            ContentInfo contentInfo = new ContentInfo();
-            contentInfo.decode(data);
-            Asn1.dump(contentInfo);
+    static byte[] readBytesFromTxtFile(String resource) throws IOException {
+        String hexStr = readStringFromTxtFile(resource);
+        return HexUtil.hex2bytes(hexStr);
+    }
 
-            CompressedData compressedData =
-                contentInfo.getContentAs(CompressedData.class);
-            Asn1.dump(compressedData);
+    static String readStringFromTxtFile(String resource) throws IOException {
+        InputStream is = TestUtil.class.getResourceAsStream(resource);
+        return IOUtil.readInput(is);
+    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assert.fail();
-        }
+    static byte[] readBytesFromBinFile(String resource) throws IOException {
+        InputStream is = TestUtil.class.getResourceAsStream(resource);
+        return IOUtil.readInputStream(is);
     }
 }

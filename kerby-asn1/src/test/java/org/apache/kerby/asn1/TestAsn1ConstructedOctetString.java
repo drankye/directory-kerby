@@ -17,35 +17,20 @@
  *  under the License. 
  *  
  */
-package org.apache.kerby.cms;
+package org.apache.kerby.asn1;
 
-import org.apache.kerby.asn1.Asn1;
-import org.apache.kerby.cms.type.CompressedData;
-import org.apache.kerby.cms.type.ContentInfo;
-import org.junit.Assert;
+import org.apache.kerby.asn1.type.Asn1OctetString;
 import org.junit.Test;
 
 import java.io.IOException;
 
-public class TestCompressedData extends CmsTestBase {
+public class TestAsn1ConstructedOctetString {
 
     //@Test
-    public void testDump1WithCompressedData() throws IOException {
-        byte[] data = readDataFile("/compressed-data.txt");
-        try {
-            Asn1.dump(data);
-
-            ContentInfo contentInfo = new ContentInfo();
-            contentInfo.decode(data);
-            Asn1.dump(contentInfo);
-
-            CompressedData compressedData =
-                contentInfo.getContentAs(CompressedData.class);
-            Asn1.dump(compressedData);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assert.fail();
-        }
+    public void testDecoding() throws IOException {
+        byte[] data = TestUtil.readBytesFromTxtFile("/constructed-octet-string.txt");
+        Asn1OctetString octetString = new Asn1OctetString();
+        octetString.decode(data);
+        Asn1.dump(octetString);
     }
 }

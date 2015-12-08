@@ -91,6 +91,10 @@ public class Asn1Header {
         return length != -1;
     }
 
+    public boolean checkBodyFinished(int pos) {
+        return getBodyEnd() != -1 && pos >= getBodyEnd();
+    }
+
     public byte[] readBodyBytes() {
         ByteBuffer bodyBuffer = getBodyBuffer();
         byte[] result = new byte[bodyBuffer.remaining()];

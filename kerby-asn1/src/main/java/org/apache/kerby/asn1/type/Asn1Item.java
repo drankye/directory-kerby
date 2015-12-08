@@ -20,7 +20,6 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Factory;
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.TaggingOption;
 import org.apache.kerby.asn1.parse.ParsingResult;
 
@@ -67,7 +66,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
     }
 
     @Override
-    protected void decodeBody(Asn1Header header) throws IOException {
+    protected void decodeBody(ParsingResult parsingResult) throws IOException {
         // NOT USED
     }
 
@@ -117,7 +116,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
     public void decodeValueWith(Asn1Type value) throws IOException {
         setValue(value);
         value.useDefinitiveLength(isDefinitiveLength());
-        ((Asn1Object) value).decode(parsingResult.getHeader());
+        ((Asn1Object) value).decode(parsingResult);
     }
 
     public void decodeValueWith(Asn1Type value,
@@ -126,7 +125,7 @@ public class Asn1Item extends AbstractAsn1Type<Asn1Type> {
             throw new IllegalArgumentException(
                 "Attempting to decode non-tagged value using tagging way");
         }
-        ((Asn1Object) value).taggedDecode(parsingResult.getHeader(), taggingOption);
+        ((Asn1Object) value).taggedDecode(parsingResult, taggingOption);
         setValue(value);
     }
 }

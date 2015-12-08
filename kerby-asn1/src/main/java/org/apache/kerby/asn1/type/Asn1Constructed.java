@@ -21,9 +21,7 @@ package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Dumpable;
 import org.apache.kerby.asn1.Asn1Dumper;
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.Tag;
-import org.apache.kerby.asn1.parse.Asn1Parser;
 import org.apache.kerby.asn1.parse.ParsingContainer;
 import org.apache.kerby.asn1.parse.ParsingResult;
 
@@ -85,11 +83,10 @@ public class Asn1Constructed
     }
 
     @Override
-    protected void decodeBody(Asn1Header header) throws IOException {
-        ParsingContainer container = new ParsingContainer(header);
-        Asn1Parser.parse(container);
+    protected void decodeBody(ParsingResult parsingResult) throws IOException {
+        ParsingContainer container = (ParsingContainer) parsingResult;
 
-        for (ParsingResult result : container.getParsingResults()) {
+        for (ParsingResult result : container.getChildren()) {
             if (!result.isEOC()) {
                 Asn1Item item = new Asn1Item(result);
                 if (item.isSimple() && !isLazy()) {

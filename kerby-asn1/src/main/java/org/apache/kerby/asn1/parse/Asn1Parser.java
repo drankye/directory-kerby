@@ -19,10 +19,7 @@
  */
 package org.apache.kerby.asn1.parse;
 
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.Tag;
-import org.apache.kerby.asn1.util.Asn1Reader;
-import org.apache.kerby.asn1.util.Asn1Reader2;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -38,7 +35,7 @@ public class Asn1Parser {
 
     public static void parse(Asn1Header header,
                       ParsingContainer parent) throws IOException {
-        Asn1Reader reader = new Asn1Reader2(header.getBuffer());
+        Asn1Reader reader = new Asn1Reader(header.getBuffer());
         int pos = header.getBodyStart();
         while (true) {
             reader.setPosition(pos);
@@ -65,7 +62,7 @@ public class Asn1Parser {
     }
 
     public static ParsingResult parse(ByteBuffer content) throws IOException {
-        Asn1Reader reader = new Asn1Reader2(content);
+        Asn1Reader reader = new Asn1Reader(content);
         return parse(reader);
     }
 

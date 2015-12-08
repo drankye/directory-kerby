@@ -20,8 +20,8 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1FieldInfo;
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.UniversalTag;
+import org.apache.kerby.asn1.parse.ParsingResult;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -60,8 +60,8 @@ public class Asn1Any extends AbstractAsn1Type<Asn1Type> {
     }
 
     @Override
-    protected void decodeBody(Asn1Header header) throws IOException {
-        ((Asn1Object) getValue()).decodeBody(header);
+    protected void decodeBody(ParsingResult parsingResult) throws IOException {
+        ((Asn1Object) getValue()).decodeBody(parsingResult);
     }
 
     @Override

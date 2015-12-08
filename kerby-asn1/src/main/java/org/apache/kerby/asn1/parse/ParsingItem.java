@@ -19,8 +19,6 @@
  */
 package org.apache.kerby.asn1.parse;
 
-import org.apache.kerby.asn1.Asn1Header;
-
 public class ParsingItem extends ParsingResult {
 
     public ParsingItem(Asn1Header header) {

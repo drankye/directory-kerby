@@ -17,7 +17,9 @@
  *  under the License. 
  *  
  */
-package org.apache.kerby.asn1;
+package org.apache.kerby.asn1.parse;
+
+import org.apache.kerby.asn1.Tag;
 
 import java.nio.ByteBuffer;
 
@@ -93,12 +95,5 @@ public class Asn1Header {
 
     public boolean checkBodyFinished(int pos) {
         return getBodyEnd() != -1 && pos >= getBodyEnd();
-    }
-
-    public byte[] readBodyBytes() {
-        ByteBuffer bodyBuffer = getBodyBuffer();
-        byte[] result = new byte[bodyBuffer.remaining()];
-        bodyBuffer.get(result);
-        return result;
     }
 }

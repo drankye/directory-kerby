@@ -19,9 +19,10 @@
  */
 package org.apache.kerby.asn1.parse;
 
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.Tag;
 import org.apache.kerby.asn1.util.Asn1Util;
+
+import java.nio.ByteBuffer;
 
 public abstract class ParsingResult {
     protected Asn1Header header;
@@ -70,4 +71,10 @@ public abstract class ParsingResult {
         return header.getBodyStart() - getHeaderLength();
     }
 
+    public byte[] readBodyBytes() {
+        ByteBuffer bodyBuffer = header.getBodyBuffer();
+        byte[] result = new byte[bodyBuffer.remaining()];
+        bodyBuffer.get(result);
+        return result;
+    }
 }

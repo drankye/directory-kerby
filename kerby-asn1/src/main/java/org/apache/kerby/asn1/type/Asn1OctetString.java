@@ -19,8 +19,8 @@
  */
 package org.apache.kerby.asn1.type;
 
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.UniversalTag;
+import org.apache.kerby.asn1.parse.ParsingResult;
 
 import java.io.IOException;
 
@@ -44,8 +44,8 @@ public class Asn1OctetString extends Asn1Simple<byte[]> {
     }
 
     @Override
-    protected void decodeBody(Asn1Header header) throws IOException {
-        setValue(header.readBodyBytes());
+    protected void decodeBody(ParsingResult parsingResult) throws IOException {
+        setValue(parsingResult.readBodyBytes());
     }
 
     @Override

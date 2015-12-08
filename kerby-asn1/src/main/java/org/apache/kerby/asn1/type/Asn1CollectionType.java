@@ -22,10 +22,10 @@ package org.apache.kerby.asn1.type;
 import org.apache.kerby.asn1.Asn1Dumpable;
 import org.apache.kerby.asn1.Asn1Dumper;
 import org.apache.kerby.asn1.Asn1FieldInfo;
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.EnumType;
 import org.apache.kerby.asn1.TaggingOption;
 import org.apache.kerby.asn1.UniversalTag;
+import org.apache.kerby.asn1.parse.ParsingResult;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -82,12 +82,12 @@ public abstract class Asn1CollectionType
     }
 
     @Override
-    protected void decodeBody(Asn1Header header) throws IOException {
+    protected void decodeBody(ParsingResult parsingResult) throws IOException {
         checkAndInitFields();
 
         Asn1Collection coll = createCollection();
         coll.setLazy(true);
-        coll.decodeBody(header);
+        coll.decodeBody(parsingResult);
 
         int lastPos = -1, foundPos = -1;
         List<Asn1Type> decodedItems = coll.getValue();

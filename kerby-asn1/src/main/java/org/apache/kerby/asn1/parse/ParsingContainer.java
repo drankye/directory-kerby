@@ -21,7 +21,6 @@ package org.apache.kerby.asn1.parse;
 
 import org.apache.kerby.asn1.Asn1Dumpable;
 import org.apache.kerby.asn1.Asn1Dumper;
-import org.apache.kerby.asn1.Asn1Header;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,29 +31,33 @@ import java.util.List;
 public class ParsingContainer
     extends ParsingResult implements Asn1Dumpable {
 
-    private List<ParsingResult> parsingResults = new ArrayList<>();
+    private List<ParsingResult> children = new ArrayList<>();
 
     public ParsingContainer(Asn1Header header) {
         super(header);
     }
 
-    public List<ParsingResult> getParsingResults() {
-        return parsingResults;
+    public ParsingContainer(ParsingResult parsingResult) {
+        super(parsingResult.header);
+    }
+
+    public List<ParsingResult> getChildren() {
+        return children;
     }
 
     public void addItem(ParsingResult value) {
-        parsingResults.add(value);
+        children.add(value);
     }
 
     public void clear() {
-        parsingResults.clear();
+        children.clear();
     }
 
     @Override
     public void dumpWith(Asn1Dumper dumper, int indents) {
         dumper.indent(indents).append(toString()).newLine();
 
-        for (ParsingResult aObj : parsingResults) {
+        for (ParsingResult aObj : children) {
             dumper.dumpType(indents + 4, aObj).newLine();
         }
     }

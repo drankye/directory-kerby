@@ -20,8 +20,8 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Dumper;
-import org.apache.kerby.asn1.Asn1Header;
 import org.apache.kerby.asn1.UniversalTag;
+import org.apache.kerby.asn1.parse.ParsingResult;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -38,8 +38,8 @@ public abstract class Asn1CollectionOf<T extends Asn1Type>
     }
 
     @Override
-    protected void decodeBody(Asn1Header header) throws IOException {
-        super.decodeBody(header);
+    protected void decodeBody(ParsingResult parsingResult) throws IOException {
+        super.decodeBody(parsingResult);
 
         decodeElements();
     }

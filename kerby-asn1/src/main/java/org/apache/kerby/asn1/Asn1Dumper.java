@@ -19,9 +19,9 @@
  */
 package org.apache.kerby.asn1;
 
+import org.apache.kerby.asn1.parse.ParsingItem;
 import org.apache.kerby.asn1.parse.ParsingResult;
 import org.apache.kerby.asn1.type.Asn1Any;
-import org.apache.kerby.asn1.parse.ParsingItem;
 import org.apache.kerby.asn1.type.Asn1Simple;
 import org.apache.kerby.asn1.type.Asn1Type;
 

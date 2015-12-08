@@ -21,8 +21,8 @@ package org.apache.kerby.asn1;
 
 import org.apache.kerby.asn1.parse.Asn1Parser;
 import org.apache.kerby.asn1.parse.ParsingResult;
+import org.apache.kerby.asn1.type.Asn1Item;
 import org.apache.kerby.asn1.type.Asn1Type;
-import org.apache.kerby.asn1.util.Asn1Reader1;
 import org.apache.kerby.asn1.util.HexUtil;
 
 import java.io.IOException;
@@ -46,17 +46,19 @@ public final class Asn1 {
         return value.encode();
     }
 
-    public static Asn1Header decodeHeader(ByteBuffer content) throws IOException {
-        Asn1Reader1 reader = new Asn1Reader1(content);
-        return reader.readHeader();
-    }
-
     public static Asn1Type decode(byte[] content) throws IOException {
         return decode(ByteBuffer.wrap(content));
     }
 
     public static Asn1Type decode(ByteBuffer content) throws IOException {
-        return null; //Asn1Parser.parse(content);
+        ParsingResult parsingResult = Asn1Parser.parse(content);
+        Asn1Item item = new Asn1Item(parsingResult);
+        if (item.isSimple()) {
+            item.decodeValueAsSimple();
+        } else {
+            item.decodeValueAsCollection();
+        }
+        return item.getValue();
     }
 
     public static ParsingResult parse(byte[] content) throws IOException {

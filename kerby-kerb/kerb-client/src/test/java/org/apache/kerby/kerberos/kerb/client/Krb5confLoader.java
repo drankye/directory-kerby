@@ -22,14 +22,8 @@ package org.apache.kerby.kerberos.kerb.client;
 import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 public class Krb5confLoader {
     class Value {

@@ -43,14 +43,14 @@ public class Krb5Parser {
      *  for the same key, there can be only one value.
      * @throws IOException
      */
-    /*public static void main (String[] args) throws IOException {
+    public static void main (String[] args) throws IOException {
         Krb5Parser k = new Krb5Parser(new File ("/krb5.conf"));
         k.load();
         k.getSections();
-        //k.dump();
+        k.dump();
         //Map<String, Object> m = k.getSection("realms");
         //k.printEntry(m, 0);
-    }*/
+    }
 
     public void load() throws IOException {
         InputStream is = Krb5confLoader.class.getResourceAsStream("/" + krb5conf.toString());
@@ -108,7 +108,7 @@ public class Krb5Parser {
             }
             else {
                 System.out.println("error format!");
-                System.exit(0);//???
+                System.exit(0);/////////////////
             }
         }
     }
@@ -127,7 +127,6 @@ public class Krb5Parser {
             }
             if (value instanceof Map) {
                 System.out.println(key + " = {");
-                //count++;
                 printEntry((Map)value, count + 1);
                 for (int i = 0; i < count; i++) {
                     System.out.print("\t");
@@ -138,13 +137,9 @@ public class Krb5Parser {
     }
 
     private void insertSections (String line, BufferedReader br, Map<String, Object> items) throws IOException {
-        //System.out.println("lineS: " + line);
         while (line.startsWith("[")) {
-            //System.out.println("encounter a section2");
-            //HashMap<String, Object> section = new HashMap<String, Object> ();
             //it is the same as items
             String sectionName = line.substring(1, line.length() - 1);
-            //System.out.println(sectionName);
             Map<String, Object> entries = new HashMap<String, Object> ();
             line = br.readLine();
             if (line != null) {
@@ -162,34 +157,28 @@ public class Krb5Parser {
 
     /*recursively go through the key-value pairs of a section*/
     private String insertEntries (String line, BufferedReader br, Map<String, Object> entries) throws IOException {
-        //System.out.println("line: " + line);
         if (line == null) {
             return line;
         }
         if (line.startsWith("[")) {
-            //System.out.println("encounter a section1");
             return line;
         }
         if (line.startsWith("}")) {
-            //System.out.println("suppose to be here");
             line = br.readLine();
             if (line != null) {
                 line = line.trim();
-                //line = insertKV(line, br, hm);
             }
             return line;
         }
         if (line.length() == 0) {
             line = br.readLine();
             if (line != null) {
-                //System.out.println("an enter");
                 line = line.trim();
                 line = insertEntries(line, br, entries);
             }
             return line;
         }
         /*some special cases above*/
-        //System.out.println ("before kv: " + line);
         String[] kv = line.split("=");
         if (kv.length > 2) {
             System.out.println("key_value error!");//report error
@@ -199,7 +188,6 @@ public class Krb5Parser {
         kv[1] = kv[1].trim();
 
         if (kv[1].startsWith("{")) {//multi key-value
-            //Map<String, Object> multiEntry = new HashMap<String, Object> ();
             //key = kv[0], kv[1] = "{"
             //value is a hashmap in next line
             Map<String, Object> meValue = new HashMap<String, Object> ();

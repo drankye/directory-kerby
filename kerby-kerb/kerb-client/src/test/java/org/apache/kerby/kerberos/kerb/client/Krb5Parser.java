@@ -19,39 +19,63 @@
  */
 package org.apache.kerby.kerberos.kerb.client;
 
-import jdk.internal.org.objectweb.asm.tree.analysis.Value;
-import org.junit.Test;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import java.io.*;
-import java.util.*;
-
+/**
+ * A parser to parse krb5.conf format file.
+ * A main function is attached to enable the tool to work independently.
+ */
 public class Krb5Parser {
     private File krb5conf;
+    /**
+     * The variable items regards section name as a key of Map, and
+     * contents of a section as a value with Object type.
+     * In specific, the value is a recursive Map type, which can be
+     * in the form of both Map<String, String> and Map<String, Object>,
+     * depending on contents of the section.
+     */
     private Map<String, Object> items;
 
+    /**
+     * The constructor.
+     * @param confFile the input krb5.conf file.
+     */
     public Krb5Parser(File confFile) {
         krb5conf = confFile;
         items = null;
     }
 
-
     /**
-     * main function for test.
-     * because of using hashmap:
-     *  sections are disordered.
-     *  entries are disordered.
-     *  for the same key, there can be only one value.
+     * Main function for test.
+     * Be able to output krb5.conf to console hierarchically.
+     * Because of using HashMap:
+     * Sections are disordered,
+     * Entries are disordered,
+     * And the same key, there can be only one value.
      * @throws IOException
      */
     public static void main (String[] args) throws IOException {
         Krb5Parser k = new Krb5Parser(new File ("/krb5.conf"));
         k.load();
-        k.getSections();
+        //k.getSections();
         k.dump();
         //Map<String, Object> m = k.getSection("realms");
         //k.printEntry(m, 0);
     }
 
+    /**
+     * Load the krb5.conf into a member variable, which is a Map.
+     * @throws IOException
+     */
     public void load() throws IOException {
         InputStream is = Krb5confLoader.class.getResourceAsStream("/" + krb5conf.toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -60,20 +84,25 @@ public class Krb5Parser {
         String originLine = br.readLine();
         while (originLine != null) {
             String line = originLine.trim();
-            if (line.startsWith("#")) {//comments
+            //parse through comments
+            if (line.startsWith("#")) {
                 originLine = br.readLine();
             }
-            else if (line.startsWith("[")) {//section begin
-                insertSections(line, br, items);//add a section
+            //section begin
+            else if (line.startsWith("[")) {
+                insertSections(line, br, items);
                 originLine = br.readLine();
             }
             else {
-                System.out.println("watch out! " + originLine);
-                originLine = br.readLine();
+                throw new RuntimeException("Unable to parse:" + originLine);
             }
         }
     }
 
+    /**
+     * Get all the names of sections in a list.
+     * @return a list of section names.
+     */
     public List<String> getSections() {
         List<String> al = new ArrayList<String>();
         Iterator iter = items.entrySet().iterator();
@@ -85,77 +114,50 @@ public class Krb5Parser {
         return al;
     }
 
+    /**
+     * Get the contents of a section given the section name.
+     * @param sectionName the name of a section
+     * @return a Map of section contents
+     */
     public Map<String, Object> getSection(String sectionName) {
         Map<String, Object> sections = (HashMap)items.get(sectionName);
         return sections;
     }
 
-    public void dump() {//print to console
+    /**
+     * Print all the meaningful contents of the krb5.conf on the console.
+     * Comments are ignored.
+     * Hierarchy is considered.
+     * Attention that the order of sections and the order inside a section
+     * will be different to the original file, due to the use of HashMap.
+     */
+    public void dump() {
         printSection(items);
-    }
-
-    private void printSection (Map<String, Object> map) {
-        Iterator iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            String key = (String)entry.getKey();
-            Object value = entry.getValue();
-            System.out.println("[" + key + "]");
-
-            if (value instanceof Map) {
-                int count = 0;
-                printEntry((Map)value, count);
-            }
-            else {
-                System.out.println("error format!");
-                System.exit(0);/////////////////
-            }
-        }
-    }
-
-    private void printEntry (Map<String, Object> map, int count) {
-        Iterator iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            String key = (String)entry.getKey();
-            Object value = entry.getValue();
-           for (int i = 0; i < count; i++) {
-                System.out.print("\t");
-           }
-            if (value instanceof String) {
-                System.out.println(key + " = " + (String)value);
-            }
-            if (value instanceof Map) {
-                System.out.println(key + " = {");
-                printEntry((Map)value, count + 1);
-                for (int i = 0; i < count; i++) {
-                    System.out.print("\t");
-                }
-                System.out.println("}");
-            }
-        }
     }
 
     private void insertSections (String line, BufferedReader br, Map<String, Object> items) throws IOException {
         while (line.startsWith("[")) {
-            //it is the same as items
             String sectionName = line.substring(1, line.length() - 1);
             Map<String, Object> entries = new HashMap<String, Object> ();
             line = br.readLine();
             if (line != null) {
                 line = line.trim();
-                line = insertEntries(line, br, entries);//obtain all the entries of a section
-                items.put(sectionName, entries);//add a section to items.
-                //watch out that sections are disordered!!!
+                //obtain all the entries of a section
+                line = insertEntries(line, br, entries);
+                //add a section to items
+                items.put(sectionName, entries);
             }
+            //line has been modified after the recursive.
             if (line == null) {
-                //System.out.println ("-----------------line == null--------------------" );
+                //the end of file
                 break;
             }
         }
     }
 
-    /*recursively go through the key-value pairs of a section*/
+    /**
+     * recursively go through the key-value pairs of a section
+     * */
     private String insertEntries (String line, BufferedReader br, Map<String, Object> entries) throws IOException {
         if (line == null) {
             return line;
@@ -181,15 +183,15 @@ public class Krb5Parser {
         /*some special cases above*/
         String[] kv = line.split("=");
         if (kv.length > 2) {
-            System.out.println("key_value error!");//report error
-            System.exit(0);//////////////////
+            throw new RuntimeException("Unable to parse:" + line);
         }
         kv[0] = kv[0].trim();
         kv[1] = kv[1].trim();
 
-        if (kv[1].startsWith("{")) {//multi key-value
+        //multi key-value
+        if (kv[1].startsWith("{")) {
             //key = kv[0], kv[1] = "{"
-            //value is a hashmap in next line
+            //value is a HashMap in next line
             Map<String, Object> meValue = new HashMap<String, Object> ();
             line = br.readLine();
             if (line != null) {
@@ -199,7 +201,8 @@ public class Krb5Parser {
                 line = insertEntries(line, br, entries);
             }
         }
-        else {//single key-value
+        //single key-value
+        else {
             entries.put(kv[0], kv[1]);
             line = br.readLine();
             if (line != null) {
@@ -208,5 +211,46 @@ public class Krb5Parser {
             }
         }
         return line;
+    }
+
+    private void printSection (Map<String, Object> map) {
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            String key = (String)entry.getKey();
+            Object value = entry.getValue();
+            System.out.println("[" + key + "]");
+
+            if (value instanceof Map) {
+                int count = 0;
+                printEntry((Map)value, count);
+            }
+            else {
+                throw new RuntimeException("Unable to print contents of [" + key + "]");
+            }
+        }
+    }
+
+    private void printEntry (Map<String, Object> map, int count) {
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            String key = (String)entry.getKey();
+            Object value = entry.getValue();
+            for (int i = 0; i < count; i++) {
+                System.out.print("\t");
+            }
+            if (value instanceof String) {
+                System.out.println(key + " = " + (String)value);
+            }
+            if (value instanceof Map) {
+                System.out.println(key + " = {");
+                printEntry((Map)value, count + 1);
+                for (int i = 0; i < count; i++) {
+                    System.out.print("\t");
+                }
+                System.out.println("}");
+            }
+        }
     }
 }

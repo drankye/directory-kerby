@@ -20,7 +20,6 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Binder;
-import org.apache.kerby.asn1.Asn1Dumper;
 import org.apache.kerby.asn1.UniversalTag;
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
 
@@ -82,16 +81,8 @@ public abstract class Asn1CollectionOf<T extends Asn1Type>
             T result = (T) eleType.newInstance();
             return result;
         } catch (Exception e) {
-            throw new IOException("Failed to create element type", e);
-        }
-    }
-
-    @Override
-    public void dumpWith(Asn1Dumper dumper, int indents) {
-        dumper.dumpTypeInfo(indents, getClass());
-
-        for (Asn1Type aObj : getValue()) {
-            dumper.dumpType(indents + 4, aObj).newLine();
+            throw new IOException("Failed to create element type, "
+                + "no default constructor? " + eleType.getName(), e);
         }
     }
 }

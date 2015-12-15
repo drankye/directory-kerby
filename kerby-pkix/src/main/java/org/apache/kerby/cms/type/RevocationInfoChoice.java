@@ -23,6 +23,8 @@ import org.apache.kerby.asn1.EnumType;
 import org.apache.kerby.asn1.type.Asn1Choice;
 import org.apache.kerby.asn1.Asn1FieldInfo;
 import org.apache.kerby.asn1.ImplicitField;
+import org.apache.kerby.x509.type.CertificateList;
+
 import static org.apache.kerby.cms.type.RevocationInfoChoice.MyEnum.*;
 
 /**
@@ -57,18 +59,18 @@ public class RevocationInfoChoice extends Asn1Choice {
     }
 
     public CertificateList getCRL() {
-        return getFieldAs(CRL, CertificateList.class);
+        return getChoiceValueAs(CRL, CertificateList.class);
     }
 
     public void setCRL(CertificateList crl) {
-        setFieldAs(CRL, crl);
+        setChoiceValue(CRL, crl);
     }
 
     public OtherRevocationInfoFormat getOther() {
-        return getFieldAs(OTHER, OtherRevocationInfoFormat.class);
+        return getChoiceValueAs(OTHER, OtherRevocationInfoFormat.class);
     }
 
     public void setOther(OtherRevocationInfoFormat other) {
-        setFieldAs(OTHER, other);
+        setChoiceValue(OTHER, other);
     }
 }

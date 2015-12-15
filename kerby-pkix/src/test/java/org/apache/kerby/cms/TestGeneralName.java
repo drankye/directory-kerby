@@ -17,26 +17,34 @@
  *  under the License.
  *
  */
-package org.apache.kerby.kerberos.kerb.codec;
+package org.apache.kerby.cms;
 
+import org.apache.kerby.asn1.Asn1;
 import org.apache.kerby.asn1.util.HexUtil;
-import org.apache.kerby.asn1.util.IOUtil;
+import org.apache.kerby.x509.type.GeneralName;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-public class CodecTestUtil {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    static byte[] readBinaryFile(String path) throws IOException {
-        InputStream is = CodecTestUtil.class.getResourceAsStream(path);
-        byte[] bytes = new byte[is.available()];
-        is.read(bytes);
-        return bytes;
-    }
+public class TestGeneralName {
+    private static final byte[] IPV4 = HexUtil.hex2bytes("87040a090800");
 
-    static byte[] readDataFile(String resource) throws IOException {
-        InputStream is = CodecTestUtil.class.getResourceAsStream(resource);
-        String hexStr = IOUtil.readInput(is);
-        return HexUtil.hex2bytes(hexStr);
+    @Test
+    public void testIpAddress() throws IOException {
+        try {
+            Asn1.dump(IPV4, true);
+            GeneralName generalName = new GeneralName();
+            generalName.decode(IPV4);
+            assertThat(generalName.getIPAddress()).isNotNull();
+            byte[] addressBytes = generalName.getIPAddress();
+            // "10.9.8.0"
+            assertThat(addressBytes).isEqualTo(new byte[] {0x0a, 0x09, 0x08, 0x00});
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
     }
 }

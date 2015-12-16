@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.kerby.kerberos.kerb.client;
+package org.apache.kerby.kerberos.kerb.common;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,31 +45,9 @@ public class Krb5Parser {
      */
     private Map<String, Object> items;
 
-    /**
-     * The constructor.
-     * @param confFile the input krb5.conf file.
-     */
     public Krb5Parser(File confFile) {
         krb5conf = confFile;
         items = null;
-    }
-
-    /**
-     * Main function for test.
-     * Be able to output krb5.conf to console hierarchically.
-     * Because of using HashMap:
-     * Sections are disordered,
-     * Entries are disordered,
-     * And the same key, there can be only one value.
-     * @throws IOException
-     */
-    public static void main (String[] args) throws IOException {
-        Krb5Parser k = new Krb5Parser(new File ("/krb5.conf"));
-        k.load();
-        //k.getSections();
-        k.dump();
-        //Map<String, Object> m = k.getSection("realms");
-        //k.printEntry(m, 0);
     }
 
     /**
@@ -77,18 +55,18 @@ public class Krb5Parser {
      * @throws IOException
      */
     public void load() throws IOException {
-        InputStream is = Krb5confLoader.class.getResourceAsStream("/" + krb5conf.toString());
+        InputStream is = Krb5Parser.class.getResourceAsStream("/" + krb5conf.toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         items = new HashMap<String, Object> ();
 
         String originLine = br.readLine();
         while (originLine != null) {
             String line = originLine.trim();
-            //parse through comments
+            /*parse through comments*/
             if (line.startsWith("#")) {
                 originLine = br.readLine();
             }
-            //section begin
+            /*parse through sections*/
             else if (line.startsWith("[")) {
                 insertSections(line, br, items);
                 originLine = br.readLine();
@@ -142,14 +120,12 @@ public class Krb5Parser {
             line = br.readLine();
             if (line != null) {
                 line = line.trim();
-                //obtain all the entries of a section
                 line = insertEntries(line, br, entries);
-                //add a section to items
                 items.put(sectionName, entries);
             }
-            //line has been modified after the recursive.
+            /*line has been modified after the recursive.*/
             if (line == null) {
-                //the end of file
+                /*the end of file*/
                 break;
             }
         }
@@ -188,10 +164,8 @@ public class Krb5Parser {
         kv[0] = kv[0].trim();
         kv[1] = kv[1].trim();
 
-        //multi key-value
+        /*multi key-value*/
         if (kv[1].startsWith("{")) {
-            //key = kv[0], kv[1] = "{"
-            //value is a HashMap in next line
             Map<String, Object> meValue = new HashMap<String, Object> ();
             line = br.readLine();
             if (line != null) {
@@ -201,7 +175,7 @@ public class Krb5Parser {
                 line = insertEntries(line, br, entries);
             }
         }
-        //single key-value
+        /*single key-value*/
         else {
             entries.put(kv[0], kv[1]);
             line = br.readLine();

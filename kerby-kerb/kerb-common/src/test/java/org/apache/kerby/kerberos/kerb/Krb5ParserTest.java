@@ -23,6 +23,8 @@ import org.apache.kerby.kerberos.kerb.common.Krb5Parser;
 import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +38,8 @@ public class Krb5ParserTest {
 
     @Test
     public void test() throws IOException {
-        Krb5Parser k = new Krb5Parser(new File("/krb5.conf"));
+        URL url = Krb5ParserTest.class.getResource("/krb5.conf");
+        Krb5Parser k = new Krb5Parser(new File(url.getFile()));
         k.load();
 
         assertThat(k.getSections().size()).isEqualTo(4);

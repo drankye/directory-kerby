@@ -21,8 +21,8 @@ package org.apache.kerby.kerberos.kerb.common;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,8 +54,7 @@ public class Krb5Parser {
      * @throws IOException
      */
     public void load() throws IOException {
-        InputStream is = Krb5Parser.class.getResourceAsStream("/" + krb5conf.toString());
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(krb5conf)));
         items = new HashMap<String, Object>();
 
         String originLine = br.readLine();

@@ -48,7 +48,5 @@ public class Krb5ParserTest {
         assertThat(m1.get("v4_instance_convert") instanceof  Map).isTrue();
         Map<String, Object> m2 = (Map)m1.get("v4_instance_convert");
         assertThat(m2.get("mit")).isEqualTo("mit.edu");
-
     }
-
 }

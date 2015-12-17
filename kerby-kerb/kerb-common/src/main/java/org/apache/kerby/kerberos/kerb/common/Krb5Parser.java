@@ -32,7 +32,6 @@ import java.util.Map;
 
 /**
  * A parser to parse krb5.conf format file.
- * A main function is attached to enable the tool to work independently.
  */
 public class Krb5Parser {
     private File krb5conf;
@@ -75,6 +74,7 @@ public class Krb5Parser {
                 throw new RuntimeException("Unable to parse:" + originLine);
             }
         }
+        br.close();
     }
 
     /**
@@ -82,13 +82,7 @@ public class Krb5Parser {
      * @return a list of section names.
      */
     public List<String> getSections() {
-        List<String> al = new ArrayList<String>();
-        Iterator iter = items.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            String key = (String)entry.getKey();
-            al.add(key);
-        }
+        List<String> al = new ArrayList<String>(items.keySet());
         return al;
     }
 

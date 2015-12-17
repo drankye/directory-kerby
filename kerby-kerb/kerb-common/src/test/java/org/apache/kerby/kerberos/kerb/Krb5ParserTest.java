@@ -23,7 +23,6 @@ import org.apache.kerby.kerberos.kerb.common.Krb5Parser;
 import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Map;
 

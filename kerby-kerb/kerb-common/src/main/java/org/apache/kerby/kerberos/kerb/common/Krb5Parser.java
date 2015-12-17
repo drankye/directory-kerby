@@ -56,7 +56,7 @@ public class Krb5Parser {
     public void load() throws IOException {
         InputStream is = Krb5Parser.class.getResourceAsStream("/" + krb5conf.toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        items = new HashMap<String, Object> ();
+        items = new HashMap<String, Object>();
 
         String originLine = br.readLine();
         while (originLine != null) {
@@ -64,13 +64,10 @@ public class Krb5Parser {
             /*parse through comments*/
             if (line.startsWith("#")) {
                 originLine = br.readLine();
-            }
-            /*parse through sections*/
-            else if (line.startsWith("[")) {
+            }   else if (line.startsWith("[")) {
                 insertSections(line, br, items);
                 originLine = br.readLine();
-            }
-            else {
+            }   else {
                 throw new RuntimeException("Unable to parse:" + originLine);
             }
         }
@@ -92,7 +89,7 @@ public class Krb5Parser {
      * @return a Map of section contents
      */
     public Map<String, Object> getSection(String sectionName) {
-        Map<String, Object> sections = (HashMap)items.get(sectionName);
+        Map<String, Object> sections = (HashMap) items.get(sectionName);
         return sections;
     }
 
@@ -107,10 +104,10 @@ public class Krb5Parser {
         printSection(items);
     }
 
-    private void insertSections (String line, BufferedReader br, Map<String, Object> items) throws IOException {
+    private void insertSections(String line, BufferedReader br, Map<String, Object> items) throws IOException {
         while (line.startsWith("[")) {
             String sectionName = line.substring(1, line.length() - 1);
-            Map<String, Object> entries = new HashMap<String, Object> ();
+            Map<String, Object> entries = new HashMap<String, Object>();
             line = br.readLine();
             if (line != null) {
                 line = line.trim();
@@ -128,7 +125,7 @@ public class Krb5Parser {
     /**
      * recursively go through the key-value pairs of a section
      * */
-    private String insertEntries (String line, BufferedReader br, Map<String, Object> entries) throws IOException {
+    private String insertEntries(String line, BufferedReader br, Map<String, Object> entries) throws IOException {
         if (line == null) {
             return line;
         }
@@ -158,9 +155,8 @@ public class Krb5Parser {
         kv[0] = kv[0].trim();
         kv[1] = kv[1].trim();
 
-        /*multi key-value*/
         if (kv[1].startsWith("{")) {
-            Map<String, Object> meValue = new HashMap<String, Object> ();
+            Map<String, Object> meValue = new HashMap<String, Object>();
             line = br.readLine();
             if (line != null) {
                 line = line.trim();
@@ -168,9 +164,7 @@ public class Krb5Parser {
                 entries.put(kv[0], meValue);
                 line = insertEntries(line, br, entries);
             }
-        }
-        /*single key-value*/
-        else {
+        }   else {
             entries.put(kv[0], kv[1]);
             line = br.readLine();
             if (line != null) {
@@ -181,39 +175,38 @@ public class Krb5Parser {
         return line;
     }
 
-    private void printSection (Map<String, Object> map) {
+    private void printSection(Map<String, Object> map) {
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
-            String key = (String)entry.getKey();
+            String key = (String) entry.getKey();
             Object value = entry.getValue();
             System.out.println("[" + key + "]");
 
             if (value instanceof Map) {
                 int count = 0;
-                printEntry((Map)value, count);
-            }
-            else {
+                printEntry((Map) value, count);
+            }   else {
                 throw new RuntimeException("Unable to print contents of [" + key + "]");
             }
         }
     }
 
-    private void printEntry (Map<String, Object> map, int count) {
+    private void printEntry(Map<String, Object> map, int count) {
         Iterator iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry) iter.next();
-            String key = (String)entry.getKey();
+            String key = (String) entry.getKey();
             Object value = entry.getValue();
             for (int i = 0; i < count; i++) {
                 System.out.print("\t");
             }
             if (value instanceof String) {
-                System.out.println(key + " = " + (String)value);
+                System.out.println(key + " = " + (String) value);
             }
             if (value instanceof Map) {
                 System.out.println(key + " = {");
-                printEntry((Map)value, count + 1);
+                printEntry((Map) value, count + 1);
                 for (int i = 0; i < count; i++) {
                     System.out.print("\t");
                 }

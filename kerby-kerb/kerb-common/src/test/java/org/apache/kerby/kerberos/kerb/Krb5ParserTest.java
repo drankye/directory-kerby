@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class Krb5ParserTest {
 
     @Test
-    public void Krb5ParserTest () throws IOException {
+    public void test() throws IOException {
         Krb5Parser k = new Krb5Parser(new File("/krb5.conf"));
         k.load();
 
@@ -44,9 +44,9 @@ public class Krb5ParserTest {
 
         assertThat(k.getSection("libdefaults").get("dns_lookup_kdc")).isEqualTo("false");
         assertThat(k.getSection("realms").get("ATHENA.MIT.EDU") instanceof Map).isTrue();
-        Map<String, Object> m1 = (Map)k.getSection("realms").get("ATHENA.MIT.EDU");
+        Map<String, Object> m1 = (Map) k.getSection("realms").get("ATHENA.MIT.EDU");
         assertThat(m1.get("v4_instance_convert") instanceof  Map).isTrue();
-        Map<String, Object> m2 = (Map)m1.get("v4_instance_convert");
+        Map<String, Object> m2 = (Map) m1.get("v4_instance_convert");
         assertThat(m2.get("mit")).isEqualTo("mit.edu");
     }
 }

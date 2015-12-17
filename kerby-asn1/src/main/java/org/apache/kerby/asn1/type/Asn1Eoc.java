@@ -62,6 +62,10 @@ public final class Asn1Eoc extends Asn1Simple<Object> {
 
     @Override
     public String toString() {
-        return "EOC";
+        String typeStr = tag().typeStr() + " ["
+            + "tag=" + tag()
+            + ", len=" + getHeaderLength() + "+" + getBodyLength()
+            + "] ";
+        return typeStr + "eoc";
     }
 }

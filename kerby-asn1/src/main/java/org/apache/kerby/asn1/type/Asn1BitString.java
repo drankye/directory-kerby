@@ -92,8 +92,17 @@ public class Asn1BitString extends Asn1Simple<byte[]> {
 
     @Override
     public String toString() {
-        String valueStr =
-            (getValue() != null ? (getValue().length + " bytes") : "null");
-        return valueStr;
+        String typeStr = tag().typeStr() + " ["
+            + "tag=" + tag()
+            + ", len=" + getHeaderLength() + "+" + getBodyLength()
+            + "] ";
+
+        byte[] valueBytes = getValue();
+        String valueStr = "<null>";
+        if (valueBytes != null) {
+            valueStr = "<" + valueBytes.length + " bytes>";
+        }
+
+        return typeStr + valueStr;
     }
 }

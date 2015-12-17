@@ -157,10 +157,14 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
 
     @Override
     public int encodingLength() {
-        return encodingHeaderLength() + getBodyLength();
+        return getHeaderLength() + getBodyLength();
     }
 
-    private int getBodyLength() {
+    protected int getHeaderLength() {
+        return encodingHeaderLength();
+    }
+
+    protected int getBodyLength() {
         if (bodyLength == -1) {
             bodyLength = encodingBodyLength();
             if (!isDefinitiveLength()) {

@@ -213,8 +213,12 @@ public abstract class Asn1Simple<T> extends AbstractAsn1Type<T> {
 
     @Override
     public String toString() {
+        String typeStr = tag().typeStr() + " ["
+            + "tag=" + tag()
+            + ", len=" + getHeaderLength() + "+" + getBodyLength()
+            + "] ";
         String valueStr =
             (getValue() != null ? String.valueOf(getValue()) : "null");
-        return valueStr;
+        return typeStr + valueStr;
     }
 }

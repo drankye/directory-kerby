@@ -107,8 +107,8 @@ public class TestPkinitAnonymousAsReqCodec {
 
         // Test encode PaPkAsReq
         //TO BE FIXED
-//        byte[] encodedPaPkAsReq = paPkAsReq.encode();
-//        PaPkAsReq decodedPaPkAsReq = new PaPkAsReq();
-//        decodedPaPkAsReq.decode(encodedPaPkAsReq);
+        byte[] encodedPaPkAsReq = paPkAsReq.encode();
+        PaPkAsReq decodedPaPkAsReq = new PaPkAsReq();
+        decodedPaPkAsReq.decode(encodedPaPkAsReq);
     }
 }

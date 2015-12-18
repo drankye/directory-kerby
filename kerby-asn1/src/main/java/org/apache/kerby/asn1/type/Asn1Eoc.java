@@ -21,8 +21,10 @@ package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.UniversalTag;
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
+import org.apache.kerby.asn1.util.Asn1Util;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * To represent Asn1 End Of Content type
@@ -33,6 +35,12 @@ public final class Asn1Eoc extends Asn1Simple<Object> {
 
     private Asn1Eoc() {
         super(UniversalTag.EOC, null);
+    }
+
+    @Override
+    public void encode(ByteBuffer buffer) {
+        buffer.put((byte) 0);
+        buffer.put((byte) 0);
     }
 
     @Override

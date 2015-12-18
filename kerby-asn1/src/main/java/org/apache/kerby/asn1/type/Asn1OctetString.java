@@ -41,7 +41,10 @@ public class Asn1OctetString extends Asn1Simple<byte[]> {
 
     @Override
     protected int encodingBodyLength() {
-        return getValue().length;
+        if (getValue() != null) {
+            return getValue().length;
+        }
+        return 0;
     }
 
     @Override

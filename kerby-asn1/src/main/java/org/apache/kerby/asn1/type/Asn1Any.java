@@ -22,6 +22,7 @@ package org.apache.kerby.asn1.type;
 import org.apache.kerby.asn1.Asn1Binder;
 import org.apache.kerby.asn1.Asn1FieldInfo;
 import org.apache.kerby.asn1.Tag;
+import org.apache.kerby.asn1.TaggingOption;
 import org.apache.kerby.asn1.UniversalTag;
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
 
@@ -60,6 +61,41 @@ public class Asn1Any extends AbstractAsn1Type<Asn1Type> {
             return field.tag();
         }
         return super.tag();
+    }
+
+    @Override
+    public byte[] encode() {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue != null) {
+            if (fieldInfo.isTagged()) {
+                TaggingOption taggingOption =
+                        fieldInfo.getTaggingOption();
+                return theValue.taggedEncode(taggingOption);
+            } else {
+                return theValue.encode();
+            }
+        } else if (field != null) {
+            return super.encode();
+        }
+        return null;
+    }
+
+    @Override
+    public void encode(ByteBuffer buffer) {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue != null) {
+            if (fieldInfo.isTagged()) {
+                TaggingOption taggingOption =
+                        fieldInfo.getTaggingOption();
+                theValue.taggedEncode(buffer, taggingOption);
+            } else {
+                theValue.encode(buffer);
+            }
+        } else if (field != null) {
+            super.encode(buffer);
+        }
     }
 
     @Override

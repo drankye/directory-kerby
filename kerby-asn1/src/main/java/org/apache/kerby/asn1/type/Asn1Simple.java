@@ -79,7 +79,10 @@ public abstract class Asn1Simple<T> extends AbstractAsn1Type<T> {
 
     @Override
     protected void encodeBody(ByteBuffer buffer) {
-        buffer.put(encodeBody());
+        byte[] body = encodeBody();
+        if (body != null) {
+            buffer.put(body);
+        }
     }
 
     @Override

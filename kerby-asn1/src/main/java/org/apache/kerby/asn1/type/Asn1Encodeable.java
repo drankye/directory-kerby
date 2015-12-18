@@ -130,7 +130,8 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
 
     @Override
     public byte[] encode() {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(encodingLength());
+        int len = encodingLength();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(len);
         encode(byteBuffer);
         byteBuffer.flip();
         return byteBuffer.array();
@@ -139,8 +140,12 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
     @Override
     public void encode(ByteBuffer buffer) {
         Asn1Util.encodeTag(buffer, tag());
-        Asn1Util.encodeLength(buffer, encodingBodyLength());
+        int bodyLen = encodingBodyLength();
+        Asn1Util.encodeLength(buffer, bodyLen);
         encodeBody(buffer);
+        if (!isDefinitiveLength()) {
+            Asn1Eoc.INSTANCE.encode(buffer);
+        }
     }
 
     protected void encodeBody(ByteBuffer buffer) { }
@@ -158,15 +163,22 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
     private int getBodyLength() {
         if (bodyLength == -1) {
             bodyLength = encodingBodyLength();
+            if (!isDefinitiveLength()) {
+                bodyLength += 2; //EOC
+            }
         }
         return bodyLength;
     }
 
     protected int encodingHeaderLength() {
-        int bodyLen = getBodyLength();
         int headerLen = Asn1Util.lengthOfTagLength(tagNo());
-        headerLen += (isDefinitiveLength()
-            ? Asn1Util.lengthOfBodyLength(bodyLen) : 1);
+        if (isDefinitiveLength()) {
+            int bodyLen = getBodyLength();
+            headerLen += Asn1Util.lengthOfBodyLength(bodyLen);
+        } else {
+            headerLen += 1;
+        }
+
         return headerLen;
     }
 
@@ -197,10 +209,16 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
 
     protected int taggedEncodingLength(TaggingOption taggingOption) {
         int taggingTagNo = taggingOption.getTagNo();
-        int taggingBodyLen = taggingOption.isImplicit() ? encodingBodyLength()
+        int taggingBodyLen = taggingOption.isImplicit() ? getBodyLength()
                 : encodingLength();
-        int taggingEncodingLen = Asn1Util.lengthOfTagLength(taggingTagNo)
-                + Asn1Util.lengthOfBodyLength(taggingBodyLen) + taggingBodyLen;
+        int taggingEncodingLen;
+        if (isDefinitiveLength()) {
+            taggingEncodingLen = Asn1Util.lengthOfTagLength(taggingTagNo)
+                    + Asn1Util.lengthOfBodyLength(taggingBodyLen) + taggingBodyLen;
+        } else {
+            taggingEncodingLen = Asn1Util.lengthOfTagLength(taggingTagNo)
+                    + 1 + taggingBodyLen + 2; //EOC
+        }
         return taggingEncodingLen;
     }
 
@@ -217,13 +235,20 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
     public void taggedEncode(ByteBuffer buffer, TaggingOption taggingOption) {
         Tag taggingTag = taggingOption.getTag(!isPrimitive());
         Asn1Util.encodeTag(buffer, taggingTag);
-        int taggingBodyLen = taggingOption.isImplicit() ? encodingBodyLength()
-                : encodingLength();
-        Asn1Util.encodeLength(buffer, taggingBodyLen);
+        if (isDefinitiveLength()) {
+            int taggingBodyLen = taggingOption.isImplicit() ? encodingBodyLength()
+                    : encodingLength();
+            Asn1Util.encodeLength(buffer, taggingBodyLen);
+        } else {
+            buffer.put((byte) 0);
+        }
         if (taggingOption.isImplicit()) {
             encodeBody(buffer);
         } else {
             encode(buffer);
+        }
+        if (!isDefinitiveLength()) {
+            Asn1Eoc.INSTANCE.encode(buffer);
         }
     }
 

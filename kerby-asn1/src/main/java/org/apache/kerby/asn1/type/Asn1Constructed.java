@@ -94,6 +94,7 @@ public class Asn1Constructed
     protected void decodeBody(Asn1ParseResult parseResult) throws IOException {
         Asn1Container container = (Asn1Container) parseResult;
         this.container = container;
+        useDefinitiveLength(parseResult.isDefinitiveLength());
 
         if (!isLazy()) {
             decodeElements();

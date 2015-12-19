@@ -21,7 +21,6 @@ package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.UniversalTag;
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
-import org.apache.kerby.asn1.util.Asn1Util;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

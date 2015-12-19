@@ -41,7 +41,6 @@ public class TestSignedData extends CmsTestBase {
             Asn1.parseAndDump(data);
             Asn1.decodeAndDump(data);
 
-            /*
             ContentInfo contentInfo = new ContentInfo();
             contentInfo.decode(data);
             Asn1.dump(contentInfo);
@@ -51,15 +50,15 @@ public class TestSignedData extends CmsTestBase {
             Asn1.dump(signedData);
 
             //TO BE FIXED
-            byte[] encodedData = contentInfo.encode();
-            Asn1.parseAndDump(encodedData);
-            */
+            //byte[] encodedData = contentInfo.encode();
+            //Asn1.parseAndDump(encodedData);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
         }
     }
 
+    // To be fixed
     //@Test
     public void testEncoding() throws IOException {
         ContentInfo contentInfo = new ContentInfo();
@@ -70,19 +69,18 @@ public class TestSignedData extends CmsTestBase {
         eContentInfo.setContent("data".getBytes());
         signedData.setEncapContentInfo(eContentInfo);
 
-        CertificateSet certificateSet = new CertificateSet();
-
         byte[] data = readDataFile("/certificate1.txt");
         Certificate certificate = new Certificate();
         certificate.decode(data);
         CertificateChoices certificateChoices = new CertificateChoices();
         certificateChoices.setCertificate(certificate);
+        CertificateSet certificateSet = new CertificateSet();
         certificateSet.addElement(certificateChoices);
-        // To be fixed
         signedData.setCertificates(certificateSet);
 
         contentInfo.setContent(signedData);
         Asn1.dump(contentInfo);
+
         byte[] encodedData = contentInfo.encode();
         Asn1.parseAndDump(encodedData);
 
@@ -95,7 +93,7 @@ public class TestSignedData extends CmsTestBase {
         Asn1.dump(decodedSignedData);
     }
 
-    //@Test
+    @Test
     public void testContentInfo() throws IOException {
         byte[] data = readDataFile("/anonymous.txt");
         try {

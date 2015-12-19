@@ -195,18 +195,20 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
     }
 
     public void decode(Asn1ParseResult parseResult) throws IOException {
+        Asn1ParseResult tmpParseResult = parseResult;
+
         if (!tag().equals(parseResult.tag())) {
             // Primitive but using constructed encoding
             if (isPrimitive() && !parseResult.isPrimitive()) {
                 Asn1Container container = (Asn1Container) parseResult;
-                parseResult = new Asn1DerivedItem(tag(), container);
+                tmpParseResult = new Asn1DerivedItem(tag(), container);
             } else {
                 throw new IOException("Unexpected item " + parseResult.typeStr()
                     + ", expecting " + tag());
             }
         }
 
-        decodeBody(parseResult);
+        decodeBody(tmpParseResult);
     }
 
     protected abstract void decodeBody(Asn1ParseResult parseResult) throws IOException;
@@ -272,17 +274,27 @@ public abstract class Asn1Encodeable extends Asn1Object implements Asn1Type {
     public void taggedDecode(Asn1ParseResult parseResult,
                                 TaggingOption taggingOption) throws IOException {
         Tag expectedTaggingTagFlags = taggingOption.getTag(!isPrimitive());
+
+        Asn1ParseResult tmpParseResult = parseResult;
         if (!expectedTaggingTagFlags.equals(parseResult.tag())) {
-            throw new IOException("Unexpected tag " + parseResult.tag()
+            // Primitive but using constructed encoding
+            if (isPrimitive() && !parseResult.isPrimitive()) {
+                Asn1Container container = (Asn1Container) parseResult;
+                tmpParseResult = new Asn1DerivedItem(tag(), container);
+            } else {
+                throw new IOException("Unexpected tag " + parseResult.tag()
                     + ", expecting " + expectedTaggingTagFlags);
+            }
         }
 
         if (taggingOption.isImplicit()) {
-            decodeBody(parseResult);
+            decodeBody(tmpParseResult);
         } else {
+
             Asn1Container container = (Asn1Container) parseResult;
-            Asn1ParseResult body = container.getChildren().get(0);
-            decode(body);
+            tmpParseResult = container.getChildren().get(0);
+            
+            decode(tmpParseResult);
         }
     }
 }

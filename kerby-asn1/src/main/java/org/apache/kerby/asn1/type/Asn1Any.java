@@ -20,8 +20,12 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Binder;
+import org.apache.kerby.asn1.Asn1Converter;
+import org.apache.kerby.asn1.Asn1Dumpable;
+import org.apache.kerby.asn1.Asn1Dumper;
 import org.apache.kerby.asn1.Asn1FieldInfo;
 import org.apache.kerby.asn1.Tag;
+import org.apache.kerby.asn1.TaggingOption;
 import org.apache.kerby.asn1.UniversalTag;
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
 
@@ -31,9 +35,11 @@ import java.nio.ByteBuffer;
 /**
  * Can be any valid ASN-1 ojbect, limited or not limited.
  */
-public class Asn1Any extends AbstractAsn1Type<Asn1Type> {
-    private Asn1FieldInfo fieldInfo;
-    private Asn1ParseResult field;
+public class Asn1Any
+    extends AbstractAsn1Type<Asn1Type> implements Asn1Dumpable {
+    private Asn1FieldInfo decodeInfo;
+    private Asn1ParseResult parseResult;
+    private boolean isBlindlyDecoded = true;
 
     public Asn1Any() {
         super(UniversalTag.ANY);
@@ -44,42 +50,80 @@ public class Asn1Any extends AbstractAsn1Type<Asn1Type> {
         setValue(anyValue);
     }
 
-    public void setFieldInfo(Asn1FieldInfo fieldInfo) {
-        this.fieldInfo = fieldInfo;
-    }
-
-    public Asn1ParseResult getField() {
-        return field;
-    }
-
     @Override
     public Tag tag() {
         if (getValue() != null) {
             return getValue().tag();
-        } else if (field != null) {
-            return field.tag();
+        } else if (parseResult != null) {
+            return parseResult.tag();
         }
         return super.tag();
     }
 
-    @Override
-    protected int encodingBodyLength() {
-        if (getValue() != null) {
-            return ((Asn1Encodeable) getValue()).encodingBodyLength();
-        } else if (field != null) {
-            return field.getBodyLength();
-        }
+    public void setDecodeInfo(Asn1FieldInfo decodeInfo) {
+        this.decodeInfo = decodeInfo;
+    }
 
-        return -1;
+    public Asn1ParseResult getParseResult() {
+        return parseResult;
     }
 
     @Override
-    protected void encodeBody(ByteBuffer buffer) {
-        if (getValue() != null) {
-            ((Asn1Encodeable) getValue()).encodeBody(buffer);
-        } else if (field != null) {
-            buffer.put(field.getBodyBuffer());
+    public void encode(ByteBuffer buffer) throws IOException {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue != null) {
+            if (!isBlindlyDecoded) {
+                if (decodeInfo.isTagged()) {
+                    TaggingOption taggingOption =
+                        decodeInfo.getTaggingOption();
+                    theValue.taggedEncode(buffer, taggingOption);
+                } else {
+                    theValue.encode(buffer);
+                }
+            } else {
+                theValue.encode(buffer);
+            }
         }
+    }
+
+    @Override
+    public int encodingLength() {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue != null) {
+            if (!isBlindlyDecoded) {
+                if (decodeInfo.isTagged()) {
+                    TaggingOption taggingOption =
+                        decodeInfo.getTaggingOption();
+                    return theValue.taggedEncodingLength(taggingOption);
+                } else {
+                    return theValue.encodingLength();
+                }
+            } else {
+                return theValue.encodingLength();
+            }
+        }
+
+        return super.encodingLength();
+    }
+
+    @Override
+    protected int encodingBodyLength() {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue == null) {
+            return 0;
+        }
+
+        return -1; // Indicate error, shouldn't be here.
+    }
+
+    @Override
+    public void decode(ByteBuffer content) throws IOException {
+        setValue(null);
+
+        super.decode(content);
     }
 
     @Override
@@ -90,15 +134,36 @@ public class Asn1Any extends AbstractAsn1Type<Asn1Type> {
 
     @Override
     protected void decodeBody(Asn1ParseResult parseResult) throws IOException {
-        this.field = parseResult;
+        this.parseResult = parseResult;
+        blindlyDecode();
+    }
+
+    private void blindlyDecode() throws IOException {
+        Asn1Type anyValue = Asn1Converter.convert(parseResult, false);
+        if (decodeInfo != null && decodeInfo.isTagged()) {
+            // Escape the wrapper
+            Asn1Constructed constructed = (Asn1Constructed) anyValue;
+            Asn1Type innerValue = constructed.getValue().get(0);
+            setValue(innerValue);
+        } else {
+            setValue(anyValue);
+        }
+
+        isBlindlyDecoded = true;
     }
 
     protected <T extends Asn1Type> T getValueAs(Class<T> t) {
         Asn1Type value = getValue();
-        if (value != null) {
+        if (value != null && !isBlindlyDecoded) {
             return (T) value;
         }
 
+        typeAwareDecode(t);
+
+        return (T) getValue();
+    }
+
+    private <T extends Asn1Type> void typeAwareDecode(Class<T> t) {
         T result;
         try {
             result = t.newInstance();
@@ -107,17 +172,26 @@ public class Asn1Any extends AbstractAsn1Type<Asn1Type> {
         }
 
         try {
-            if (field.isContextSpecific()) {
-                Asn1Binder.bindWithTagging(field, result,
-                    fieldInfo.getTaggingOption());
+            if (parseResult.isContextSpecific()) {
+                Asn1Binder.bindWithTagging(parseResult, result,
+                    decodeInfo.getTaggingOption());
             } else {
-                Asn1Binder.bind(field, result);
+                Asn1Binder.bind(parseResult, result);
             }
         } catch (IOException e) {
             throw new RuntimeException("Fully decoding failed", e);
         }
 
-        return result;
+        setValue(result);
+        isBlindlyDecoded = false;
+    }
+
+    @Override
+    public void dumpWith(Asn1Dumper dumper, int indents) {
+        Asn1Type theValue = getValue();
+        dumper.indent(indents).append("<Any>").newLine();
+        //dumper.append(simpleInfo()).newLine();
+        dumper.dumpType(indents, theValue);
     }
 }
 

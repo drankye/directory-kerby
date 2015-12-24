@@ -21,9 +21,12 @@ package org.apache.kerby.cms;
 
 import org.apache.kerby.asn1.Asn1;
 import org.apache.kerby.asn1.type.Asn1ObjectIdentifier;
+import org.apache.kerby.cms.type.CertificateChoices;
+import org.apache.kerby.cms.type.CertificateSet;
 import org.apache.kerby.cms.type.ContentInfo;
 import org.apache.kerby.cms.type.EncapsulatedContentInfo;
 import org.apache.kerby.cms.type.SignedData;
+import org.apache.kerby.x509.type.Certificate;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,19 +38,20 @@ public class TestSignedData extends CmsTestBase {
     public void testDecoding() throws IOException {
         byte[] data = readDataFile("/signed-data.txt");
         try {
-            Asn1.dump(data, true);
+            Asn1.parseAndDump(data);
+            //Asn1.decodeAndDump(data);
 
             ContentInfo contentInfo = new ContentInfo();
             contentInfo.decode(data);
-            Asn1.dump(contentInfo);
+            //Asn1.dump(contentInfo);
 
             SignedData signedData =
-                contentInfo.getContentAs(SignedData.class);
+            contentInfo.getContentAs(SignedData.class);
             Asn1.dump(signedData);
 
-            //TO BE FIXED
-            //byte[] encodedData = contentInfo.encode();
-            //Asn1.dump(encodedData, true);
+            Asn1.dump(contentInfo);
+            byte[] encodedData = contentInfo.encode();
+            Asn1.parseAndDump(encodedData);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -63,10 +67,21 @@ public class TestSignedData extends CmsTestBase {
         eContentInfo.setContentType(new Asn1ObjectIdentifier("1.3.6.1.5.2.3.1"));
         eContentInfo.setContent("data".getBytes());
         signedData.setEncapContentInfo(eContentInfo);
+
+        byte[] data = readDataFile("/certificate1.txt");
+        Certificate certificate = new Certificate();
+        certificate.decode(data);
+        CertificateChoices certificateChoices = new CertificateChoices();
+        certificateChoices.setCertificate(certificate);
+        CertificateSet certificateSet = new CertificateSet();
+        certificateSet.addElement(certificateChoices);
+        signedData.setCertificates(certificateSet);
+
         contentInfo.setContent(signedData);
         Asn1.dump(contentInfo);
+
         byte[] encodedData = contentInfo.encode();
-        Asn1.dump(encodedData, true);
+        Asn1.parseAndDump(encodedData);
 
         ContentInfo decodedContentInfo = new ContentInfo();
         decodedContentInfo.decode(encodedData);
@@ -81,7 +96,7 @@ public class TestSignedData extends CmsTestBase {
     public void testContentInfo() throws IOException {
         byte[] data = readDataFile("/anonymous.txt");
         try {
-            Asn1.dump(data, true);
+            Asn1.parseAndDump(data);
 
             ContentInfo contentInfo = new ContentInfo();
             contentInfo.decode(data);

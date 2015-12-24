@@ -20,6 +20,8 @@
 package org.apache.kerby.asn1.type;
 
 import org.apache.kerby.asn1.Asn1Binder;
+import org.apache.kerby.asn1.Asn1Dumpable;
+import org.apache.kerby.asn1.Asn1Dumper;
 import org.apache.kerby.asn1.Asn1FieldInfo;
 import org.apache.kerby.asn1.EnumType;
 import org.apache.kerby.asn1.Tag;
@@ -30,7 +32,8 @@ import org.apache.kerby.asn1.parse.Asn1ParseResult;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
+public class Asn1Choice
+    extends AbstractAsn1Type<Asn1Type> implements Asn1Dumpable {
 
     private final Asn1FieldInfo[] fieldInfos;
     private final Tag[] tags;
@@ -40,10 +43,19 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
     public Asn1Choice(Asn1FieldInfo[] fieldInfos) {
         super(UniversalTag.CHOICE);
 
-        setValue(this);
         this.fieldInfos = fieldInfos;
         this.tags = new Tag[fieldInfos.length];
         initTags();
+    }
+
+    @Override
+    public Tag tag() {
+        if (getValue() != null) {
+            return getValue().tag();
+        } else if (chosenField != null) {
+            return chosenField.getFieldTag();
+        }
+        return super.tag();
     }
 
     private void initTags() {
@@ -75,7 +87,38 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
     }
 
     @Override
-    protected int encodingBodyLength() {
+    public byte[] encode() throws IOException {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue != null) {
+            if (chosenField.isTagged()) {
+                TaggingOption taggingOption =
+                        chosenField.getTaggingOption();
+                return theValue.taggedEncode(taggingOption);
+            } else {
+                return theValue.encode();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void encode(ByteBuffer buffer) throws IOException {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue != null) {
+            if (chosenField.isTagged()) {
+                TaggingOption taggingOption =
+                        chosenField.getTaggingOption();
+                theValue.taggedEncode(buffer, taggingOption);
+            } else {
+                theValue.encode(buffer);
+            }
+        }
+    }
+
+    @Override
+    public int encodingLength() {
         Asn1Encodeable theValue = (Asn1Encodeable) getValue();
 
         if (theValue != null) {
@@ -88,11 +131,22 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
             }
         }
 
-        return 0;
+        return super.encodingLength();
     }
 
     @Override
-    protected void encodeBody(ByteBuffer buffer) {
+    protected int encodingBodyLength() {
+        Asn1Encodeable theValue = (Asn1Encodeable) getValue();
+
+        if (theValue == null) {
+            return 0;
+        }
+
+        return -1; // Indicate error, shouldn't be here.
+    }
+
+    @Override
+    protected void encodeBody(ByteBuffer buffer) throws IOException {
         Asn1Encodeable theValue = (Asn1Encodeable) getValue();
 
         if (theValue != null) {
@@ -131,7 +185,7 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
 
         if (chosenField == null) {
             throw new IOException("Unexpected item, not in choices: "
-                + parseResult.typeStr());
+                + parseResult.simpleInfo());
         }
 
         Asn1Type fieldValue = getValue();
@@ -175,5 +229,13 @@ public class Asn1Choice extends AbstractAsn1Type<Asn1Type> {
             return value.getValue();
         }
         return null;
+    }
+
+    @Override
+    public void dumpWith(Asn1Dumper dumper, int indents) {
+        Asn1Type theValue = getValue();
+        dumper.indent(indents).append("<Choice>").newLine();
+        //dumper.append(simpleInfo()).newLine();
+        dumper.dumpType(indents, theValue);
     }
 }

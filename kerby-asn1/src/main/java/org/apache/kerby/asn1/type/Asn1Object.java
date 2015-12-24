@@ -22,6 +22,8 @@ package org.apache.kerby.asn1.type;
 import org.apache.kerby.asn1.Tag;
 import org.apache.kerby.asn1.UniversalTag;
 
+import java.io.IOException;
+
 /**
  * An ASN1 object has a tag.
  */
@@ -103,5 +105,24 @@ public abstract class Asn1Object {
 
     public boolean isCollection() {
         return Asn1Collection.isCollection(tag());
+    }
+
+    protected abstract int getHeaderLength() throws IOException;
+
+    protected abstract int getBodyLength() throws IOException;
+
+    protected String simpleInfo() {
+        String simpleInfo = tag().typeStr();
+
+        try {
+            simpleInfo += " ["
+                + "tag=" + tag()
+                + ", len=" + getHeaderLength() + "+" + getBodyLength()
+                + "] ";
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return simpleInfo;
     }
 }

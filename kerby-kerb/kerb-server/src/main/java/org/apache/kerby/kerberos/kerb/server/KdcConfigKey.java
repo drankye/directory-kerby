@@ -25,7 +25,7 @@ public enum KdcConfigKey implements ConfigKey {
     KRB_DEBUG(true),
     KDC_SERVICE_NAME("KDC-Server"),
     KDC_IDENTITY_BACKEND,
-    KDC_HOST("127.0.0.1"), // NOPMD
+    KDC_HOST("127.0.0.1"),
     KDC_PORT,
     KDC_ALLOW_TCP(true),
     KDC_ALLOW_UDP(true),
@@ -51,7 +51,9 @@ public enum KdcConfigKey implements ConfigKey {
     KDC_MAX_DGRAM_REPLY_SIZE(4096),
     TOKEN_VERIFY_KEYS(),
     TOKEN_DECRYPTION_KEYS(),
-    TOKEN_ISSUERS();
+    TOKEN_ISSUERS(),
+    PKINIT_IDENTITY(null),
+    PKINIT_ANCHORS(null);
 
     private Object defaultValue;
 

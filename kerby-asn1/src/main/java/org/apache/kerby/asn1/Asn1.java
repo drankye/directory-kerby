@@ -37,11 +37,11 @@ public final class Asn1 {
 
     }
 
-    public static void encode(ByteBuffer buffer, Asn1Type value) {
+    public static void encode(ByteBuffer buffer, Asn1Type value) throws IOException {
         value.encode(buffer);
     }
 
-    public static byte[] encode(Asn1Type value) {
+    public static byte[] encode(Asn1Type value) throws IOException {
         return value.encode();
     }
 
@@ -51,7 +51,7 @@ public final class Asn1 {
 
     public static Asn1Type decode(ByteBuffer content) throws IOException {
         Asn1ParseResult parseResult = Asn1Parser.parse(content);
-        return Asn1Converter.convert(parseResult);
+        return Asn1Converter.convert(parseResult, false);
     }
 
     public static Asn1ParseResult parse(byte[] content) throws IOException {
@@ -63,39 +63,50 @@ public final class Asn1 {
     }
 
     public static void dump(Asn1Type value) {
-        dump(value, true);
-    }
-
-    public static void dump(Asn1Type value, boolean withType) {
-        Asn1Dumper dumper = new Asn1Dumper(withType);
-        if (!withType) {
-            dumper.dumpTypeInfo(value.getClass());
-        }
+        Asn1Dumper dumper = new Asn1Dumper();
         dumper.dumpType(0, value);
         String output = dumper.output();
         System.out.println(output);
     }
 
-    public static void dump(String hexStr,
-                            boolean useRawFormat) throws IOException {
+    public static void parseAndDump(String hexStr) throws IOException {
         byte[] data = HexUtil.hex2bytes(hexStr);
-        dump(data, useRawFormat);
+        parseAndDump(data);
     }
 
-    public static void dump(ByteBuffer content,
-                            boolean useRawFormat) throws IOException {
+    public static void decodeAndDump(String hexStr) throws IOException {
+        byte[] data = HexUtil.hex2bytes(hexStr);
+        decodeAndDump(data);
+    }
+
+    public static void parseAndDump(ByteBuffer content) throws IOException {
         byte[] bytes = new byte[content.remaining()];
         content.get(bytes);
-        dump(bytes, useRawFormat);
+        parseAndDump(bytes);
     }
 
-    public static void dump(byte[] content,
-                            boolean useRawFormat) throws IOException {
+    public static void decodeAndDump(ByteBuffer content) throws IOException {
+        byte[] bytes = new byte[content.remaining()];
+        content.get(bytes);
+        decodeAndDump(bytes);
+    }
+
+    public static void parseAndDump(byte[] content) throws IOException {
         String hexStr = HexUtil.bytesToHex(content);
         Asn1Dumper dumper = new Asn1Dumper();
         System.out.println("Dumping data:");
         dumper.dumpData(hexStr);
-        dumper.dump(content, useRawFormat);
+        dumper.parseAndDump(content);
+        String output = dumper.output();
+        System.out.println(output);
+    }
+
+    public static void decodeAndDump(byte[] content) throws IOException {
+        String hexStr = HexUtil.bytesToHex(content);
+        Asn1Dumper dumper = new Asn1Dumper();
+        System.out.println("Dumping data:");
+        dumper.dumpData(hexStr);
+        dumper.decodeAndDump(content);
         String output = dumper.output();
         System.out.println(output);
     }

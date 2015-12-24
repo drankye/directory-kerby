@@ -23,12 +23,14 @@ import org.apache.kerby.KOption;
 import org.apache.kerby.KOptions;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.client.KrbContext;
+import org.apache.kerby.kerberos.kerb.client.KrbOption;
 import org.apache.kerby.kerberos.kerb.client.KrbOptionGroup;
 import org.apache.kerby.kerberos.kerb.client.preauth.KrbFastRequestState;
 import org.apache.kerby.kerberos.kerb.client.preauth.PreauthContext;
 import org.apache.kerby.kerberos.kerb.client.preauth.PreauthHandler;
 import org.apache.kerby.kerberos.kerb.common.EncryptionUtil;
 import org.apache.kerby.kerberos.kerb.crypto.EncryptionHandler;
+import org.apache.kerby.kerberos.kerb.crypto.dh.DhClient;
 import org.apache.kerby.kerberos.kerb.type.KerberosTime;
 import org.apache.kerby.kerberos.kerb.type.base.EncryptedData;
 import org.apache.kerby.kerberos.kerb.type.base.EncryptionKey;
@@ -58,7 +60,7 @@ public abstract class KdcRequest {
     protected Map<String, Object> credCache;
     private KrbContext context;
     private Object sessionData;
-    private KOptions krbOptions;
+    private KOptions requestOptions;
     private PrincipalName serverPrincipal;
     private List<HostAddress> hostAddresses = new ArrayList<HostAddress>();
     private KdcOptions kdcOptions = new KdcOptions();
@@ -74,6 +76,8 @@ public abstract class KdcRequest {
     private byte[] outerRequestBody;
 
     private boolean isRetrying;
+
+    private DhClient dhClient;
 
     public KdcRequest(KrbContext context) {
         this.context = context;
@@ -108,12 +112,12 @@ public abstract class KdcRequest {
         this.sessionData = sessionData;
     }
 
-    public KOptions getKrbOptions() {
-        return krbOptions;
+    public KOptions getRequestOptions() {
+        return requestOptions;
     }
 
-    public void setKrbOptions(KOptions options) {
-        this.krbOptions = options;
+    public void setRequestOptions(KOptions options) {
+        this.requestOptions = options;
     }
 
     public boolean isRetrying() {
@@ -235,8 +239,13 @@ public abstract class KdcRequest {
         this.context = context;
     }
 
-    protected byte[] decryptWithClientKey(EncryptedData data, KeyUsage usage) throws KrbException {
-        return EncryptionHandler.decrypt(data, getClientKey(), usage);
+    protected byte[] decryptWithClientKey(EncryptedData data,
+                                          KeyUsage usage) throws KrbException {
+        EncryptionKey tmpKey = getClientKey();
+        if (tmpKey == null) {
+            throw new KrbException("Client key isn't availalbe");
+        }
+        return EncryptionHandler.decrypt(data, tmpKey, usage);
     }
 
     public abstract PrincipalName getClientPrincipal();
@@ -401,12 +410,21 @@ public abstract class KdcRequest {
         kdcOptions.setFlag(KdcOption.PROXIABLE);
         kdcOptions.setFlag(KdcOption.RENEWABLE_OK);
 
-        for (KOption kOpt: krbOptions.getOptions()) {
-            if (kOpt.getGroup() == KrbOptionGroup.KDC_FLAGS) {
-                KdcOption kdcOption = KdcOption.valueOf(kOpt.getOptionName());
-                boolean flagValue = krbOptions.getBooleanOption(kOpt, false);
+        for (KOption kOpt: requestOptions.getOptions()) {
+            if (kOpt.getOptionInfo().getGroup() == KrbOptionGroup.KDC_FLAGS) {
+                KrbOption krbOption = (KrbOption) kOpt;
+                KdcOption kdcOption = KdcOption.valueOf(krbOption.name());
+                boolean flagValue = requestOptions.getBooleanOption(kOpt, false);
                 kdcOptions.setFlag(kdcOption, flagValue);
             }
         }
+    }
+
+    public void setDhClient(DhClient client) {
+        this.dhClient = client;
+    }
+
+    public DhClient getDhClient() {
+        return this.dhClient;
     }
 }

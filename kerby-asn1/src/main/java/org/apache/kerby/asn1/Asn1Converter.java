@@ -20,7 +20,7 @@
 package org.apache.kerby.asn1;
 
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
-import org.apache.kerby.asn1.type.Asn1Application;
+import org.apache.kerby.asn1.type.Asn1Specifix;
 import org.apache.kerby.asn1.type.Asn1Collection;
 import org.apache.kerby.asn1.type.Asn1Constructed;
 import org.apache.kerby.asn1.type.Asn1Encodeable;
@@ -38,21 +38,22 @@ public final class Asn1Converter {
 
     }
 
-    public static Asn1Type convert(Asn1ParseResult parseResult) throws IOException {
+    public static Asn1Type convert(Asn1ParseResult parseResult,
+                                   boolean isLazy) throws IOException {
         if (Asn1Simple.isSimple(parseResult.tag())) {
             return Asn1Converter.convertAsSimple(parseResult);
         } else if (Asn1Collection.isCollection(parseResult.tag())) {
-            return Asn1Converter.convertAsCollection(parseResult);
+            return Asn1Converter.convertAsCollection(parseResult, isLazy);
         } else if (!parseResult.tag().isPrimitive()) {
             Asn1Encodeable tmpValue = new Asn1Constructed(parseResult.tag());
             tmpValue.decode(parseResult);
             return tmpValue;
-        } else if (parseResult.isAppSpecific()) {
-            Asn1Application app = new Asn1Application(parseResult.tag());
+        } else if (parseResult.isTagSpecific()) {
+            Asn1Specifix app = new Asn1Specifix(parseResult.tag());
             app.decode(parseResult);
             return app;
         } else {
-            throw new IOException("Unexpected item: " + parseResult.typeStr());
+            throw new IOException("Unexpected item: " + parseResult.simpleInfo());
         }
     }
 
@@ -63,10 +64,11 @@ public final class Asn1Converter {
         return value;
     }
 
-    public static Asn1Type convertAsCollection(Asn1ParseResult parseResult) throws IOException {
+    public static Asn1Type convertAsCollection(Asn1ParseResult parseResult,
+                                               boolean isLazy) throws IOException {
         Asn1Collection value = Asn1Collection.createCollection(parseResult.tag());
         value.useDefinitiveLength(parseResult.isDefinitiveLength());
-        value.setLazy(true);
+        value.setLazy(isLazy);
         Asn1Binder.bind(parseResult, value);
         return value;
     }

@@ -59,7 +59,7 @@ public enum KinitOption implements KOption {
     CANONICALIZE(new KOptionInfo("-C", "canonicalize",
         KrbOptionGroup.KDC_FLAGS)),
 
-    USE_PASSWD(new KOptionInfo("using password", "using password",
+    USE_PASSWD(new KOptionInfo("using-password", "using password",
         KrbOptionGroup.KRB)),
     USER_PASSWD(new KOptionInfo("user-passwd", "User plain password",
         KrbOptionGroup.KRB)),
@@ -77,7 +77,7 @@ public enum KinitOption implements KOption {
         KrbOptionGroup.KRB, KOptionType.FILE)),
 
     XATTR(new KOptionInfo("-X", "<attribute>[=<value>]", KOptionType.STR)),
-    CONF_DIR(new KOptionInfo("-conf", "conf dir", KOptionType.DIR));
+    CONF_DIR(new KOptionInfo("-conf", "conf dir", KrbOptionGroup.KRB, KOptionType.DIR));
 
     private final KOptionInfo optionInfo;
 
@@ -93,7 +93,8 @@ public enum KinitOption implements KOption {
     public static KinitOption fromName(String name) {
         if (name != null) {
             for (KinitOption ko : values()) {
-                if (ko.name().equals(name)) {
+                if (ko.optionInfo != null
+                        && ko.optionInfo.getName().equals(name)) {
                     return ko;
                 }
             }

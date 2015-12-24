@@ -21,6 +21,7 @@ package org.apache.kerby.kerberos.tool.kinit;
 
 import org.apache.kerby.KOption;
 import org.apache.kerby.KOptionGroup;
+import org.apache.kerby.KOptionInfo;
 import org.apache.kerby.KOptionType;
 import org.apache.kerby.KOptions;
 import org.apache.kerby.kerberos.kerb.KrbException;
@@ -214,7 +215,7 @@ public class KinitTool {
                 kto = KinitOption.NONE;
             }
 
-            if (kto.getOptionInfo().getType() != KOptionType.NOV) {
+            if (kto != KinitOption.NONE && kto.getOptionInfo().getType() != KOptionType.NOV) {
                 // require a parameter
                 param = null;
                 if (i < args.length) {
@@ -230,7 +231,9 @@ public class KinitTool {
             if (error != null) {
                 printUsage(error);
             }
-            ktOptions.add(kto);
+            if (kto != KinitOption.NONE) {
+                ktOptions.add(kto);
+            }
         }
 
         if (principal == null) {
@@ -254,20 +257,20 @@ public class KinitTool {
         KOptions results = new KOptions();
 
         for (KOption toolOpt : toolOptions.getOptions()) {
-            KinitOption kinitOption = (KinitOption) toolOpt;
-            KOptionGroup group = kinitOption.getOptionInfo().getGroup();
+            KOptionInfo kOptionInfo = toolOpt.getOptionInfo();
+            KOptionGroup group = kOptionInfo.getGroup();
             KOption kOpt = null;
 
             if (group == KrbOptionGroup.KRB) {
-                kOpt = KrbOption.fromOptionName(kinitOption.name());
+                kOpt = KrbOption.fromOptionName(kOptionInfo.getName());
             } else if (group == KrbOptionGroup.PKINIT) {
-                kOpt = PkinitOption.fromOptionName(kinitOption.name());
+                kOpt = PkinitOption.fromOptionName(kOptionInfo.getName());
             } else if (group == KrbOptionGroup.TOKEN) {
-                kOpt = TokenOption.fromOptionName(kinitOption.name());
+                kOpt = TokenOption.fromOptionName(kOptionInfo.getName());
             } else if (group == KrbOptionGroup.KDC_FLAGS) {
-                kOpt = KrbKdcOption.fromOptionName(kinitOption.name());
+                kOpt = KrbKdcOption.fromOptionName(kOptionInfo.getName());
             }
-            if (kOpt != null && kOpt != KrbOption.NONE) {
+            if (kOpt != null && kOpt.getOptionInfo() != KrbOption.NONE.getOptionInfo()) {
                 kOpt.getOptionInfo().setValue(toolOpt.getOptionInfo().getValue());
                 results.add(kOpt);
             }

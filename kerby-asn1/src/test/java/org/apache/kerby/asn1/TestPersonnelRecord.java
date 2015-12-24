@@ -35,7 +35,7 @@ public class TestPersonnelRecord {
     static boolean verbose = false;
 
     @Test
-    public void testEncoding() {
+    public void testEncoding() throws IOException {
         PersonnelRecord pr = TestData.createSamplePersonnel();
 
         if (verbose) {
@@ -76,7 +76,7 @@ public class TestPersonnelRecord {
     public void testDecoding() throws IOException {
         PersonnelRecord expected = TestData.createSamplePersonnel();
         byte[] data = TestData.createSammplePersonnelEncodingData();
-        Asn1.dump(data, true);
+        Asn1.parseAndDump(data);
         PersonnelRecord decoded = new PersonnelRecord();
         decoded.decode(data);
         Asn1.dump(decoded);

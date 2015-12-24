@@ -23,7 +23,8 @@ import org.apache.kerby.kerberos.kerb.KrbErrorCode;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.ccache.CredentialCache;
 import org.apache.kerby.kerberos.kerb.client.KrbContext;
-import org.apache.kerby.kerberos.kerb.client.KrbOption;
+import org.apache.kerby.kerberos.kerb.client.PkinitOption;
+import org.apache.kerby.kerberos.kerb.client.TokenOption;
 import org.apache.kerby.kerberos.kerb.common.KrbUtil;
 import org.apache.kerby.kerberos.kerb.type.base.EncryptionKey;
 import org.apache.kerby.kerberos.kerb.type.base.HostAddress;
@@ -89,8 +90,11 @@ public class AsRequest extends KdcRequest {
         PrincipalName clientPrincipal = getKdcRep().getCname();
         String clientRealm = getKdcRep().getCrealm();
         clientPrincipal.setRealm(clientRealm);
-        if (!getKrbOptions().contains(KrbOption.TOKEN_USER_ID_TOKEN)
-            && !clientPrincipal.equals(getClientPrincipal())) {
+
+        if (!(getRequestOptions().contains(PkinitOption.USE_ANONYMOUS)
+                && KrbUtil.pricipalCompareIgnoreRealm(clientPrincipal, getClientPrincipal()))
+                && !getRequestOptions().contains(TokenOption.USER_ID_TOKEN)
+                && !clientPrincipal.equals(getClientPrincipal())) {
             throw new KrbException(KrbErrorCode.KDC_ERR_CLIENT_NAME_MISMATCH);
         }
 
@@ -137,7 +141,7 @@ public class AsRequest extends KdcRequest {
 
     public TgtTicket getTicket() {
         TgtTicket tgtTicket = new TgtTicket(getKdcRep().getTicket(),
-                (EncAsRepPart) getKdcRep().getEncPart(), getKdcRep().getCname().getName());
+                (EncAsRepPart) getKdcRep().getEncPart(), getKdcRep().getCname());
         return tgtTicket;
     }
 
@@ -151,4 +155,5 @@ public class AsRequest extends KdcRequest {
 
         return cc;
     }
+
 }

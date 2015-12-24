@@ -62,7 +62,7 @@ public class Asn1Tagging<T extends Asn1Type>
     }
 
     @Override
-    protected int encodingBodyLength() {
+    protected int encodingBodyLength() throws IOException {
         Asn1Encodeable value = (Asn1Encodeable) getValue();
         if (isImplicit()) {
             return value.encodingBodyLength();
@@ -72,7 +72,7 @@ public class Asn1Tagging<T extends Asn1Type>
     }
 
     @Override
-    protected void encodeBody(ByteBuffer buffer) {
+    protected void encodeBody(ByteBuffer buffer) throws IOException {
         Asn1Encodeable value = (Asn1Encodeable) getValue();
         if (isImplicit()) {
             value.encodeBody(buffer);
@@ -108,7 +108,8 @@ public class Asn1Tagging<T extends Asn1Type>
     @Override
     public void dumpWith(Asn1Dumper dumper, int indents) {
         Asn1Type taggedValue = getValue();
-        dumper.dumpTypeInfo(indents, getClass());
+        dumper.indent(indents).appendType(getClass());
+        dumper.append(simpleInfo()).newLine();
         dumper.dumpType(indents, taggedValue);
     }
 }

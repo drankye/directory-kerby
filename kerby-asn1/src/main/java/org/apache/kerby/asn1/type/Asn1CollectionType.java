@@ -30,6 +30,7 @@ import org.apache.kerby.asn1.parse.Asn1Container;
 import org.apache.kerby.asn1.parse.Asn1ParseResult;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -52,25 +53,27 @@ public abstract class Asn1CollectionType
     }
 
     @Override
-    protected int encodingBodyLength() {
+    protected int encodingBodyLength() throws IOException {
         int allLen = 0;
+        int fieldLen;
         for (int i = 0; i < fields.length; ++i) {
             Asn1Encodeable field = (Asn1Encodeable) fields[i];
             if (field != null) {
                 if (fieldInfos[i].isTagged()) {
                     TaggingOption taggingOption =
                         fieldInfos[i].getTaggingOption();
-                    allLen += field.taggedEncodingLength(taggingOption);
+                    fieldLen = field.taggedEncodingLength(taggingOption);
                 } else {
-                    allLen += field.encodingLength();
+                    fieldLen = field.encodingLength();
                 }
+                allLen += fieldLen;
             }
         }
         return allLen;
     }
 
     @Override
-    protected void encodeBody(ByteBuffer buffer) {
+    protected void encodeBody(ByteBuffer buffer) throws IOException {
         for (int i = 0; i < fields.length; ++i) {
             Asn1Type field = fields[i];
             if (field != null) {
@@ -88,6 +91,7 @@ public abstract class Asn1CollectionType
     @Override
     protected void decodeBody(Asn1ParseResult parseResult) throws IOException {
         checkAndInitFields();
+        useDefinitiveLength(parseResult.isDefinitiveLength());
 
         Asn1Container container = (Asn1Container) parseResult;
         List<Asn1ParseResult> parseResults = container.getChildren();
@@ -95,13 +99,13 @@ public abstract class Asn1CollectionType
         int lastPos = -1, foundPos = -1;
 
         for (Asn1ParseResult parseItem : parseResults) {
-            if (parseItem.isEOC() || parseItem.isNull()) {
+            if (parseItem.isEOC()) {
                 continue;
             }
 
             foundPos = match(lastPos, parseItem);
             if (foundPos == -1) {
-                throw new IOException("Unexpected item: " + parseItem.typeStr());
+                throw new IOException("Unexpected item: " + parseItem.simpleInfo());
             }
             lastPos = foundPos;
 
@@ -116,7 +120,7 @@ public abstract class Asn1CollectionType
 
         if (fieldValue instanceof Asn1Any) {
             Asn1Any any = (Asn1Any) fieldValue;
-            any.setFieldInfo(fieldInfo);
+            any.setDecodeInfo(fieldInfo);
             Asn1Binder.bind(parseItem, any);
         } else {
             if (parseItem.isContextSpecific()) {
@@ -220,25 +224,31 @@ public abstract class Asn1CollectionType
         setFieldAs(index, new Asn1Integer(value));
     }
 
+    protected void setFieldAsBigInteger(EnumType index, BigInteger value) {
+        setFieldAs(index, new Asn1Integer(value));
+    }
+
     protected <T extends Asn1Type> T getFieldAsAny(EnumType index, Class<T> t) {
         Asn1Type value = fields[index.getValue()];
         if (value != null && value instanceof Asn1Any) {
             Asn1Any any = (Asn1Any) value;
             return any.getValueAs(t);
         }
-
         return null;
     }
 
     protected void setFieldAsAny(EnumType index, Asn1Type value) {
         if (value != null) {
-            setFieldAs(index, new Asn1Any(value));
+            Asn1Any any = new Asn1Any(value);
+            any.setDecodeInfo(fieldInfos[index.getValue()]);
+            setFieldAs(index, any);
         }
     }
 
     @Override
     public void dumpWith(Asn1Dumper dumper, int indents) {
-        dumper.dumpTypeInfo(indents, getClass());
+        dumper.indent(indents).appendType(getClass());
+        dumper.append(simpleInfo()).newLine();
 
         String fdName;
         for (int i = 0; i < fieldInfos.length; i++) {

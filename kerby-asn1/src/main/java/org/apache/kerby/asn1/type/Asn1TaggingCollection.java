@@ -126,12 +126,12 @@ public abstract class Asn1TaggingCollection
 
 
     @Override
-    protected int encodingBodyLength() {
+    protected int encodingBodyLength() throws IOException {
         return tagging.encodingBodyLength();
     }
 
     @Override
-    protected void encodeBody(ByteBuffer buffer) {
+    protected void encodeBody(ByteBuffer buffer) throws IOException {
         tagging.encodeBody(buffer);
     }
 
@@ -184,7 +184,8 @@ public abstract class Asn1TaggingCollection
     @Override
     public void dumpWith(Asn1Dumper dumper, int indents) {
         Asn1Type taggedValue = getValue();
-        dumper.dumpTypeInfo(indents, getClass());
+        dumper.indent(indents).appendType(getClass());
+        dumper.append(simpleInfo()).newLine();
         dumper.dumpType(indents, taggedValue);
     }
 }

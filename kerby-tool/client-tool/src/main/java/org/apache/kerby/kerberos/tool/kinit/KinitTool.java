@@ -19,14 +19,19 @@
  */
 package org.apache.kerby.kerberos.tool.kinit;
 
+import org.apache.kerby.KOption;
+import org.apache.kerby.KOptionGroup;
 import org.apache.kerby.KOptionType;
 import org.apache.kerby.KOptions;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.client.KrbClient;
+import org.apache.kerby.kerberos.kerb.client.KrbKdcOption;
 import org.apache.kerby.kerberos.kerb.client.KrbOption;
+import org.apache.kerby.kerberos.kerb.client.KrbOptionGroup;
+import org.apache.kerby.kerberos.kerb.client.PkinitOption;
+import org.apache.kerby.kerberos.kerb.client.TokenOption;
 import org.apache.kerby.kerberos.kerb.type.ticket.SgtTicket;
 import org.apache.kerby.kerberos.kerb.type.ticket.TgtTicket;
-import org.apache.kerby.kerberos.tool.ToolUtil;
 import org.apache.kerby.util.OSUtil;
 import org.apache.kerby.util.SysUtil;
 
@@ -112,8 +117,11 @@ public class KinitTool {
             confDir = ktOptions.getDirOption(KinitOption.CONF_DIR);
         }
 
-        //If not request tickets by keytab than by password.
-        if (!ktOptions.contains(KinitOption.USE_KEYTAB)) {
+        if (ktOptions.contains(KinitOption.ANONYMOUS)) {
+            ktOptions.add(PkinitOption.USE_ANONYMOUS);
+            ktOptions.add(PkinitOption.X509_ANCHORS);
+        } else if (!ktOptions.contains(KinitOption.USE_KEYTAB)) {
+            //If not request tickets by keytab than by password.
             ktOptions.add(KinitOption.USE_PASSWD);
             String password = getPassword(principal);
             ktOptions.add(KinitOption.USER_PASSWD, password);
@@ -129,8 +137,7 @@ public class KinitTool {
 
         TgtTicket tgt = null;
         try {
-            tgt = krbClient.requestTgt(
-                ToolUtil.convertOptions(ktOptions));
+            tgt = krbClient.requestTgt(convertOptions(ktOptions));
         } catch (KrbException e) {
             System.err.println("Authentication failed: " + e.getMessage());
             System.exit(1);
@@ -154,7 +161,7 @@ public class KinitTool {
         }
 
         System.out.println("Successfully requested and stored ticket in "
-                + ccacheFile.getAbsolutePath());
+            + ccacheFile.getAbsolutePath());
         if (ktOptions.contains(KinitOption.SERVICE)) {
             String servicePrincipal = ktOptions.getStringOption(KinitOption.SERVICE);
             SgtTicket sgtTicket =
@@ -180,6 +187,10 @@ public class KinitTool {
         return krbClient;
     }
 
+    private static String getAnonymousPrincipal() {
+        return "WELLKNOWN/ANONYMOUS";
+    }
+
     public static void main(String[] args) throws Exception {
         KOptions ktOptions = new KOptions();
         KinitOption kto;
@@ -203,13 +214,14 @@ public class KinitTool {
                 kto = KinitOption.NONE;
             }
 
-            if (kto.getType() != KOptionType.NOV) { // require a parameter
+            if (kto.getOptionInfo().getType() != KOptionType.NOV) {
+                // require a parameter
                 param = null;
                 if (i < args.length) {
                     param = args[i++];
                 }
                 if (param != null) {
-                    KOptions.parseSetValue(kto, param);
+                    KOptions.parseSetValue(kto.getOptionInfo(), param);
                 } else {
                     error = "Option " + opt + " require a parameter";
                 }
@@ -222,11 +234,45 @@ public class KinitTool {
         }
 
         if (principal == null) {
-            printUsage("No principal is specified");
+            if (ktOptions.contains(KinitOption.ANONYMOUS)) {
+                principal = getAnonymousPrincipal();
+            } else {
+                printUsage("No principal is specified");
+            }
         }
 
         requestTicket(principal, ktOptions);
         System.exit(0);
     }
 
+    /**
+     * Convert kinit tool options to KOptions.
+     * @param toolOptions
+     * @return KOptions
+     */
+    static KOptions convertOptions(KOptions toolOptions) {
+        KOptions results = new KOptions();
+
+        for (KOption toolOpt : toolOptions.getOptions()) {
+            KinitOption kinitOption = (KinitOption) toolOpt;
+            KOptionGroup group = kinitOption.getOptionInfo().getGroup();
+            KOption kOpt = null;
+
+            if (group == KrbOptionGroup.KRB) {
+                kOpt = KrbOption.fromOptionName(kinitOption.name());
+            } else if (group == KrbOptionGroup.PKINIT) {
+                kOpt = PkinitOption.fromOptionName(kinitOption.name());
+            } else if (group == KrbOptionGroup.TOKEN) {
+                kOpt = TokenOption.fromOptionName(kinitOption.name());
+            } else if (group == KrbOptionGroup.KDC_FLAGS) {
+                kOpt = KrbKdcOption.fromOptionName(kinitOption.name());
+            }
+            if (kOpt != null && kOpt != KrbOption.NONE) {
+                kOpt.getOptionInfo().setValue(toolOpt.getOptionInfo().getValue());
+                results.add(kOpt);
+            }
+        }
+
+        return results;
+    }
 }

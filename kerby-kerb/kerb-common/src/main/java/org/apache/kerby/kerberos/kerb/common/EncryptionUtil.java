@@ -126,7 +126,7 @@ public class EncryptionUtil {
 
     public static EncryptedData seal(Asn1Encodeable asn1Type,
                                      EncryptionKey key, KeyUsage usage) throws KrbException {
-        byte[] encoded = asn1Type.encode();
+        byte[] encoded = KrbCodec.encode(asn1Type);
         EncryptedData encrypted = EncryptionHandler.encrypt(encoded, key, usage);
         return encrypted;
     }
@@ -138,16 +138,16 @@ public class EncryptionUtil {
     }
 
     public static byte[] encrypt(EncryptionKey key,
-          byte[] plaintext, int usage) throws KrbException {
+          byte[] plaintext, KeyUsage usage) throws KrbException {
         EncTypeHandler encType = EncryptionHandler.getEncHandler(key.getKeyType());
-        byte[] cipherData = encType.encrypt(plaintext, key.getKeyData(), usage);
+        byte[] cipherData = encType.encrypt(plaintext, key.getKeyData(), usage.getValue());
         return cipherData;
     }
 
     public static byte[] decrypt(EncryptionKey key,
-           byte[] cipherData, int usage) throws KrbException {
+           byte[] cipherData, KeyUsage usage) throws KrbException {
         EncTypeHandler encType = EncryptionHandler.getEncHandler(key.getKeyType());
-        byte[] plainData = encType.decrypt(cipherData, key.getKeyData(), usage);
+        byte[] plainData = encType.decrypt(cipherData, key.getKeyData(), usage.getValue());
         return plainData;
     }
 }

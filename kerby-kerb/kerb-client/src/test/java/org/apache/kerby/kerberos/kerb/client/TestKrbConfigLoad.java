@@ -25,7 +25,7 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URL;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Test for loading configurations form krb5.conf.
@@ -58,5 +58,8 @@ public class TestKrbConfigLoad {
                 .contains(EncryptionType.DES_CBC_CRC);
         assertThat(krbConfig.getDefaultTktEnctypes()).hasSize(1)
                 .contains(EncryptionType.DES_CBC_CRC);
+        assertThat(krbConfig.getPkinitAnchors()).hasSize(1);
+        assertThat(krbConfig.getPkinitIdentities()).hasSize(2);
+        assertThat(krbConfig.getPkinitKdcHostName()).isEqualTo("kdc-server.example.com");
     }
 }

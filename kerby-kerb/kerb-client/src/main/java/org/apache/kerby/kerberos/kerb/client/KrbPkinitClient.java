@@ -23,29 +23,44 @@ import org.apache.kerby.KOptions;
 import org.apache.kerby.kerberos.kerb.KrbException;
 import org.apache.kerby.kerberos.kerb.type.ticket.TgtTicket;
 
-import java.security.PrivateKey;
-import java.security.cert.Certificate;
+import java.io.File;
 
 /**
  * A krb PKINIT client API for applications to interact with KDC using PKINIT.
  */
-public class KrbPkinitClient {
-    private final KrbClient krbClient;
+public class KrbPkinitClient extends KrbClientBase {
+
+    /**
+     * Default constructor.
+     * @throws KrbException e
+     */
+    public KrbPkinitClient() throws KrbException {
+        super();
+    }
+
+    /**
+     * Construct with prepared KrbConfig.
+     * @param krbConfig The krb config
+     */
+    public KrbPkinitClient(KrbConfig krbConfig) {
+        super(krbConfig);
+    }
+
+    /**
+     * Constructor with conf dir
+     * @param confDir The conf dir
+     * @throws KrbException e
+     */
+    public KrbPkinitClient(File confDir) throws KrbException {
+        super(confDir);
+    }
 
     /**
      * Constructor with prepared KrbClient.
      * @param krbClient The krb client
      */
     public KrbPkinitClient(KrbClient krbClient) {
-        this.krbClient = krbClient;
-    }
-
-    /**
-     * Get krb client.
-     * @return KrbClient
-     */
-    public KrbClient getKrbClient() {
-        return krbClient;
+        super(krbClient);
     }
 
     /**
@@ -55,12 +70,15 @@ public class KrbPkinitClient {
      * @return TGT
      * @throws KrbException e
      */
-    public TgtTicket requestTgt(Certificate certificate,
-                                PrivateKey privateKey) throws KrbException {
+    public TgtTicket requestTgt(String principal, String certificate,
+                                String privateKey) throws KrbException {
         KOptions requestOptions = new KOptions();
-        requestOptions.add(KrbOption.PKINIT_X509_CERTIFICATE, certificate);
-        requestOptions.add(KrbOption.PKINIT_X509_PRIVATE_KEY, privateKey);
-        return krbClient.requestTgt(requestOptions);
+        requestOptions.add(KrbOption.CLIENT_PRINCIPAL, principal);
+        requestOptions.add(PkinitOption.USE_PKINIT);
+        requestOptions.add(PkinitOption.USING_RSA);
+        requestOptions.add(PkinitOption.X509_IDENTITY, certificate);
+        requestOptions.add(PkinitOption.X509_PRIVATE_KEY, privateKey);
+        return requestTgt(requestOptions);
     }
 
     /**
@@ -68,9 +86,11 @@ public class KrbPkinitClient {
      * @return TGT
      * @throws KrbException e
      */
-    public TgtTicket requestTgt() throws KrbException {
+    public TgtTicket requestTgt(String anchors) throws KrbException {
         KOptions requestOptions = new KOptions();
-        requestOptions.add(KrbOption.USE_PKINIT_ANONYMOUS);
-        return krbClient.requestTgt(requestOptions);
+        requestOptions.add(PkinitOption.USE_ANONYMOUS);
+        requestOptions.add(KrbOption.CLIENT_PRINCIPAL, "WELLKNOWN/ANONYMOUS");
+        requestOptions.add(PkinitOption.X509_ANCHORS, anchors);
+        return requestTgt(requestOptions);
     }
 }

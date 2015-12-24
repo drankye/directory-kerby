@@ -71,6 +71,8 @@ public class KdcHandler {
         KdcRequest kdcRequest = null;
         KrbMessage krbResponse;
 
+        ByteBuffer message = receivedMessage.duplicate();
+
         try {
             krbRequest = KrbCodec.decodeMessage(receivedMessage);
         } catch (IOException e) {
@@ -98,6 +100,9 @@ public class KdcHandler {
             }
         }
 
+        // For checksum
+        kdcRequest.setReqPackage(message);
+
         if (remoteAddress == null) {
             throw new KrbException("Remote address is null, not available.");
         }
@@ -124,7 +129,7 @@ public class KdcHandler {
         } else {
             responseMessage = ByteBuffer.allocate(bodyLen);
         }
-        krbResponse.encode(responseMessage);
+        KrbCodec.encode(krbResponse, responseMessage);
         responseMessage.flip();
 
         return responseMessage;

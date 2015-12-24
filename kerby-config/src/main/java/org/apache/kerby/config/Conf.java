@@ -36,8 +36,8 @@ import java.util.Set;
 public class Conf implements Config {
     private static final Logger LOGGER = LoggerFactory.getLogger(Conf.class);
 
-    private List<ConfigLoader> resourceConfigs;/*resource name with a loader*/
-    private final ConfigImpl config;/*resource contents*/
+    private List<ConfigLoader> resourceConfigs;
+    private final ConfigImpl config;
 
     public Conf() {
         this.resourceConfigs = new ArrayList<ConfigLoader>(1);
@@ -75,7 +75,6 @@ public class Conf implements Config {
     public void addResource(Resource resource) {
         ConfigLoader loader = getLoader(resource);
         resourceConfigs.add(loader);
-
         Config loaded = loader.load();
         config.add(loaded);
     }

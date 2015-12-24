@@ -70,9 +70,10 @@ public class Conf implements Config {
 
     /**
      * Load the resource name and content in one step.
+     * Add synchronized to avoid conflicts
      * @param resource the config resource
      */
-    public void addResource(Resource resource) {
+    public synchronized void addResource(Resource resource) {
         ConfigLoader loader = getLoader(resource);
         resourceConfigs.add(loader);
         Config loaded = loader.load();
@@ -93,6 +94,18 @@ public class Conf implements Config {
         }
         loader.setResource(resource);
         return loader;
+    }
+
+    /**
+     * For users usage, to determine whether to reload config files.
+     * Add synchronized to avoid conflicts
+     */
+    public synchronized void reload() {
+        config.reset();
+        for (ConfigLoader loader : resourceConfigs) {
+            Config loaded = loader.load();
+            config.add(loaded);
+        }
     }
 
     @Override
@@ -122,11 +135,12 @@ public class Conf implements Config {
 
     /**
      * Values user sets will be add in config directly.
+     * Add synchronized to avoid conflicts
      * @param name The property name
      * @param value The string value
      */
     @Override
-    public void setString(String name, String value) {
+    public synchronized void setString(String name, String value) {
         config.set(name, value);
     }
 

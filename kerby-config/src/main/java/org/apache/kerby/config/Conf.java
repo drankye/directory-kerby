@@ -36,14 +36,14 @@ public class Conf implements Config {
 
     private List<ConfigLoader> resourceConfigs;
     private final ConfigImpl config;
-    private final Map<String, String> setValues;
-    private boolean needReload;/*used to control the load of default mapconfig*/
+    //private final Map<String, String> setValues;
+    //private boolean needReload;/*used to control the load of default mapconfig*/
 
     public Conf() {
         this.resourceConfigs = new ArrayList<ConfigLoader>(1);
         this.config = new ConfigImpl("Conf");
-        this.setValues = new HashMap<>(10);
-        this.needReload = false;/*initially false. when user set default values, it becomes true*/
+        //this.setValues = new HashMap<>(10);
+        //this.needReload = false;/*initially false. when user set default values, it becomes true*/
 
         /*for user's usage*/
         //addMapConfig(setValues);
@@ -99,12 +99,12 @@ public class Conf implements Config {
     }
 
     /*not all get() function need this?*/
-    private void loadDefaultMap () {
+    /*private void loadDefaultMap () {
         if (needReload) {
             addMapConfig (setValues);
             needReload = false;
         }
-    }
+    }*/
     /*need to delete*/
     /*private void checkAndLoad() {
         if (needReload) {
@@ -125,42 +125,36 @@ public class Conf implements Config {
     @Override
     public String getResource() {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getResource();
     }
 
     @Override
     public Set<String> getNames() {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getNames();
     }
 
     @Override
     public String getString(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getString(name);
     }
 
     @Override
     public String getString(ConfigKey name, boolean useDefault) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getString(name, useDefault);
     }
 
     @Override
     public String getString(String name, String defaultValue) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getString(name, defaultValue);
     }
 
     @Override
     public void setString(String name, String value) {
-        setValues.put(name, value);
-        needReload = true;/*need to load the default map*/
+        config.set(name, value);/*directly set the  key-value into config*/
     }
 
     @Override
@@ -171,35 +165,30 @@ public class Conf implements Config {
     @Override
     public String getTrimmed(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getTrimmed(name);
     }
 
     @Override
     public String getTrimmed(ConfigKey name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getTrimmed(name);
     }
 
     @Override
     public Boolean getBoolean(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getBoolean(name);
     }
 
     @Override
     public Boolean getBoolean(ConfigKey name, boolean useDefault) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getBoolean(name, useDefault);
     }
 
     @Override
     public Boolean getBoolean(String name, Boolean defaultValue) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getBoolean(name, defaultValue);
     }
 
@@ -216,21 +205,18 @@ public class Conf implements Config {
     @Override
     public Integer getInt(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getInt(name);
     }
 
     @Override
     public Integer getInt(ConfigKey name, boolean useDefault) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getInt(name, useDefault);
     }
 
     @Override
     public Integer getInt(String name, Integer defaultValue) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getInt(name, defaultValue);
     }
 
@@ -247,21 +233,18 @@ public class Conf implements Config {
     @Override
     public Long getLong(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getLong(name);
     }
 
     @Override
     public Long getLong(ConfigKey name, boolean useDefault) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getLong(name, useDefault);
     }
 
     @Override
     public Long getLong(String name, Long defaultValue) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getLong(name, defaultValue);
     }
 
@@ -278,21 +261,18 @@ public class Conf implements Config {
     @Override
     public Float getFloat(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getFloat(name);
     }
 
     @Override
     public Float getFloat(ConfigKey name, boolean useDefault) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getFloat(name, useDefault);
     }
 
     @Override
     public Float getFloat(String name, Float defaultValue) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getFloat(name, defaultValue);
     }
 
@@ -309,42 +289,36 @@ public class Conf implements Config {
     @Override
     public List<String> getList(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getList(name);
     }
 
     @Override
     public List<String> getList(String name, String[] defaultValue) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getList(name, defaultValue);
     }
 
     @Override
     public List<String> getList(ConfigKey name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getList(name);
     }
 
     @Override
     public Config getConfig(String name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getConfig(name);
     }
 
     @Override
     public Config getConfig(ConfigKey name) {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getConfig(name);
     }
 
     @Override
     public Class<?> getClass(String name) throws ClassNotFoundException {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getClass(name);
     }
 
@@ -352,7 +326,6 @@ public class Conf implements Config {
     public Class<?> getClass(String name, Class<?> defaultValue)
             throws ClassNotFoundException {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getClass(name, defaultValue);
     }
 
@@ -360,28 +333,24 @@ public class Conf implements Config {
     public Class<?> getClass(ConfigKey name, boolean useDefault)
             throws ClassNotFoundException {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getClass(name, useDefault);
     }
 
     @Override
     public <T> T getInstance(String name) throws ClassNotFoundException {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getInstance(name);
     }
 
     @Override
     public <T> T getInstance(ConfigKey name) throws ClassNotFoundException {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getInstance(name);
     }
 
     @Override
     public <T> T getInstance(String name, Class<T> xface) throws ClassNotFoundException {
         //checkAndLoad();
-        loadDefaultMap();
         return config.getInstance(name, xface);
     }
 }
